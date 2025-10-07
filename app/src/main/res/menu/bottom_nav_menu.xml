@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Home"
+        android:id="@+id/HomeFragment"
+        android:icon="@drawable/ic_home" />
+
+    <item
+        android:title="Chat"
+        android:id="@+id/ChatFragment"
+        android:icon="@drawable/ic_mess" />
+
+    <item
+        android:title="Add"
+        android:id="@+id/AddFragment"
+        android:icon="@drawable/ic_add" />
+
+    <item
+        android:title="Calendar"
+        android:id="@+id/CalendarFragment"
+        android:icon="@drawable/ic_calendar" />
+
+    <item
+        android:title="Notification"
+        android:id="@+id/NotificationFragment"
+        android:icon="@drawable/ic_home" />
+</menu>
