@@ -37,11 +37,25 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.ongoingProjectState.observe(viewLifecycleOwner){
-            binding.rcvOngoingProject.adapter = OngoingProjectAdapter(it)
+            if(!it.isEmpty()){
+                binding.rcvOngoingProject.visibility = View.VISIBLE
+                binding.tvNoDataInOngoingProject.visibility = View.GONE
+                binding.rcvOngoingProject.adapter = OngoingProjectAdapter(it)
+            }else{
+                binding.rcvOngoingProject.visibility = View.GONE
+                binding.tvNoDataInOngoingProject.visibility = View.VISIBLE
+            }
         }
 
         homeViewModel.completedProjectState.observe(viewLifecycleOwner){
-            binding.rcvTaskCompleted.adapter = CompletedProjectAdapter(it)
+            if(!it.isEmpty()){
+                binding.rcvTaskCompleted.visibility = View.VISIBLE
+                binding.tvNoDataInCompletedProject.visibility = View.GONE
+                binding.rcvTaskCompleted.adapter = CompletedProjectAdapter(it)
+            }else{
+                binding.rcvTaskCompleted.visibility = View.GONE
+                binding.tvNoDataInCompletedProject.visibility = View.VISIBLE
+            }
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
