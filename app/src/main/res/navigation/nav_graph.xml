@@ -8,7 +8,14 @@
         android:id="@+id/HomeFragment"
         android:name="com.example.anew.ui.fragment.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_HomeFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ChatFragment"
         android:name="com.example.anew.ui.fragment.chat.ChatFragment"
@@ -29,4 +36,13 @@
         android:name="com.example.anew.ui.fragment.notification.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="com.example.anew.ui.fragment.home.TaskDetailFragment"
+        android:label="fragment_task_detail"
+        tools:layout="@layout/fragment_task_detail" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.anew.ui.fragment.home.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

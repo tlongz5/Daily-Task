@@ -2,6 +2,7 @@ package com.example.anew.repo
 
 import android.util.Log
 import com.example.anew.model.Team
+import com.example.anew.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -26,5 +27,14 @@ class ProjectRepo {
         }
 
         return projectList
+    }
+
+    suspend fun getUserFromUid(uid: String): User{
+        val snapshot = db.collection("users").document(uid).get().await()
+        return snapshot.toObject(User::class.java)!!
+    }
+
+    suspend fun loadImage(url: String){
+
     }
 }

@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.example.anew.R
 import com.example.anew.databinding.FragmentHomeBinding
 import com.example.anew.model.Team
+import com.example.anew.model.fakeData
 import com.example.anew.ui.fragment.home.adapter.CompletedProjectAdapter
 import com.example.anew.ui.fragment.home.adapter.OngoingProjectAdapter
 import com.example.anew.viewmodelFactory.MyViewModelFactory
@@ -40,7 +45,7 @@ class HomeFragment : Fragment() {
             if(!it.isEmpty()){
                 binding.rcvOngoingProject.visibility = View.VISIBLE
                 binding.tvNoDataInOngoingProject.visibility = View.GONE
-                binding.rcvOngoingProject.adapter = OngoingProjectAdapter(it)
+                binding.rcvOngoingProject.adapter = OngoingProjectAdapter(it.take(20) as MutableList<Team>)
             }else{
                 binding.rcvOngoingProject.visibility = View.GONE
                 binding.tvNoDataInOngoingProject.visibility = View.VISIBLE
@@ -51,7 +56,7 @@ class HomeFragment : Fragment() {
             if(!it.isEmpty()){
                 binding.rcvTaskCompleted.visibility = View.VISIBLE
                 binding.tvNoDataInCompletedProject.visibility = View.GONE
-                binding.rcvTaskCompleted.adapter = CompletedProjectAdapter(it)
+                binding.rcvTaskCompleted.adapter = CompletedProjectAdapter(it.take(20) as MutableList<Team>)
             }else{
                 binding.rcvTaskCompleted.visibility = View.GONE
                 binding.tvNoDataInCompletedProject.visibility = View.VISIBLE
@@ -67,12 +72,19 @@ class HomeFragment : Fragment() {
             homeViewModel.reloadProjectDataWithSearch(it.toString())
         }
 
-//        val onGoingProject = mutableListOf<Team>()
-//        val completedProject = mutableListOf<Team>()
-//
-//        homeViewModel.getProjectsData(completedProject, onGoingProject)
-//        binding.rcvTaskCompleted.adapter = CompletedProjectAdapter(completedProject)
-//        binding.rcvOngoingProject.adapter = OngoingProjectAdapter(onGoingProject)
+//      // handle load data user and click avatar
+        binding.userName.text = fakeData.name
+        Glide.with(this)
+            .load(fakeData.avatarUrl)
+            .error(R.drawable.ic_launcher_background)
+            .circleCrop()
+            .override(48,48)
+            .into(binding.avatar)
+
+        binding.avatar.setOnClickListener {
+            findNavController().navigate(R.id.action_HomeFragment_to_profileFragment)
+        }
+
     }
 
     override fun onDestroyView() {

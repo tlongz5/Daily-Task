@@ -33,7 +33,6 @@ class HomeViewModel(private val projectRepo: ProjectRepo): ViewModel() {
     fun reloadProjectDataWithSearch(text: String){
         _completedProjectState.value = _projectState.value?.filter { it.inProgress == false && checkTextData(it,text) } as MutableList<Team>
         _ongoingProjectState.value = _projectState.value?.filter { it.inProgress == true && checkTextData(it,text) } as MutableList<Team>
-
     }
 
     private fun checkTextData( team: Team, text: String): Boolean {

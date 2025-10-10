@@ -102,6 +102,9 @@ class LoginActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("uid", currentUser!!.uid)
+        editor.putString("name", currentUser.displayName)
+        editor.putString("email", currentUser.email)
+        editor.putString("avatar", currentUser.photoUrl.toString())
         editor.apply()
 
         //save to global object
@@ -118,6 +121,10 @@ class LoginActivity : AppCompatActivity() {
         val userId = sharePref.getString("uid", null)
         if(userId!=null){
             fakeData.uid = userId
+            fakeData.name = sharePref.getString("name", null)
+            fakeData.email = sharePref.getString("email", null)
+            fakeData.avatarUrl = sharePref.getString("avatar", null)
+
             callIntent()
             finish()
         }
