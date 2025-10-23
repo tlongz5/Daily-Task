@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
 
     private val myViewModelFactory = MyViewModelFactory()
 
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
 
     private val activityResultLaucher =
@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 try {
                     val signInAccount = task.getResult(ApiException::class.java)
-                    authViewModel.signInWithGoogle(signInAccount.idToken!!)
+                    loginViewModel.signInWithGoogle(signInAccount.idToken!!)
                 } catch (e: ApiException) {
                     e.printStackTrace()
                 }
@@ -52,9 +52,9 @@ class LoginActivity : AppCompatActivity() {
         //check user login
         checkLogin()
 
-        authViewModel = ViewModelProvider(this, myViewModelFactory)[AuthViewModel::class.java]
+        loginViewModel = ViewModelProvider(this, myViewModelFactory)[LoginViewModel::class.java]
 
-        authViewModel.authState.observe(this) { user ->
+        loginViewModel.authState.observe(this) { user ->
             if (user != null) {
                 initUser()
             }
@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
             ).show()
         }
 
-        authViewModel.userState.observe(this){ user ->
+        loginViewModel.userState.observe(this){ user ->
             if(user!=null){
                 callIntent()
                 finish()
@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.btnLoginGoogle.setOnClickListener {
-            val signInIntent = authViewModel.signInIntent(this)
+            val signInIntent = loginViewModel.signInIntent(this)
             activityResultLaucher.launch(signInIntent)
         }
 
@@ -95,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
                 currentUser.email!!,
                 uri.toString()
             )
-            authViewModel.initUser(this ,user)
+            loginViewModel.initUser(this ,user)
         }
 
         //save to SharePreference

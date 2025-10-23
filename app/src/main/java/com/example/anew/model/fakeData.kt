@@ -9,6 +9,7 @@ object fakeData{
         var name:String? =null
         var email:String? =null
         var avatarUrl:String? =null
+        var phoneNumber:String?=null
 
         val members: List<Member> = listOf(
             Member(R.drawable.avt1, "david cot"),

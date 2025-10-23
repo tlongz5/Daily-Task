@@ -11,7 +11,7 @@ import com.example.anew.repo.AuthRepo
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
-class AuthViewModel(private val authRepo: AuthRepo): ViewModel()  {
+class LoginViewModel(private val authRepo: AuthRepo): ViewModel()  {
     private val _authState = MutableLiveData<FirebaseUser?>()
     val authState: LiveData<FirebaseUser?> = _authState
 

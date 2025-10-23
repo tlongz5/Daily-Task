@@ -57,6 +57,14 @@ class AuthRepo {
             .requestIdToken(context.getString(R.string.client_id))
             .build()
         GoogleSignIn.getClient(context, gso).signOut().await()
+
+        //clear from sharePreference
+        val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
+        fakeData.uid = null
+        fakeData.name = null
+        fakeData.email = null
+        fakeData.avatarUrl = null
     }
 
     suspend fun checkUser(user: User): Boolean{
