@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/custom_bottom_sheet_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/bottomSheetDragHandleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="@id/bottomSheetDragHandleView"
+        app:layout_constraintStart_toStartOf="@id/bottomSheetDragHandleView"
+        app:layout_constraintTop_toBottomOf="@+id/bottomSheetDragHandleView"/>
+
+    <TextView
+        android:id="@+id/tv_view_avatar"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:text="View avatar"
+        android:textSize="24dp"
+        android:drawableStart="@drawable/view_avatar"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bottomSheetDragHandleView" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#33000000"
+        app:layout_constraintEnd_toEndOf="@id/tv_view_avatar"
+        app:layout_constraintStart_toStartOf="@id/tv_view_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/tv_view_avatar"/>
+
+    <TextView
+        android:id="@+id/tv_pick_from_device"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:text="Pick image from device"
+        android:textSize="24dp"
+        android:drawableStart="@drawable/add_image_from_device"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_view_avatar" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#33000000"
+        app:layout_constraintEnd_toEndOf="@id/tv_pick_from_device"
+        app:layout_constraintStart_toStartOf="@id/tv_pick_from_device"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pick_from_device"/>
+
+    <TextView
+        android:id="@+id/tv_upload_photo"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:drawableStart="@drawable/add_photo_from_gallery"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textSize="24dp"
+        android:text="Upload photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pick_from_device" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -146,14 +146,14 @@
             android:id="@+id/edtPhoneNumber"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="start|center_vertical"
             android:layout_marginStart="8dp"
+            android:background="@null"
+            android:fontFamily="sans-serif"
+            android:gravity="start|center_vertical"
             android:text="Phone number"
             android:textSize="16dp"
-            android:fontFamily="sans-serif"
-            android:background = "@null"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_edit_phone"
             app:layout_constraintStart_toEndOf="@+id/imageButton93"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -18,11 +18,16 @@ class LoginViewModel(private val authRepo: AuthRepo): ViewModel()  {
     private val _userState = MutableLiveData<User?>()
     val userState: LiveData<User?> = _userState
 
-
     fun signInWithGoogle(idToken: String){
         viewModelScope.launch {
             val user = authRepo.signInWithGoogle(idToken)
             _authState.value = user
+        }
+    }
+
+    fun initUser(context: Context, user: User){
+        viewModelScope.launch {
+            _userState.value= authRepo.getDataUser(user)
         }
     }
 
@@ -36,11 +41,4 @@ class LoginViewModel(private val authRepo: AuthRepo): ViewModel()  {
 
     fun signInIntent(context: Context) : Intent = authRepo.getSignInIntent(context)
 
-    fun initUser(context: Context, user: User){
-        viewModelScope.launch {
-            val check = authRepo.checkUser(user)
-            if(!check) authRepo.initUser(context,user)
-            _userState.value= user
-        }
-    }
 }

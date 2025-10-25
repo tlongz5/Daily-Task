@@ -14,9 +14,11 @@ import androidx.room.util.findColumnIndexBySuffix
 import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentProfileBinding
+import com.example.anew.databinding.FragmentProfileBottomSheetBinding
 import com.example.anew.model.fakeData
 import com.example.anew.ui.activity.login.LoginActivity
 import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlin.jvm.java
 
 class ProfileFragment: Fragment() {
@@ -38,7 +40,7 @@ class ProfileFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         profileViewModel = ViewModelProvider(this, MyViewModelFactory).get(ProfileViewModel::class.java)
 
-        binding.edtName.text = fakeData.name as Editable?
+        binding.edtName.text = fakeData.name as Editable
         binding.tvEmail.text = fakeData.email
         binding.edtPhoneNumber.text = fakeData.phoneNumber as Editable
 
@@ -47,6 +49,10 @@ class ProfileFragment: Fragment() {
             .error(R.drawable.ic_launcher_background)
             .circleCrop()
             .into(binding.avatar)
+
+        binding.avatar.setOnClickListener {
+            showBottomSheet()
+        }
 
 
         binding.btnLogOut.setOnClickListener {
@@ -66,6 +72,27 @@ class ProfileFragment: Fragment() {
             imm.showSoftInput(binding.edtName, InputMethodManager.SHOW_IMPLICIT)
 
         }
+
+    }
+
+    private fun showBottomSheet() {
+        val bottomSheet = BottomSheetDialog(requireContext())
+        val bindingBottomSheet = FragmentProfileBottomSheetBinding.inflate(layoutInflater)
+        bottomSheet.setContentView(bindingBottomSheet.root)
+        bindingBottomSheet.tvViewAvatar.setOnClickListener {
+
+            bottomSheet.dismiss()
+        }
+        bindingBottomSheet.tvPickFromDevice.setOnClickListener {
+
+            bottomSheet.dismiss()
+        }
+        bindingBottomSheet.tvUploadPhoto.setOnClickListener {
+
+            bottomSheet.dismiss()
+        }
+
+        bottomSheet.show()
 
     }
 

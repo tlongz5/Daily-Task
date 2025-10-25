@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.anew.databinding.ActivityLoginBinding
 import com.example.anew.model.User
 import com.example.anew.model.fakeData
+import com.example.anew.model.saveUserToSharePref
 import com.example.anew.ui.activity.main.MainActivity
 import com.example.anew.viewmodelFactory.MyViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -69,6 +70,7 @@ class LoginActivity : AppCompatActivity() {
             if(user!=null){
                 callIntent()
                 finish()
+                saveUserToSharePref(user, this)
             }
             else Log.d("user", "login failed")
         }
@@ -93,22 +95,11 @@ class LoginActivity : AppCompatActivity() {
                 currentUser.uid,
                 currentUser.displayName.toString(),
                 currentUser.email!!,
-                uri.toString()
+                uri.toString(),
+                ""
             )
             loginViewModel.initUser(this ,user)
         }
-
-        //save to SharePreference
-        val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("uid", currentUser!!.uid)
-        editor.putString("name", currentUser.displayName)
-        editor.putString("email", currentUser.email)
-        editor.putString("avatar", currentUser.photoUrl.toString())
-        editor.apply()
-
-        //save to global object
-        fakeData.uid = currentUser.uid
     }
 
     private fun callIntent() {
@@ -124,6 +115,7 @@ class LoginActivity : AppCompatActivity() {
             fakeData.name = sharePref.getString("name", null)
             fakeData.email = sharePref.getString("email", null)
             fakeData.avatarUrl = sharePref.getString("avatar", null)
+            fakeData.phoneNumber = sharePref.getString("phoneNumber", null)
 
             callIntent()
             finish()

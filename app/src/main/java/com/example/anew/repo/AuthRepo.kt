@@ -65,14 +65,15 @@ class AuthRepo {
         fakeData.name = null
         fakeData.email = null
         fakeData.avatarUrl = null
+        fakeData.phoneNumber = null
     }
 
-    suspend fun checkUser(user: User): Boolean{
+    suspend fun getDataUser(user: User): User{
         val data = db.collection("users")
             .document(user.uid)
             .get()
             .await()
-        return data.exists()
+        return if(data.exists()) data.toObject(User::class.java)!! else user
     }
 
     suspend fun initUser(context: Context, user: User){
