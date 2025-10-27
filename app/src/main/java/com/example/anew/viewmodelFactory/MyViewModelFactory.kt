@@ -6,7 +6,7 @@ import com.example.anew.repo.AuthRepo
 import com.example.anew.repo.ProjectRepo
 import com.example.anew.ui.activity.login.LoginViewModel
 import com.example.anew.ui.fragment.home.HomeViewModel
-import com.example.anew.ui.fragment.home.ProfileViewModel
+import com.example.anew.ui.fragment.home.profile.ProfileViewModel
 
 class MyViewModelFactory: ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

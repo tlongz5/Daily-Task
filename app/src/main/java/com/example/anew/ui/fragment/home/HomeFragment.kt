@@ -73,9 +73,9 @@ class HomeFragment : Fragment() {
         }
 
 //      // handle load data user and click avatar
-        binding.userName.text = fakeData.name
+        binding.userName.text = fakeData.user!!.name
         Glide.with(this)
-            .load(fakeData.avatarUrl)
+            .load(fakeData.user!!.photoUrl)
             .error(R.drawable.ic_launcher_background)
             .circleCrop()
             .override(48,48)

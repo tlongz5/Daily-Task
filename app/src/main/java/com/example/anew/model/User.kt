@@ -6,4 +6,6 @@ data class User(
     val email: String,
     var photoUrl: String,
     val phoneNumber: String
-)
+){
+    constructor() : this("","","","","")
+}

@@ -43,6 +43,15 @@
         tools:layout="@layout/fragment_task_detail" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.anew.ui.fragment.home.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:name="com.example.anew.ui.fragment.home.profile.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_viewAvatarFragment"
+            app:destination="@id/viewAvatarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewAvatarFragment"
+        android:name="com.example.anew.ui.fragment.home.profile.ViewAvatarFragment"
+        android:label="fragment_view_avatar"
+        tools:layout="@layout/fragment_view_avatar" />
 </navigation>

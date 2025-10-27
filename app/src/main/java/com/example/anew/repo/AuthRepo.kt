@@ -61,11 +61,11 @@ class AuthRepo {
         //clear from sharePreference
         val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
         sharedPreferences.edit().clear().apply()
-        fakeData.uid = null
-        fakeData.name = null
-        fakeData.email = null
-        fakeData.avatarUrl = null
-        fakeData.phoneNumber = null
+//        fakeData.uid = null
+//        fakeData.name = null
+//        fakeData.email = null
+//        fakeData.avatarUrl = null
+//        fakeData.phoneNumber = null
     }
 
     suspend fun getDataUser(user: User): User{

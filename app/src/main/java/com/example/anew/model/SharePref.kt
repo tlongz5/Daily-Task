@@ -3,7 +3,8 @@ package com.example.anew.model
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 
-fun saveUserToSharePref(user: User, context: Context){
+// save to share pref and fake data
+fun saveUserToSharePrefAndDataLocal(user: User, context: Context){
     val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
     val editor = sharedPreferences.edit()
     editor.putString("uid", user.uid)
@@ -12,6 +13,8 @@ fun saveUserToSharePref(user: User, context: Context){
     editor.putString("avatar", user.photoUrl)
     editor.putString("phoneNumber",user.phoneNumber)
     editor.apply()
+
+    fakeData.user = user
 }
 
 fun getUserFromSharePref(context: Context) {
@@ -25,5 +28,5 @@ fun editUserToSharePref(user: User, context: Context){
 
 fun deleteUserFromSharePref(context: Context){
     val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
-
+    sharedPreferences.edit().clear().apply()
 }

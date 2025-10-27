@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.home.ViewAvatarBottomSheetFragment">
+    tools:context=".ui.fragment.home.profile.ViewAvatarFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
     </com.google.android.material.appbar.AppBarLayout>
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/avatar"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

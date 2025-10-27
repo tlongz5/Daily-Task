@@ -25,7 +25,7 @@ class HomeViewModel(private val projectRepo: ProjectRepo): ViewModel() {
 
     fun getProjectData(){
         viewModelScope.launch {
-            val projectList = projectRepo.getProjectsData(fakeData.uid!!)
+            val projectList = projectRepo.getProjectsData(fakeData.user!!.uid)
             _projectState.value = projectList
         }
     }

@@ -1,4 +1,4 @@
-package com.example.anew.ui.fragment.home
+package com.example.anew.ui.fragment.home.profile
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -8,6 +8,6 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val authRepo: AuthRepo): ViewModel() {
     fun signOut(context: Context){
-        viewModelScope.launch { authRepo.signOut(context) };
+        viewModelScope.launch { authRepo.signOut(context) }
     }
 }
