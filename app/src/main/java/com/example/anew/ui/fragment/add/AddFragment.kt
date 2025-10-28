@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.ui.fragment.add.AddTeamMembersAdapter
 import com.example.anew.databinding.FragmentAddBinding
 
@@ -25,11 +26,27 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rcvTeamMembers.adapter = AddTeamMembersAdapter()
-        val gridLayout = GridLayoutManager(requireContext(), 3)
-        binding.rcvTeamMembers.layoutManager = gridLayout
+        val linearLayout = LinearLayoutManager(requireContext(),
+            LinearLayoutManager.HORIZONTAL, false)
+        binding.rcvTeamMembers.layoutManager =linearLayout
+
+        binding.tvProjectName.setOnClickListener {
+            getBottomSheet()
+        }
+
+        binding.tvTaskDetail.setOnClickListener {
+            getBottomSheet()
+        }
+
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+//Note
+    private fun getBottomSheet() {
+
+    }
+
 }

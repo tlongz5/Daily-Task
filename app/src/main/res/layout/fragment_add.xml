@@ -8,32 +8,19 @@
     tools:context=".ui.fragment.add.AddFragment">
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#E67D7D"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
-    </androidx.appcompat.widget.Toolbar>
-
     <TextView
         android:id="@+id/textView22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="18dp"
         android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"
         android:text="Project Name"
-        app:layout_constraintStart_toStartOf="@+id/toolbar"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/edt_project_name"
+    <TextView
+        android:id="@+id/tv_project_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -41,7 +28,7 @@
         android:text="checking app"
         android:paddingStart="8dp"
         android:padding="16dp"
-        android:background="#AFDCFF"
+        android:background="#F3F4F6"
         app:layout_constraintStart_toStartOf="@+id/textView22"
         app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
@@ -53,18 +40,19 @@
         android:textSize="18dp"
         android:textStyle="bold"
         android:text="Task Detail"
-        app:layout_constraintStart_toStartOf="@+id/edt_project_name"
-        app:layout_constraintTop_toBottomOf="@+id/edt_project_name" />
+        app:layout_constraintStart_toStartOf="@+id/tv_project_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_project_name" />
 
-    <EditText
-        android:id="@+id/edt_task_detail"
+    <TextView
+        android:id="@+id/tv_task_detail"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:textSize="16dp"
         android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500"
         android:paddingStart="8dp"
+        android:layout_marginTop="8dp"
         android:padding="8dp"
-        android:background="#AFDCFF"
+        android:background="#F3F4F6"
         android:fontFamily="sans-serif-condensed"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -77,32 +65,49 @@
         android:textSize="24dp"
         android:textStyle="bold"
         android:text="Team Members"
-        app:layout_constraintStart_toStartOf="@+id/edt_task_detail"
-        app:layout_constraintTop_toBottomOf="@+id/edt_task_detail" />
+        app:layout_constraintStart_toStartOf="@+id/tv_task_detail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_task_detail" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_team_members"
+    <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton5"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/textView1"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/textView1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_team_members"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/btn_add_member"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_add_image" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/create_new_task"
-        app:layout_constraintStart_toStartOf="@+id/create_new_task">
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8">
 
         <LinearLayout
             android:id="@+id/due_time"
-            android:layout_marginEnd="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
             android:layout_weight="1"
+            android:background="#F3F4F6"
             android:orientation="horizontal">
 
             <ImageButton
@@ -127,13 +132,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="#F3F4F6"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/imageButton6"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:src="@drawable/ic_calendar" />
+                android:src="@drawable/ic_calendar_set" />
 
             <TextView
                 android:id="@+id/textView24"
@@ -149,32 +155,54 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/create_new_task"
+        android:id="@+id/btn_create_new_task"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="Create"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout5"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout5"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
     <TextView
         android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Time and Date"
         android:textSize="24dp"
         android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time and Date"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout5" />
+        app:layout_constraintStart_toStartOf="@+id/linearLayout6"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
-    <ImageButton
-        android:id="@+id/imageButton5"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/set_text_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_add"
-        app:layout_constraintBottom_toTopOf="@+id/textView8"
-        app:layout_constraintEnd_toEndOf="@+id/rcv_team_members"
-        app:layout_constraintStart_toStartOf="@+id/rcv_team_members" />
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/edt_set_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Name"
+            app:layout_constraintEnd_toStartOf="@+id/btn_done"
+            tools:layout_editor_absoluteY="654dp" />
+
+        <ImageButton
+            android:id="@+id/btn_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_set_text_doned"
+            android:layout_gravity="end" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

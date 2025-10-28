@@ -2,14 +2,14 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    app:cardCornerRadius="8dp"
-    android:layout_margin="4dp"
-    android:layout_height="48dp">
+    android:layout_width="wrap_content"
+    android:layout_height="48dp"
+    app:cardCornerRadius="16dp"
+    android:background="#F3F4F6"
+    android:layout_margin="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:background="#83BEF0"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
         <ImageView
@@ -38,10 +38,10 @@
             android:id="@+id/delete_member"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_marginEnd="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/avatar"
+            app:layout_constraintStart_toEndOf="@+id/tv_name"
+            app:layout_constraintTop_toTopOf="@+id/avatar"
             app:srcCompat="@drawable/ic_delete" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

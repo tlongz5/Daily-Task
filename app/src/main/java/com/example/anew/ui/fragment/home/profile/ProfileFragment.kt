@@ -117,7 +117,6 @@ class ProfileFragment: Fragment() {
     private fun pickAvtPreset() {
         val bottomSheetDialogFragment = PickPresetAvatarBottomSheet()
         bottomSheetDialogFragment.show(parentFragmentManager, bottomSheetDialogFragment.tag)
-
     }
 
 }
