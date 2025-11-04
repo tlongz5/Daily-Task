@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.paging.common)
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+
     ksp(libs.room.compiler)
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation("io.reactivex.rxjava3:rxjava:3.1.6")

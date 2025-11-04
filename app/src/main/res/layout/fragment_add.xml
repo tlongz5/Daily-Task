@@ -117,7 +117,7 @@
                 android:src="@drawable/ic_clock" />
 
             <TextView
-                android:id="@+id/textView0"
+                android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -142,7 +142,7 @@
                 android:src="@drawable/ic_calendar_set" />
 
             <TextView
-                android:id="@+id/textView24"
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -175,34 +175,6 @@
         app:layout_constraintStart_toStartOf="@+id/linearLayout6"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
-    <LinearLayout
-        android:id="@+id/set_text_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
 
-        <EditText
-            android:id="@+id/edt_set_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Name"
-            app:layout_constraintEnd_toStartOf="@+id/btn_done"
-            tools:layout_editor_absoluteY="654dp" />
-
-        <ImageButton
-            android:id="@+id/btn_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/ic_set_text_doned"
-            android:layout_gravity="end" />
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

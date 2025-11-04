@@ -34,7 +34,4 @@ class ProjectRepo {
         return snapshot.toObject(User::class.java)!!
     }
 
-    suspend fun loadImage(url: String){
-
-    }
 }

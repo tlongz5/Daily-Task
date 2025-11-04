@@ -20,12 +20,20 @@
         android:id="@+id/ChatFragment"
         android:name="com.example.anew.ui.fragment.chat.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_ChatFragment_to_friendListFragment"
+            app:destination="@id/friendListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/AddFragment"
         android:name="com.example.anew.ui.fragment.add.AddFragment"
         android:label="fragment_add"
-        tools:layout="@layout/fragment_add" />
+        tools:layout="@layout/fragment_add" >
+        <action
+            android:id="@+id/action_AddFragment_to_selectAddMemberFragment"
+            app:destination="@id/selectAddMemberFragment" />
+    </fragment>
     <fragment
         android:id="@+id/CalendarFragment"
         android:name="com.example.anew.ui.fragment.calendar.CalendarFragment"
@@ -54,4 +62,14 @@
         android:name="com.example.anew.ui.fragment.home.profile.ViewAvatarFragment"
         android:label="fragment_view_avatar"
         tools:layout="@layout/fragment_view_avatar" />
+    <fragment
+        android:id="@+id/selectAddMemberFragment"
+        android:name="com.example.anew.ui.fragment.add.SelectAddMemberFragment"
+        android:label="fragment_select_add_member"
+        tools:layout="@layout/fragment_select_add_member" />
+    <fragment
+        android:id="@+id/friendListFragment"
+        android:name="com.example.anew.FriendListFragment"
+        android:label="fragment_friend_list"
+        tools:layout="@layout/fragment_friend_list" />
 </navigation>

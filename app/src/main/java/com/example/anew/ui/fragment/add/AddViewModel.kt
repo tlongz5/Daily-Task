@@ -1,7 +1,10 @@
 package com.example.anew.ui.fragment.add
 
 import androidx.lifecycle.ViewModel
+import com.example.anew.repo.ProjectRepo
 
-class AddViewModel: ViewModel() {
-    
+class AddViewModel(
+    private val projectRepo: ProjectRepo
+): ViewModel() {
+
 }

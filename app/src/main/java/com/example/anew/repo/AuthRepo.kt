@@ -121,6 +121,12 @@ class AuthRepo {
             })
     }
 
-
+    suspend fun getUserDataFromUid(uid: String): User{
+        val data = db.collection("users")
+            .document(uid)
+            .get()
+            .await()
+        return data.toObject(User::class.java)!!
+    }
 
 }
