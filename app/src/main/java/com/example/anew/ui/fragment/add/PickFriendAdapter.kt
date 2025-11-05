@@ -10,6 +10,8 @@ import com.example.anew.databinding.ItemPickFriendBinding
 import com.example.anew.model.User
 
 class PickFriendAdapter(private val callback: (Boolean, User) -> Unit): PagingDataAdapter<User, PickFriendAdapter.ViewHolder>(DIFF_CALLBACK) {
+    private val selectedFriends = mutableListOf<String>()
+
     class ViewHolder(val binding: ItemPickFriendBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
@@ -25,25 +27,40 @@ class PickFriendAdapter(private val callback: (Boolean, User) -> Unit): PagingDa
         position: Int
     ) {
         getItem(position)?.let { user ->
-            holder.binding.btnPickMember.setOnCheckedChangeListener { _, isChecked ->
-                callback(isChecked,user)
-            }
             holder.binding.tvNameMember.text = user.name
-            holder.itemView.setOnClickListener {
-                holder.binding.btnPickMember.isChecked = !holder.binding.btnPickMember.isChecked
-                callback(holder.binding.btnPickMember.isChecked,user)
-            }
-
             Glide.with(holder.itemView.context)
                 .load(user.photoUrl)
                 .circleCrop()
                 .into(holder.binding.avatar)
+            setCbLogic(holder,user)
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: List<Any?>) {
-        super.onBindViewHolder(holder, position, payloads)
+    private fun setCbLogic(holder: ViewHolder, user: User) {
+        holder.binding.btnPickMember.setOnCheckedChangeListener(null)
+        holder.binding.btnPickMember.isChecked = selectedFriends.contains(user.uid)
 
+        holder.itemView.setOnClickListener {
+            holder.binding.btnPickMember.isChecked = !holder.binding.btnPickMember.isChecked
+        }
+        holder.binding.btnPickMember.setOnCheckedChangeListener { _, isChecked ->
+            callback(isChecked,user)
+        }
+    }
+
+    fun reloadPickedFriend(users: List<String>){
+        selectedFriends.clear()
+        selectedFriends.addAll(users)
+    }
+
+    fun updateUserListSelection(user: User, isChecked: Boolean) {
+        if (isChecked) {
+            selectedFriends.add(user.uid)
+        }else {
+            selectedFriends.remove(user.uid)
+        }
+        val index = snapshot().indexOfFirst { it!!.uid == user.uid }
+        notifyItemChanged(index)
     }
 
     companion object {
@@ -55,6 +72,5 @@ class PickFriendAdapter(private val callback: (Boolean, User) -> Unit): PagingDa
                 return oldItem == newItem
             }
         }
-
     }
 }

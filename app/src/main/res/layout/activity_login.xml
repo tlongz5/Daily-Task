@@ -5,7 +5,7 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#738AEF"
+    android:background="#A9B1D7"
     android:padding="16dp"
     tools:context=".ui.activity.login.LoginActivity">
 
@@ -47,7 +47,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="#DCD4D4"
-        android:drawableStart="@drawable/login_email"
         android:hint="Enter your email"
         android:inputType="text"
         android:padding="8dp"
@@ -73,7 +72,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#DCD4D4"
-        android:drawableStart="@drawable/login_password"
         android:ems="10"
         android:inputType="text"
         android:padding="8dp"

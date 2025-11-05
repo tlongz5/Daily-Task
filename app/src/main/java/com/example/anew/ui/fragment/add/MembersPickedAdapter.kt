@@ -2,20 +2,22 @@ package com.example.anew.ui.fragment.add
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.anew.databinding.ItemMembersPickedBinding
 import com.example.anew.model.User
 
-class MembersPickedAdapter(private val membersPicked: MutableList<User>,
-    private val callback: (User) -> Unit): RecyclerView.Adapter<MembersPickedAdapter.ViewHolder>() {
-    class ViewHolder(val binding: ItemMembersPickedBinding): RecyclerView.ViewHolder(binding.root)
+class MembersPickedAdapter(private val callback: (User) -> Unit): ListAdapter<User, MembersPickedAdapter.ViewHolder>(DIFF_CALLBACK) {
+    class ViewHolder(val binding: ItemMembersPickedBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding = ItemMembersPickedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemMembersPickedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -23,18 +25,27 @@ class MembersPickedAdapter(private val membersPicked: MutableList<User>,
         holder: ViewHolder,
         position: Int
     ) {
-        holder.binding.tvNameMember.text = membersPicked[position].name.split(" ").last()
+        val user = getItem(position)
+        holder.binding.tvNameMember.text = user.name.split(" ").last()
         holder.binding.btnDeleteMember.setOnClickListener {
-            callback(membersPicked[position])
+            callback(user)
         }
 
         Glide.with(holder.itemView.context)
-            .load(membersPicked[position].photoUrl)
+            .load(user.photoUrl)
             .circleCrop()
             .into(holder.binding.imgAvatar)
     }
 
-    override fun getItemCount(): Int {
-        return membersPicked.size
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<User>() {
+            override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+                return oldItem.uid == newItem.uid
+            }
+
+            override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }

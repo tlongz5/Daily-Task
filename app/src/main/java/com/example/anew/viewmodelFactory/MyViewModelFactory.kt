@@ -2,6 +2,8 @@ package com.example.anew.viewmodelFactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.anew.model.MyHelper
+import com.example.anew.model.fakeData
 import com.example.anew.repo.AuthRepo
 import com.example.anew.repo.FriendRepo
 import com.example.anew.repo.ProjectRepo
@@ -24,7 +26,7 @@ class MyViewModelFactory: ViewModelProvider.Factory {
                 ProfileViewModel(AuthRepo()) as T
             }
             modelClass.isAssignableFrom(SelectAddMemberViewModel::class.java) -> {
-                SelectAddMemberViewModel(FriendRepo(), AuthRepo()) as T
+                SelectAddMemberViewModel(FriendRepo(), AuthRepo(), fakeData.user!!.uid) as T
             }
             modelClass.isAssignableFrom(AddViewModel::class.java) -> {
                 AddViewModel(ProjectRepo()) as T

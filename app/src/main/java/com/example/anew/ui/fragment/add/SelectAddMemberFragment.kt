@@ -25,6 +25,9 @@ class SelectAddMemberFragment : Fragment() {
         }
     )
 
+    private val membersPickedAdapter = MembersPickedAdapter{
+        setChangeUserPicked(false,it)
+    }
 
     var _binding: FragmentSelectAddMemberBinding? = null
     private val binding get() = _binding!!
@@ -49,12 +52,11 @@ class SelectAddMemberFragment : Fragment() {
             }
         }
 
-        binding.rcvTeamMembersPicked.adapter 
+        binding.rcvTeamMembersPicked.adapter  = membersPickedAdapter
 
         selectAddMemberViewModel.friendPickedState.observe(viewLifecycleOwner){
-            binding.rcvTeamMembersPicked.adapter= MembersPickedAdapter(it.toMutableList()) { user ->
-                
-            }
+            membersPickedAdapter.submitList(it)
+            pickFriendAdapter.reloadPickedFriend(it.map { user -> user.uid })
         }
 
     }
@@ -63,8 +65,9 @@ class SelectAddMemberFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
+//Note
     private fun setChangeUserPicked(checked: Boolean, user: User) {
         selectAddMemberViewModel.updateFriendPickedState(checked,user)
+        pickFriendAdapter.updateUserListSelection(user,checked)
     }
 }

@@ -84,7 +84,7 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:contentDescription="team"
-            android:src="@drawable/ic_team"
+            android:src="@drawable/ic_group"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView10"
