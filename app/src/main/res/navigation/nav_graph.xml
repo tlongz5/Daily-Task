@@ -20,11 +20,7 @@
         android:id="@+id/ChatFragment"
         android:name="com.example.anew.ui.fragment.chat.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" >
-        <action
-            android:id="@+id/action_ChatFragment_to_friendListFragment"
-            app:destination="@id/friendListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_chat" />
     <fragment
         android:id="@+id/AddFragment"
         android:name="com.example.anew.ui.fragment.add.AddFragment"
@@ -68,8 +64,8 @@
         android:label="fragment_select_add_member"
         tools:layout="@layout/fragment_select_add_member" />
     <fragment
-        android:id="@+id/friendListFragment"
-        android:name="com.example.anew.FriendListFragment"
-        android:label="fragment_friend_list"
-        tools:layout="@layout/fragment_friend_list" />
+        android:id="@+id/otherUserProfileFragment"
+        android:name="com.example.anew.ui.fragment.chat.OtherUserProfileFragment"
+        android:label="fragment_other_user_profile"
+        tools:layout="@layout/fragment_other_user_profile" />
 </navigation>

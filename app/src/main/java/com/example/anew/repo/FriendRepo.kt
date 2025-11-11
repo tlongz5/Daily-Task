@@ -58,7 +58,8 @@ class FriendRepo {
     }
 
     suspend fun checkSentFriendInvite(uid: String, friendId: String): Boolean{
-        val snapshot = db.collection("friends").document(uid).get().await()
+        val snapshot = db.collection("users").document(uid)
+            .collection("friends").document(uid).get().await()
         val sentInvite = snapshot.get("sentFriendInvite") as List<String>
         return sentInvite.contains(friendId)
     }

@@ -24,7 +24,7 @@ class MessageAdapter(val messages: List<Message>): RecyclerView.Adapter<MessageA
         with(holder.binding){
             tvSenderMessage.text=messages[position].lastMessage
             tvSenderName.text=messages[position].name
-            tvLastMessageTime.text=messages[position].lastMessage
+            tvLastMessageTime.text=messages[position].lastMessageTime
             imgSenderAvatar.setImageResource(messages[position].avatar)
         }
     }

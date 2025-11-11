@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/contact"
-        android:icon="@drawable/ic_contact"
+        android:icon="@drawable/ic_group"
         android:title="contact"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/new_friend"
+        android:icon="@drawable/ic_make_new_friend"
+        android:title="make new friend"
         app:showAsAction="always"/>
 </menu>

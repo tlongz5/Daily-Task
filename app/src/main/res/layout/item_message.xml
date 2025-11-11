@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="90dp">
 
     <ImageView
         android:id="@+id/img_sender_avatar"
         android:layout_width="60dp"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,7 +19,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
         android:maxLines="1"
         android:text="Text Message"
         app:layout_constraintBottom_toBottomOf="@+id/img_sender_avatar"
@@ -28,13 +27,12 @@
 
     <TextView
         android:id="@+id/tv_sender_name"
-        android:textStyle="bold"
-        android:maxLines="1"
-        android:textSize="18dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:text="Name_"
-        android:layout_marginTop="8dp"
+        android:textSize="18dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/img_sender_avatar"
         app:layout_constraintTop_toTopOf="@+id/img_sender_avatar" />
 
