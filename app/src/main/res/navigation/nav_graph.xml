@@ -20,7 +20,14 @@
         android:id="@+id/ChatFragment"
         android:name="com.example.anew.ui.fragment.chat.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_ChatFragment_to_friendsRequestFragment"
+            app:destination="@id/friendsRequestFragment" />
+        <action
+            android:id="@+id/action_ChatFragment_to_friendListFragment"
+            app:destination="@id/friendListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/AddFragment"
         android:name="com.example.anew.ui.fragment.add.AddFragment"
@@ -65,7 +72,41 @@
         tools:layout="@layout/fragment_select_add_member" />
     <fragment
         android:id="@+id/otherUserProfileFragment"
-        android:name="com.example.anew.ui.fragment.chat.OtherUserProfileFragment"
+        android:name="com.example.anew.ui.fragment.chat.other_user.OtherUserProfileFragment"
         android:label="fragment_other_user_profile"
-        tools:layout="@layout/fragment_other_user_profile" />
+        tools:layout="@layout/fragment_other_user_profile" >
+        <action
+            android:id="@+id/action_otherUserProfileFragment_to_chatRoomFragment"
+            app:destination="@id/chatRoomFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/friendListFragment"
+        android:name="com.example.anew.ui.fragment.chat.friend.FriendListFragment"
+        android:label="fragment_friend_list"
+        tools:layout="@layout/fragment_friend_list" >
+        <action
+            android:id="@+id/action_friendListFragment_to_otherUserProfileFragment"
+            app:destination="@id/otherUserProfileFragment" />
+        <action
+            android:id="@+id/action_friendListFragment_to_chatRoomFragment"
+            app:destination="@id/chatRoomFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/friendsRequestFragment"
+        android:name="com.example.anew.ui.fragment.chat.friend_request.FriendsRequestFragment"
+        android:label="fragment_friends_request"
+        tools:layout="@layout/fragment_friends_request" >
+        <action
+            android:id="@+id/action_friendsRequestFragment_to_otherUserProfileFragment"
+            app:destination="@id/otherUserProfileFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/chatRoomFragment"
+        android:name="com.example.anew.ui.fragment.chat.ChatRoomFragment"
+        android:label="fragment_chat_room"
+        tools:layout="@layout/fragment_chat_room" >
+        <action
+            android:id="@+id/action_chatRoomFragment_to_otherUserProfileFragment"
+            app:destination="@id/otherUserProfileFragment" />
+    </fragment>
 </navigation>

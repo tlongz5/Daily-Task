@@ -4,16 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.chat.FriendsRequestFragment">
+    tools:context=".ui.fragment.chat.friend_request.FriendsRequestFragment">
 
 
     <SearchView
         android:id="@+id/search_friend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:iconifiedByDefault="true"
+        android:queryHint="Find new friend, enter full email"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/custom_search_view"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_friends_request"

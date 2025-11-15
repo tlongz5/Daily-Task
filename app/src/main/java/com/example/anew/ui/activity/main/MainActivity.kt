@@ -1,6 +1,7 @@
 package com.example.anew.ui.activity.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -17,5 +18,15 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.bottomNav.setupWithNavController(navController)
+
+        setSupportActionBar(binding.toolbar)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.ChatFragment -> {
+                    binding.toolbar.visibility = View.VISIBLE
+                }
+
+            }
+        }
     }
 }

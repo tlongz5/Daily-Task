@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.FragmentSelectAddMemberBinding
 import com.example.anew.model.User
@@ -53,6 +54,7 @@ class SelectAddMemberFragment : Fragment() {
         }
 
         binding.rcvTeamMembersPicked.adapter  = membersPickedAdapter
+        binding.rcvTeamMembersPicked.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         selectAddMemberViewModel.friendPickedState.observe(viewLifecycleOwner){
             membersPickedAdapter.submitList(it)

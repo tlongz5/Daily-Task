@@ -129,4 +129,19 @@ class AuthRepo {
         return data.toObject(User::class.java)!!
     }
 
+    suspend fun checkEmailExist(email: String): Boolean {
+        val data = db.collection("users")
+            .whereEqualTo("email", email)
+            .get()
+            .await()
+        return !data.isEmpty
+    }
+    suspend fun getUidDataFromEmail(email: String): String{
+        val data = db.collection("users")
+            .whereEqualTo("email", email)
+            .get()
+            .await()
+        return data.documents[0].id
+    }
+
 }

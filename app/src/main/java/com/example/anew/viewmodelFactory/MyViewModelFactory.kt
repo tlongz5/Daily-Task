@@ -2,7 +2,6 @@ package com.example.anew.viewmodelFactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.anew.model.MyHelper
 import com.example.anew.model.fakeData
 import com.example.anew.repo.AuthRepo
 import com.example.anew.repo.FriendRepo
@@ -10,6 +9,9 @@ import com.example.anew.repo.ProjectRepo
 import com.example.anew.ui.activity.login.LoginViewModel
 import com.example.anew.ui.fragment.add.AddViewModel
 import com.example.anew.ui.fragment.add.SelectAddMemberViewModel
+import com.example.anew.ui.fragment.chat.friend.FriendListViewModel
+import com.example.anew.ui.fragment.chat.friend_request.FriendsRequestViewModel
+import com.example.anew.ui.fragment.chat.other_user.OtherUserProfileViewModel
 import com.example.anew.ui.fragment.home.HomeViewModel
 import com.example.anew.ui.fragment.home.profile.ProfileViewModel
 
@@ -30,6 +32,15 @@ class MyViewModelFactory: ViewModelProvider.Factory {
             }
             modelClass.isAssignableFrom(AddViewModel::class.java) -> {
                 AddViewModel(ProjectRepo()) as T
+            }
+            modelClass.isAssignableFrom(FriendListViewModel::class.java) ->{
+                FriendListViewModel(FriendRepo(), AuthRepo()) as T
+            }
+            modelClass.isAssignableFrom(OtherUserProfileViewModel::class.java) ->{
+                OtherUserProfileViewModel(AuthRepo(), FriendRepo()) as T
+            }
+            modelClass.isAssignableFrom(FriendsRequestViewModel::class.java) ->{
+                FriendsRequestViewModel(AuthRepo(), FriendRepo()) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

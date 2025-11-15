@@ -7,8 +7,9 @@ import com.bumptech.glide.Glide
 import com.example.anew.databinding.ItemFriendListBinding
 import com.example.anew.model.User
 
-class FriendListAdapter(private val friends: List<User>,
-    private val onClick: (String) -> Unit) : RecyclerView.Adapter<FriendListAdapter.FriendListViewHolder>() {
+class FriendListAdapter(private var friends: MutableList<User>,
+    private val onClickJohnChatRoom: (String) -> Unit,
+    private val onClickViewProfileUser: (String) -> Unit) : RecyclerView.Adapter<FriendListAdapter.FriendListViewHolder>() {
     class FriendListViewHolder(val binding: ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
@@ -25,10 +26,13 @@ class FriendListAdapter(private val friends: List<User>,
     ) {
         holder.binding.tvName.text= friends[position].name
         holder.binding.chat.setOnClickListener {
-            onClick(friends[position].uid)
+            onClickJohnChatRoom(friends[position].uid)
+        }
+        holder.binding.avatar.setOnClickListener {
+            onClickViewProfileUser(friends[position].uid)
         }
         holder.itemView.setOnClickListener {
-            onClick(friends[position].uid)
+            onClickViewProfileUser(friends[position].uid)
         }
         Glide.with(holder.itemView.context)
             .load(friends[position].photoUrl)
@@ -39,5 +43,11 @@ class FriendListAdapter(private val friends: List<User>,
 
     override fun getItemCount(): Int {
         return friends.size
+    }
+
+    fun updateData(newFriends: List<User>) {
+        friends.clear()
+        friends.addAll(newFriends)
+        notifyDataSetChanged()
     }
 }

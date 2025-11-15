@@ -71,10 +71,10 @@ class ChatFragment : Fragment() {
             }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 if(menuItem.itemId == R.id.contact){
-                    findNavController().navigate()
+                    findNavController().navigate(R.id.action_ChatFragment_to_friendListFragment)
                     return true
                 }else if(menuItem.itemId == R.id.new_friend){
-                    findNavController().navigate()
+                    findNavController().navigate(R.id.action_ChatFragment_to_friendsRequestFragment)
                     return true
                 }
                 return false

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.anew.ui.fragment.chat.MessageAdapter
+import com.example.anew.ui.fragment.chat.adapter.MessageAdapter
 import com.example.anew.databinding.FragmentMessageBinding
 import com.example.anew.model.GroupType
 import com.example.anew.model.fakeData
