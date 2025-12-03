@@ -2,13 +2,16 @@ package com.example.anew.viewmodelFactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.anew.model.fakeData
+import com.example.anew.support.fakeData
 import com.example.anew.repo.AuthRepo
 import com.example.anew.repo.FriendRepo
+import com.example.anew.repo.MessageRepo
 import com.example.anew.repo.ProjectRepo
 import com.example.anew.ui.activity.login.LoginViewModel
 import com.example.anew.ui.fragment.add.AddViewModel
 import com.example.anew.ui.fragment.add.SelectAddMemberViewModel
+import com.example.anew.ui.fragment.chat.chat_room.ChatRoomViewModel
+import com.example.anew.ui.fragment.chat.conversation.ConversationViewModel
 import com.example.anew.ui.fragment.chat.friend.FriendListViewModel
 import com.example.anew.ui.fragment.chat.friend_request.FriendsRequestViewModel
 import com.example.anew.ui.fragment.chat.other_user.OtherUserProfileViewModel
@@ -41,6 +44,12 @@ class MyViewModelFactory: ViewModelProvider.Factory {
             }
             modelClass.isAssignableFrom(FriendsRequestViewModel::class.java) ->{
                 FriendsRequestViewModel(AuthRepo(), FriendRepo()) as T
+            }
+            modelClass.isAssignableFrom(ChatRoomViewModel::class.java) ->{
+                ChatRoomViewModel(MessageRepo()) as T
+            }
+            modelClass.isAssignableFrom(ConversationViewModel::class.java) ->{
+                ConversationViewModel(MessageRepo()) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

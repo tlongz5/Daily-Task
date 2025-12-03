@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:maxLines="1"
-        android:text="Text Message"
+        android:text="Say hello to start conversation!!!"
         app:layout_constraintBottom_toBottomOf="@+id/img_sender_avatar"
         app:layout_constraintStart_toEndOf="@+id/img_sender_avatar"
         app:layout_constraintTop_toBottomOf="@+id/tv_sender_name" />

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentOtherUserProfileBinding
+import com.example.anew.support.fakeData
 import com.example.anew.viewmodelFactory.MyViewModelFactory
 
 class OtherUserProfileFragment : Fragment() {
@@ -33,7 +34,7 @@ class OtherUserProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel= ViewModelProvider(this, MyViewModelFactory).get(OtherUserProfileViewModel::class.java)
+        viewModel= ViewModelProvider(this, MyViewModelFactory)[OtherUserProfileViewModel::class.java]
         val bundle = arguments
         if (bundle != null) {
             val uid = bundle.getString("uid")
@@ -43,7 +44,6 @@ class OtherUserProfileFragment : Fragment() {
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
             binding.tvDisplayName.text = user.name
-            binding.
             binding.tvEmail.text = user.email
             binding.tvPhoneNumber.text = user.phoneNumber
             Glide.with(this)
@@ -79,7 +79,12 @@ class OtherUserProfileFragment : Fragment() {
 
             binding.btnSendMessage.setOnClickListener {
                 findNavController().navigate(R.id.action_otherUserProfileFragment_to_chatRoomFragment, Bundle().apply {
-                    putString("uid", user.uid)
+                    putString("chat_type", "Private")
+                    putString("chat_name", user.name)
+                    putString("receiver_id", user.uid)
+                    putString("receiver_name", user.name)
+                    putString("receiver_avatar", user.photoUrl)
+                    putString("chatId", listOf(user.uid, fakeData.user!!.uid).sorted().joinToString("_"))
                 })
             }
         }

@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentHomeBinding
 import com.example.anew.model.Team
-import com.example.anew.model.fakeData
+import com.example.anew.support.fakeData
 import com.example.anew.ui.fragment.home.adapter.CompletedProjectAdapter
 import com.example.anew.ui.fragment.home.adapter.OngoingProjectAdapter
 import com.example.anew.viewmodelFactory.MyViewModelFactory

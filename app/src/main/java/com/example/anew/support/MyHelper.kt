@@ -1,6 +1,7 @@
-package com.example.anew.model
+package com.example.anew.support
 
 import com.example.anew.R
+import com.example.anew.model.User
 
 object MyHelper {
     var user: User? = null

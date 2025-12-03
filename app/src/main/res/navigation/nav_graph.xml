@@ -27,6 +27,12 @@
         <action
             android:id="@+id/action_ChatFragment_to_friendListFragment"
             app:destination="@id/friendListFragment" />
+        <action
+            android:id="@+id/action_ChatFragment_to_chatRoomFragment"
+            app:destination="@id/chatRoomFragment" />
+        <action
+            android:id="@+id/action_ChatFragment_to_selectAddMemberFragment"
+            app:destination="@id/selectAddMemberFragment" />
     </fragment>
     <fragment
         android:id="@+id/AddFragment"
@@ -102,7 +108,7 @@
     </dialog>
     <fragment
         android:id="@+id/chatRoomFragment"
-        android:name="com.example.anew.ui.fragment.chat.ChatRoomFragment"
+        android:name="com.example.anew.ui.fragment.chat.chat_room.ChatRoomFragment"
         android:label="fragment_chat_room"
         tools:layout="@layout/fragment_chat_room" >
         <action

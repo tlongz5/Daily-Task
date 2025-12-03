@@ -3,7 +3,10 @@ package com.example.anew.ui.activity.main
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.anew.R
 import com.example.anew.databinding.ActivityMainBinding
@@ -20,13 +23,31 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setupWithNavController(navController)
 
         setSupportActionBar(binding.toolbar)
+
+        val topLevelDestinations = setOf(
+            R.id.ChatFragment,
+            R.id.AddFragment,
+            R.id.NotificationFragment,
+            R.id.CalendarFragment
+        )
+        val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.ChatFragment -> {
                     binding.toolbar.visibility = View.VISIBLE
                 }
+                R.id.chatRoomFragment -> {
+                    binding.toolbar.visibility = View.GONE
+                }
 
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.fragmentContainerView)
+        return super.onSupportNavigateUp()|| navController.navigateUp()
     }
 }

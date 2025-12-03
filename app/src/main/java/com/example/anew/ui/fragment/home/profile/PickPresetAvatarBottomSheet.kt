@@ -1,16 +1,14 @@
 package com.example.anew.ui.fragment.home.profile
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import com.example.anew.R
 import com.example.anew.databinding.BottomSheetPickPresetAvatarBinding
-import com.example.anew.model.MyHelper
-import com.example.anew.model.fakeData
+import com.example.anew.support.MyHelper
+import com.example.anew.support.fakeData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class PickPresetAvatarBottomSheet : BottomSheetDialogFragment() {

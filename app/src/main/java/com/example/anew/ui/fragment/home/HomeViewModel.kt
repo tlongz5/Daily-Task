@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.anew.model.Team
-import com.example.anew.model.fakeData
+import com.example.anew.support.fakeData
 import com.example.anew.repo.ProjectRepo
 import kotlinx.coroutines.launch
 

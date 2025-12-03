@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.paging.common)
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    implementation("com.google.firebase:firebase-database-ktx")
 
     ksp(libs.room.compiler)
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")

@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.ItemCompletedProjectCardBinding
 import com.example.anew.model.Team
-import com.example.anew.model.fakeData
 import kotlin.math.min
 
 class CompletedProjectAdapter(private val completedProject: MutableList<Team>): RecyclerView.Adapter<CompletedProjectAdapter.CompletedProjectViewHolder>() {

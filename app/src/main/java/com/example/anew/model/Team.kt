@@ -8,6 +8,6 @@ data class Team( // represent each project
     val members:List<String>,
     val teamMembersImage: List<String>, // load image present on item max 3
     val completedPercent:Int,
-    val dueTime: Timestamp,
+    val dueTime: Long,
     val inProgress: Boolean
 )

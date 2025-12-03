@@ -1,6 +1,5 @@
 package com.example.anew.ui.activity.login
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -15,8 +14,8 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.example.anew.databinding.ActivityLoginBinding
 import com.example.anew.model.User
-import com.example.anew.model.fakeData
-import com.example.anew.model.saveUserToSharePrefAndDataLocal
+import com.example.anew.support.fakeData
+import com.example.anew.support.saveUserToSharePrefAndDataLocal
 import com.example.anew.ui.activity.main.MainActivity
 import com.example.anew.viewmodelFactory.MyViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn

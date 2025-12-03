@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.ItemOngoingProjectCardBinding
 import com.example.anew.model.Team
-import com.example.anew.model.fakeData
 import kotlin.math.min
 
 class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>): RecyclerView.Adapter<OngoingProjectAdapter.OngoingProjectViewHolder>() {

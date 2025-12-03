@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.anew.R
 import com.example.anew.databinding.FragmentChatBinding
+import com.example.anew.ui.fragment.chat.conversation.ConversationFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class ChatFragment : Fragment() {
@@ -31,11 +32,12 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // ViewPager2 + TabLayout
-        val fragments = listOf(MessageFragment.newInstance("Chat"),
-            MessageFragment.newInstance("Group"),
-            MessageFragment.newInstance("Project"))
+        val fragments = listOf(
+            ConversationFragment.newInstance("Private"),
+            ConversationFragment.newInstance("Group"),
+            ConversationFragment.newInstance("Project"))
 
-        val titles = listOf("Chat","Group","Project")
+        val titles = listOf("Private","Group","Project")
 
         val viewPager2Adapter = object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
@@ -76,6 +78,11 @@ class ChatFragment : Fragment() {
                 }else if(menuItem.itemId == R.id.new_friend){
                     findNavController().navigate(R.id.action_ChatFragment_to_friendsRequestFragment)
                     return true
+                }else if(menuItem.itemId == R.id.create_group){
+                    findNavController().navigate(R.id.action_ChatFragment_to_selectAddMemberFragment,
+                        Bundle().apply {
+                            putString("chat_type", "Group")
+                        })
                 }
                 return false
             }

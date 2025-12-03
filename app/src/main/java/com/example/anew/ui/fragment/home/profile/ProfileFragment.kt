@@ -3,12 +3,10 @@ package com.example.anew.ui.fragment.home.profile
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentProfileBinding
 import com.example.anew.databinding.ProfileBottomSheetImageSourceBinding
-import com.example.anew.model.fakeData
+import com.example.anew.support.fakeData
 import com.example.anew.ui.activity.login.LoginActivity
 import com.example.anew.viewmodelFactory.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog

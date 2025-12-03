@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.FragmentFriendListBinding
+import com.example.anew.support.fakeData
 import com.example.anew.ui.fragment.chat.adapter.FriendListAdapter
 import com.example.anew.viewmodelFactory.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -43,7 +44,8 @@ class FriendListFragment : BottomSheetDialogFragment() {
         binding.rcvFriendList.adapter = FriendListAdapter(mutableListOf(),
             onClickJohnChatRoom = { // NOTOOTOTOTOOTOTOTOT
                 findNavController().navigate(R.id.action_friendListFragment_to_chatRoomFragment, Bundle().apply {
-                    putString("uid", it)
+                    putString("chat_type", "Private")
+                    putString("chatId", listOf(it, fakeData.user!!.uid).sorted().joinToString("_"))
                 })
             },
             onClickViewProfileUser = {

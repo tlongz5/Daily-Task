@@ -12,4 +12,9 @@
         android:icon="@drawable/ic_make_new_friend"
         android:title="make new friend"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/create_group"
+        android:icon="@drawable/ic_create_group"
+        android:title="make new friend"
+        app:showAsAction="always"/>
 </menu>

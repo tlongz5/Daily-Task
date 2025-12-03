@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anew.databinding.ItemAddMemberBinding
-import com.example.anew.model.fakeData
+import com.example.anew.support.fakeData
 
 // add User to new project
 class AddTeamMembersAdapter: RecyclerView.Adapter<AddTeamMembersAdapter.ViewHolder>() {

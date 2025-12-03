@@ -82,6 +82,7 @@ class FriendsRequestFragment : BottomSheetDialogFragment() {
         _binding =null
     }
 
+    //NOTEEEEEEEE
     @NonNull
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog

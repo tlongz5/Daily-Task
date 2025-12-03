@@ -1,10 +1,13 @@
 package com.example.anew.model
 
-data class Message (
-    val id: String,
-    val name: String,
-    val lastMessage: String,
-    val lastMessageTime: String,
-    val avatar: Int,
-    val type: GroupType
-)
+data class Message(
+    val messageId: String,
+    val senderId: String,
+    val senderName: String,
+    val senderAvatar: String,
+    val message: String,
+    val imageUrlList: List<String>,
+    val time: Long
+){
+    constructor() : this("", "", "", "", "", emptyList(), 0)
+}

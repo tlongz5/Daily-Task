@@ -1,7 +1,8 @@
-package com.example.anew.model
+package com.example.anew.support
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import com.example.anew.model.User
 
 // save to share pref and fake data
 fun saveUserToSharePrefAndDataLocal(user: User, context: Context){
@@ -18,15 +19,15 @@ fun saveUserToSharePrefAndDataLocal(user: User, context: Context){
 }
 
 fun getUserFromSharePref(context: Context) {
-    val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+    val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
 
 }
 
 fun editUserToSharePref(user: User, context: Context){
-    val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+    val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
 }
 
 fun deleteUserFromSharePref(context: Context){
-    val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+    val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
     sharedPreferences.edit().clear().apply()
 }

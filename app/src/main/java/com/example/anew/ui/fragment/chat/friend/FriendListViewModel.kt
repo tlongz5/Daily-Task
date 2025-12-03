@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.anew.model.User
-import com.example.anew.model.fakeData
+import com.example.anew.support.fakeData
 import com.example.anew.repo.AuthRepo
 import com.example.anew.repo.FriendRepo
 import kotlinx.coroutines.launch

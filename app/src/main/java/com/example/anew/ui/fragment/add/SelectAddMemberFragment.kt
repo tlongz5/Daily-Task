@@ -43,7 +43,7 @@ class SelectAddMemberFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        selectAddMemberViewModel = ViewModelProvider(this, MyViewModelFactory).get(SelectAddMemberViewModel::class.java)
+        selectAddMemberViewModel = ViewModelProvider(this, MyViewModelFactory)[SelectAddMemberViewModel::class.java]
 
         binding.rcvFriends.adapter = pickFriendAdapter.withLoadStateFooter(FriendLoadStateAdapter { pickFriendAdapter.retry() })
 
