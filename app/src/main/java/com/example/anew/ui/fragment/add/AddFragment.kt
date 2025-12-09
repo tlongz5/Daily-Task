@@ -5,15 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.BottomSheetSetTextAddBinding
-import com.example.anew.ui.fragment.add.AddTeamMembersAdapter
 import com.example.anew.databinding.FragmentAddBinding
+import com.example.anew.model.Team
+import com.example.anew.support.getCurrentDate
+import com.example.anew.support.getCurrentTime
+import com.example.anew.support.mergeDateAndTime
+import com.example.anew.viewmodelFactory.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -23,7 +28,8 @@ import java.util.Date
 import java.util.Locale
 
 class AddFragment : Fragment() {
-
+    private val myViewModelFactory = MyViewModelFactory()
+    private lateinit var viewModel: AddViewModel
     var setDate: Long?=null
     var setHour: Int?=null
     var setMinute: Int?=null
@@ -44,6 +50,17 @@ class AddFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(requireActivity(), myViewModelFactory)[AddViewModel::class.java]
+        viewModel.teamState.observe(viewLifecycleOwner){
+            (binding.rcvTeamMembers.adapter as AddTeamMembersAdapter).submitList(it)
+            binding.btnCreateNewTask.isEnabled = true
+            binding.btnCreateNewTask.alpha=1f
+        }
+
+        //init
+        binding.tvDate.text= getCurrentDate()
+        binding.tvTime.text = getCurrentTime()
         binding.rcvTeamMembers.adapter = AddTeamMembersAdapter()
         val linearLayout = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL, false)
@@ -68,7 +85,10 @@ class AddFragment : Fragment() {
             materialTimePicker.addOnPositiveButtonClickListener {
                 setHour = materialTimePicker.hour
                 setMinute = materialTimePicker.minute
-                binding.tvTime.text = "$setHour:$setMinute"
+                val bonus = if(setMinute!!<10) "0" else ""
+                val bonusEnd = if(setHour!!<12) " AM" else " PM"
+                val time = if(setHour!!>12) setHour!!-12 else setHour
+                binding.tvTime.text = "$time:$bonus$setMinute$bonusEnd"
             }
             materialTimePicker.show(childFragmentManager,"time_picker")
         }
@@ -91,12 +111,34 @@ class AddFragment : Fragment() {
         binding.btnAddMember.setOnClickListener {
             findNavController().navigate(R.id.action_AddFragment_to_selectAddMemberFragment)
         }
+
+        //NOTEEEEEEE
+        binding.btnCreateNewTask.setOnClickListener {
+            if(binding.tvProjectName.text.isEmpty() ||
+                binding.tvTaskDetail.text.isEmpty() ||
+                viewModel.teamState.value.isNullOrEmpty() ||
+                setDate==null || setHour==null){
+                Toast.makeText(context, "Please fill all information", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val team = Team(
+                binding.tvProjectName.text.toString(),
+                binding.tvTaskDetail.text.toString(),
+                viewModel.teamState.value!!.map { it.uid },
+                viewModel.teamState.value!!.map { it.photoUrl }.take(4),
+                0,
+                mergeDateAndTime(setDate!!,setHour!!,setMinute!!),
+                false
+            )
+            viewModel.createProject(team)
+            Toast.makeText(context, "Create Success", Toast.LENGTH_SHORT).show()
+            findNavController().popBackStack()
+        }
     }
 
 //Note
     private fun getBottomSheet(type: Boolean) {
         var check: Boolean = false // check Done
-
         val bottomSheet = BottomSheetDialog(requireContext())
         val bindingBottomSheet = BottomSheetSetTextAddBinding.inflate(layoutInflater)
         bottomSheet.setContentView(bindingBottomSheet.root)
@@ -111,15 +153,15 @@ class AddFragment : Fragment() {
         }
 
         bindingBottomSheet.edtSetText.addTextChangedListener {
-            if(type == true){
+            if(type){
                 binding.tvProjectName.text = it.toString()
             }else binding.tvTaskDetail.text = it.toString()
         }
 
         bottomSheet.setOnDismissListener {
-            if(check == false){
-                binding.tvProjectName.text = ""
-                binding.tvTaskDetail.text = ""
+            if(!check){
+                if(type) binding.tvProjectName.text = ""
+                else binding.tvTaskDetail.text = ""
             }
         }
         bottomSheet.show()

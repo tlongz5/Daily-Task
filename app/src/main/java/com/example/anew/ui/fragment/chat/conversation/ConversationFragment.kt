@@ -37,7 +37,7 @@ class ConversationFragment(): Fragment() {
 
         //get data from bundle
         val data = arguments?.getString("chat_type")
-        val chatType = if(data!=null) data else "Private"
+        val chatType = data ?: "Private"
 
         binding.rcvMessage.layoutManager = LinearLayoutManager(requireContext())
         binding.rcvMessage.adapter = ConversationAdapter(callback = {

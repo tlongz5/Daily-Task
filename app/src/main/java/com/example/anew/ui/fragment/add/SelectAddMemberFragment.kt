@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.FragmentSelectAddMemberBinding
@@ -16,18 +19,19 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class SelectAddMemberFragment : Fragment() {
-
+    private lateinit var sharedAddFragment: AddViewModel
     private lateinit var selectAddMemberViewModel: SelectAddMemberViewModel
     private val MyViewModelFactory = MyViewModelFactory()
 
     private val pickFriendAdapter = PickFriendAdapter(
         callback = { isChecked, user ->
-            setChangeUserPicked(isChecked,user)
+            selectAddMemberViewModel.updateFriendPickedState(isChecked,user)
         }
     )
 
     private val membersPickedAdapter = MembersPickedAdapter{
-        setChangeUserPicked(false,it)
+        selectAddMemberViewModel.updateFriendPickedState(false,it)
+        pickFriendAdapter.updateUserListSelection(it,false)
     }
 
     var _binding: FragmentSelectAddMemberBinding? = null
@@ -44,9 +48,9 @@ class SelectAddMemberFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         selectAddMemberViewModel = ViewModelProvider(this, MyViewModelFactory)[SelectAddMemberViewModel::class.java]
+        sharedAddFragment = ViewModelProvider(requireActivity(), MyViewModelFactory)[AddViewModel::class.java]
 
         binding.rcvFriends.adapter = pickFriendAdapter.withLoadStateFooter(FriendLoadStateAdapter { pickFriendAdapter.retry() })
-
         lifecycleScope.launch {
             selectAddMemberViewModel.friendPagingData.collectLatest { pagingData ->
                 pickFriendAdapter.submitData(pagingData)
@@ -61,15 +65,13 @@ class SelectAddMemberFragment : Fragment() {
             pickFriendAdapter.reloadPickedFriend(it.map { user -> user.uid })
         }
 
+//        setupActionBarWithNavController(findNavController(R.id.nav_graph), appBarConfiguration)
+        //NOTE
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-//Note
-    private fun setChangeUserPicked(checked: Boolean, user: User) {
-        selectAddMemberViewModel.updateFriendPickedState(checked,user)
-        pickFriendAdapter.updateUserListSelection(user,checked)
     }
 }

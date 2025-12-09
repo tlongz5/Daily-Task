@@ -10,6 +10,15 @@ import kotlinx.coroutines.tasks.await
 class ProjectRepo {
     private val db : FirebaseFirestore = FirebaseFirestore.getInstance()
 
+    suspend fun createProject(team: Team){
+        try {
+            db.collection("projects").add(team).await()
+            Log.d("project", "createProject success")
+        }catch (e: Exception){
+            Log.d("project", "createProject failed")
+        }
+    }
+
     suspend fun getProjectsData(uid: String): MutableList<Team>{
         val projectList= mutableListOf<Team>()
         try {

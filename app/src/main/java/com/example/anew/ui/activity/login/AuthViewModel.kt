@@ -25,9 +25,14 @@ class LoginViewModel(private val authRepo: AuthRepo): ViewModel()  {
         }
     }
 
-    fun initUser(context: Context, user: User){
+    fun initUser(user: User){
         viewModelScope.launch {
-            _userState.value= authRepo.getDataUser(user)
+            var data=authRepo.getDataUser(user)
+            if(data==null){
+                authRepo.initUser( user)
+                data=user
+            }
+            _userState.value= data
         }
     }
 

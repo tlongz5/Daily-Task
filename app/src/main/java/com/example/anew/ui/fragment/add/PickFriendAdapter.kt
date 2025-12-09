@@ -59,8 +59,10 @@ class PickFriendAdapter(private val callback: (Boolean, User) -> Unit): PagingDa
         }else {
             selectedFriends.remove(user.uid)
         }
-        val index = snapshot().indexOfFirst { it!!.uid == user.uid }
-        notifyItemChanged(index)
+        val index = snapshot().indexOfFirst { it?.uid == user.uid }
+        if (index != -1) {
+            notifyItemChanged(index)
+        }
     }
 
     companion object {

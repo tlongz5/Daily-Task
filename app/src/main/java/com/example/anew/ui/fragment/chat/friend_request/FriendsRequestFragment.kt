@@ -41,11 +41,11 @@ class FriendsRequestFragment : BottomSheetDialogFragment() {
 
         viewModel.fetchFriendsRequest()
         viewModel.friendsRequest.observe(viewLifecycleOwner){
-            (binding.rcvFriendsRequest.adapter as FriendsRequestAdapter).setChangeFriendRequestList(it)
+            binding.progressBar.visibility = View.GONE
+            (binding.rcvFriendsRequest.adapter as FriendsRequestAdapter).submitList(it)
         }
 
         binding.rcvFriendsRequest.adapter = FriendsRequestAdapter(
-            mutableListOf(),
             callbackAccept = {
                 viewModel.addFriend(it)
             },
@@ -94,7 +94,7 @@ class FriendsRequestFragment : BottomSheetDialogFragment() {
             )
 
             frameLayout?.let {
-                it.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                it.layoutParams.height = (resources.displayMetrics.heightPixels*0.8).toInt()
                 it.requestLayout()
 
                 val behavior = BottomSheetBehavior.from(it)

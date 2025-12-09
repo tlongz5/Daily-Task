@@ -49,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //check user login
+        //check user login before
         checkLogin()
 
         loginViewModel = ViewModelProvider(this, myViewModelFactory)[LoginViewModel::class.java]
@@ -78,26 +78,20 @@ class LoginActivity : AppCompatActivity() {
             val signInIntent = loginViewModel.signInIntent(this)
             activityResultLaucher.launch(signInIntent)
         }
-
-        binding.btnLogin.setOnClickListener {
-            callIntent()
-        }
-
-
     }
 
     private fun initUser() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if(currentUser != null){
-            val uri = swapDrawableToUrl()
+            val url = swapDrawableToUrl()
             val user = User(
                 currentUser.uid,
                 currentUser.displayName.toString(),
                 currentUser.email!!,
-                uri.toString(),
+                url,
                 ""
             )
-            loginViewModel.initUser(this ,user)
+            loginViewModel.initUser(user)
         }
     }
 
@@ -122,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun swapDrawableToUrl(): Uri {
+    private fun swapDrawableToUrl(): String {
         //convert to bitmap
         val drawable = ContextCompat.getDrawable(this, fakeData.avatar.random())
         var bitmap = (drawable as BitmapDrawable).bitmap
@@ -134,8 +128,7 @@ class LoginActivity : AppCompatActivity() {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
         }
 
-        val uri = FileProvider.getUriForFile(this, this.packageName + ".provider", file)
-        return uri
+        return file.absolutePath
 
     }
 }

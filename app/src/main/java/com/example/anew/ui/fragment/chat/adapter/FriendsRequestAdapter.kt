@@ -2,15 +2,18 @@ package com.example.anew.ui.fragment.chat.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.anew.databinding.ItemFriendRequestBinding
 import com.example.anew.model.User
 
-class FriendsRequestAdapter(private val friendsRequestList: MutableList<User>,
+class FriendsRequestAdapter(
     private val callbackAccept: (String) -> Unit,
-    private val callbackDecline: (String) -> Unit): RecyclerView.Adapter<FriendsRequestAdapter.ViewHolder>() {
+    private val callbackDecline: (String) -> Unit): ListAdapter<User, FriendsRequestAdapter.ViewHolder>(FriendsRequestDiffUtil()) {
     class ViewHolder(val binding: ItemFriendRequestBinding): RecyclerView.ViewHolder(binding.root)
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -21,7 +24,7 @@ class FriendsRequestAdapter(private val friendsRequestList: MutableList<User>,
     }
 
     override fun onBindViewHolder(holder: FriendsRequestAdapter.ViewHolder, position: Int) {
-        val friendRequest = friendsRequestList[position]
+        val friendRequest = getItem(position)
 
         with(holder.binding){
             tvName.text = friendRequest.name
@@ -42,14 +45,20 @@ class FriendsRequestAdapter(private val friendsRequestList: MutableList<User>,
         }
     }
 
-    override fun getItemCount(): Int {
-        return friendsRequestList.size
-    }
+    class FriendsRequestDiffUtil: DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(
+            oldItem: User,
+            newItem: User
+        ): Boolean {
+            return oldItem.uid == newItem.uid
+        }
 
-    fun setChangeFriendRequestList(newFriendsRequestList: List<User>){
-        friendsRequestList.clear()
-        friendsRequestList.addAll(newFriendsRequestList)
-        notifyDataSetChanged()
+        override fun areContentsTheSame(
+            oldItem: User,
+            newItem: User
+        ): Boolean {
+            return oldItem == newItem
+        }
     }
 
 }

@@ -26,6 +26,7 @@ class MembersPickedAdapter(private val callback: (User) -> Unit): ListAdapter<Us
         position: Int
     ) {
         val user = getItem(position)
+    //Xu li last name truoc khi cho vao recycleview tranh phai xu li lai
         holder.binding.tvNameMember.text = user.name.split(" ").last()
         holder.binding.btnDeleteMember.setOnClickListener {
             callback(user)

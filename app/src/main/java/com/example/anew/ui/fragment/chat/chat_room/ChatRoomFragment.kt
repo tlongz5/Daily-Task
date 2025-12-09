@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentChatRoomBinding
 import com.example.anew.model.UiState
@@ -35,6 +37,8 @@ class ChatRoomFragment : Fragment() {
     private lateinit var receiverId: String
     private lateinit var receiverName: String
     private lateinit var receiverAvatar: String
+
+    private lateinit var adminId: String
 
     private val pickImg = registerForActivityResult(
         ActivityResultContracts.PickMultipleVisualMedia(10)){ uris ->
@@ -78,17 +82,35 @@ class ChatRoomFragment : Fragment() {
         receiverId = arguments?.getString("receiver_id") ?: ""
         receiverName = arguments?.getString("receiver_name") ?: ""
         receiverAvatar = arguments?.getString("receiver_avatar") ?: ""
+        adminId = arguments?.getString("admin_id") ?: ""
 
         setupToolbar(chatType)
         setUpViewModel(chatId!!)
 
+        binding.tvNameToolbar.text = chatName
+        Glide.with(this)
+            .load(receiverAvatar)
+            .circleCrop()
+            .into(binding.imgAvatarToolbar)
         binding.rcvMessage.layoutManager= LinearLayoutManager(requireContext())
-        binding.rcvMessage.adapter= ChatRoomAdapter()
+
+        val adapter = ChatRoomAdapter()
+        adapter.registerAdapterDataObserver(
+            object : RecyclerView.AdapterDataObserver() {
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    if(!binding.rcvMessage.canScrollVertically(1))
+                        binding.rcvMessage.post {
+                            binding.rcvMessage.scrollToPosition(adapter.itemCount-1)
+                        }
+                }
+        })
+        binding.rcvMessage.adapter = adapter
+
         binding.btnSendMessage.setOnClickListener {
-            binding.editMessage.text.clear()
-            binding.editMessage.clearFocus()
             val message = binding.editMessage.text.toString()
-            if(message.isEmpty()) return@setOnClickListener
+            binding.editMessage.clearFocus()
+            binding.editMessage.text.clear()
+            if(message.isEmpty() || message.isBlank()) return@setOnClickListener
             viewModel.pushMessage(
                 chatId,
                 chatName,
@@ -123,10 +145,18 @@ class ChatRoomFragment : Fragment() {
                 findNavController().popBackStack()
             }
             inflateMenu(R.menu.chat_room_menu)
+            menu.setGroupVisible(R.id.common_actions, true)
             if(chatType=="Private") {
                 menu.setGroupVisible(R.id.group_actions, false)
                 menu.setGroupVisible(R.id.admin_actions, false)
                 menu.setGroupVisible(R.id.project_action, false)
+                menu.setGroupVisible(R.id.private_actions, true)
+            }else{
+                menu.setGroupVisible(R.id.group_actions, true)
+                menu.setGroupVisible(R.id.project_action, true)
+                menu.setGroupVisible(R.id.private_actions, false)
+                if(adminId == fakeData.user!!.uid) menu.setGroupVisible(R.id.admin_actions, true)
+                else menu.setGroupVisible(R.id.admin_actions, false)
             }
             setOnMenuItemClickListener {
                 when (it.itemId) {

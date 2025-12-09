@@ -1,15 +1,21 @@
 package com.example.anew.support
 
+import android.app.DownloadManager
+import android.content.Context
 import android.net.Uri
+import android.os.Environment
 import android.text.format.DateUtils
+import android.widget.Toast
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
+import com.example.anew.R
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import kotlin.coroutines.resume
 
 fun Long.toRelativeTime(): String {
@@ -30,6 +36,26 @@ fun Long.toTime(): String{
     }
 }
 
+fun mergeDateAndTime(date: Long, hour: Int, minute: Int): Long? {
+    val dateCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+    dateCalendar.timeInMillis = date
+    val resCalendar = Calendar.getInstance()
+    resCalendar.set(
+        dateCalendar.get(Calendar.YEAR),
+        dateCalendar.get(Calendar.MONTH),
+        dateCalendar.get(Calendar.DAY_OF_MONTH),
+        hour,
+        minute,
+        0
+    )
+    return resCalendar.timeInMillis
+}
+
+fun String.toLongDate(): Long {
+    val date = SimpleDateFormat("hh:mm a dd/MM/yyyy", Locale.US).parse(this)
+    return date.time
+}
+
 fun isThisYear(time: Long): Boolean{
     val now= Calendar.getInstance()
     val date = Calendar.getInstance().apply {
@@ -38,8 +64,37 @@ fun isThisYear(time: Long): Boolean{
     return now.get(Calendar.YEAR) == date.get(Calendar.YEAR)
 }
 
-suspend fun convertUriToCloudinaryUrl(imgUri: Uri): String = suspendCancellableCoroutine { continuation ->
+fun getCurrentTime():String{
+    val date = Date()
+    return SimpleDateFormat("HH:mm a", Locale.US).format(date)
+}
+
+fun getCurrentDate():String{
+    val date = Date()
+    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+}
+
+
+fun downloadImgToLocal(context: Context, imgUrl: String){
+    return try{
+        val request = DownloadManager.Request(Uri.parse(imgUrl))
+            .setTitle("Loading Image")
+            .setDescription("Downloading Image")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,"${System.currentTimeMillis()}.png")
+
+        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager.enqueue(request)
+        Toast.makeText(context,"Downloading Image ...", Toast.LENGTH_SHORT).show()
+
+    }catch (e:Exception){
+        Toast.makeText(context, "Download Failed", Toast.LENGTH_SHORT).show()
+    }
+}
+
+suspend fun convertUriToCloudinaryUrl( imgUri: String): String = suspendCancellableCoroutine { continuation ->
     MediaManager.get().upload(imgUri)
+        .unsigned("tl_default")
         .callback(object : UploadCallback{
             override fun onStart(requestId: String?) {
 
@@ -59,7 +114,7 @@ suspend fun convertUriToCloudinaryUrl(imgUri: Uri): String = suspendCancellableC
             ) {
                 // Get the URL from the result data
                 val url = resultData!!["secure_url"] as String
-                continuation.resume(url)
+                if(continuation.isActive) continuation.resume(url)
             }
 
             override fun onError(
@@ -73,5 +128,44 @@ suspend fun convertUriToCloudinaryUrl(imgUri: Uri): String = suspendCancellableC
                 error: ErrorInfo?
             ) {
             }
-        })
+        }).dispatch()
+}
+
+suspend fun convertUriToCloudinaryUrl( imgUri: Uri): String = suspendCancellableCoroutine { continuation ->
+    MediaManager.get().upload(imgUri)
+        .unsigned("tl_default")
+        .callback(object : UploadCallback{
+            override fun onStart(requestId: String?) {
+
+            }
+
+            override fun onProgress(
+                requestId: String?,
+                bytes: Long,
+                totalBytes: Long
+            ) {
+
+            }
+
+            override fun onSuccess(
+                requestId: String,
+                resultData: Map<*, *>?
+            ) {
+                // Get the URL from the result data
+                val url = resultData!!["secure_url"] as String
+                if(continuation.isActive) continuation.resume(url)
+            }
+
+            override fun onError(
+                requestId: String?,
+                error: ErrorInfo?
+            ) {
+            }
+
+            override fun onReschedule(
+                requestId: String?,
+                error: ErrorInfo?
+            ) {
+            }
+        }).dispatch()
 }

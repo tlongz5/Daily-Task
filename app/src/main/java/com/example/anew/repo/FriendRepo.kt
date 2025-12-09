@@ -109,9 +109,17 @@ class FriendRepo {
             .collection("friends").document(friendId)
         val solve2 = db.collection("users").document(friendId)
             .collection("friends").document(uid)
+
+        val delete1 = db.collection("users").document(friendId)
+            .collection("friendsRequested").document(uid)
+        val delete2 = db.collection("users").document(uid)
+            .collection("receivedFriendInvite").document(friendId)
+
         try {
             batch.set(solve1, mapOf<String, Any>())
             batch.set(solve2, mapOf<String, Any>())
+            batch.delete(delete1)
+            batch.delete(delete2)
             batch.commit().await()
         }catch (e: Exception){
             Log.d("FriendRepo", "Error Add Friend")

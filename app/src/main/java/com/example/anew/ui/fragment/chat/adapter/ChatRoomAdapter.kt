@@ -63,12 +63,15 @@ class ChatRoomAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDif
             fun bind(message: Message){
                 if(message.imageUrlList.isEmpty()) {
                     binding.rcvImage.visibility = View.GONE
+                    binding.tvMessage.visibility = View.VISIBLE
+                    binding.tvTime.visibility = View.VISIBLE
                     binding.tvMessage.text = message.message
                     binding.tvTime.text = message.time.toTime()
                 }
                 else{
                     binding.tvMessage.visibility= View.GONE
                     binding.tvTime.visibility= View.GONE
+                    binding.rcvImage.visibility = View.VISIBLE
                     binding.rcvImage.setRecycledViewPool(viewPool)
                     binding.rcvImage.adapter = LoadImageChatRoomAdapter(message.imageUrlList)
                     binding.rcvImage.layoutManager = GridLayoutManager(binding.root.context, 2)
@@ -83,20 +86,23 @@ class ChatRoomAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDif
         RecyclerView.ViewHolder(binding.root){
             fun bind(message: Message){
                 binding.tvName.text = message.senderName
+                Glide.with(binding.root.context)
+                    .load(message.senderAvatar)
+                    .circleCrop()
+                    .into(binding.imgReceiverAvatar)
                 if(message.imageUrlList.isEmpty()){
                     binding.rcvImage.visibility = View.GONE
+                    binding.tvMessage.visibility = View.VISIBLE
+                    binding.tvTime.visibility = View.VISIBLE
                     binding.tvMessage.text = message.message
                     binding.tvTime.text = message.time.toTime()
                 }else{
                     binding.tvMessage.visibility= View.GONE
                     binding.tvTime.visibility= View.GONE
+                    binding.rcvImage.visibility = View.VISIBLE
                     binding.rcvImage.setRecycledViewPool(viewPool)
                     binding.rcvImage.adapter = LoadImageChatRoomAdapter(message.imageUrlList)
                     binding.rcvImage.layoutManager = GridLayoutManager(binding.root.context, 2)
-                    Glide.with(binding.root.context)
-                        .load(message.senderAvatar)
-                        .circleCrop()
-                        .into(binding.imgReceiverAvatar)
                 }
             }
         }

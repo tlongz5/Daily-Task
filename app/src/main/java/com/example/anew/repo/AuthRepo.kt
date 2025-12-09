@@ -9,6 +9,7 @@ import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.example.anew.R
 import com.example.anew.model.User
+import com.example.anew.support.convertUriToCloudinaryUrl
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -39,6 +40,7 @@ class AuthRepo {
             val result = auth.signInWithCredential(credential).await()
             return result.user
         }catch (e: Exception){
+            Log.d("Login", "signInWithGoogle failed")
             null
         }
     }
@@ -61,57 +63,27 @@ class AuthRepo {
 //        fakeData.phoneNumber = null
     }
 
-    suspend fun getDataUser(user: User): User{
+    suspend fun getDataUser(user: User): User?{
         val data = db.collection("users")
             .document(user.uid)
             .get()
             .await()
-        return if(data.exists()) data.toObject(User::class.java)!! else user
+        return if(data.exists()) data.toObject(User::class.java) else null
     }
 
-    suspend fun initUser(context: Context, user: User){
-        MediaManager.get().upload(user.photoUrl)
-            .unsigned(getString(context,R.string.upload_preset))
-            .callback(object : UploadCallback{
-                override fun onStart(requestId: String?) {
+    suspend fun initUser(user: User){
+        val url = convertUriToCloudinaryUrl(user.photoUrl)
+        user.photoUrl = url
 
-                }
-
-                override fun onProgress(
-                    requestId: String?,
-                    bytes: Long,
-                    totalBytes: Long
-                ) {
-
-                }
-
-                override fun onSuccess(
-                    requestId: String?,
-                    resultData: Map<*, *>?
-                ) {
-                    val url = resultData?.get("url").toString()
-                    user.photoUrl = url
-
-                    val data = db.collection("users")
-                        .document(user.uid)
-                        .set(user)
-                    Log.d("User", "User ${user.uid} created successfully")
-                }
-
-                override fun onError(
-                    requestId: String?,
-                    error: ErrorInfo?
-                ) {
-                    Log.d("Cloudinary upload image", "Error")
-                }
-
-                override fun onReschedule(
-                    requestId: String?,
-                    error: ErrorInfo?
-                ) {
-
-                }
-            })
+        db.collection("users")
+            .document(user.uid)
+            .set(user)
+            .addOnSuccessListener {
+                Log.d("User", "User ${user.uid} created successfully")
+            }
+            .addOnFailureListener {
+                Log.d("User", "User ${user.uid} created failed")
+            }
     }
 
     suspend fun getUserDataFromUid(uid: String): User{

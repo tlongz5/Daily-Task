@@ -25,10 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textSize="20dp"
-        android:text="checking app"
         android:paddingStart="8dp"
         android:padding="16dp"
-        android:background="#F3F4F6"
+        android:background="@drawable/custom_common"
         app:layout_constraintStart_toStartOf="@+id/textView22"
         app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
@@ -48,11 +47,10 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:textSize="16dp"
-        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500"
         android:paddingStart="8dp"
         android:layout_marginTop="8dp"
         android:padding="8dp"
-        android:background="#F3F4F6"
+        android:background="@drawable/custom_common"
         android:fontFamily="sans-serif-condensed"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -88,6 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:background="@null"
             android:src="@drawable/ic_add_image" />
     </LinearLayout>
 
@@ -107,13 +106,15 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
-            android:background="#F3F4F6"
+            android:background="@drawable/custom_common"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/imageButton4"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
+                android:layout_marginStart="4dp"
+                android:background="@null"
                 android:src="@drawable/ic_clock" />
 
             <TextView
@@ -132,13 +133,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#F3F4F6"
+            android:background="@drawable/custom_common"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/imageButton6"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
+                android:layout_marginStart="4dp"
                 android:src="@drawable/ic_calendar_set" />
 
             <TextView

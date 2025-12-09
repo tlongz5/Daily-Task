@@ -8,8 +8,8 @@ import com.example.anew.databinding.ItemFriendListBinding
 import com.example.anew.model.User
 
 class FriendListAdapter(private var friends: MutableList<User>,
-    private val onClickJohnChatRoom: (String) -> Unit,
-    private val onClickViewProfileUser: (String) -> Unit) : RecyclerView.Adapter<FriendListAdapter.FriendListViewHolder>() {
+                        private val onClickJohnChatRoom: (User) -> Unit,
+                        private val onClickViewProfileUser: (String) -> Unit) : RecyclerView.Adapter<FriendListAdapter.FriendListViewHolder>() {
     class FriendListViewHolder(val binding: ItemFriendListBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
@@ -26,7 +26,7 @@ class FriendListAdapter(private var friends: MutableList<User>,
     ) {
         holder.binding.tvName.text= friends[position].name
         holder.binding.chat.setOnClickListener {
-            onClickJohnChatRoom(friends[position].uid)
+            onClickJohnChatRoom(friends[position])
         }
         holder.binding.avatar.setOnClickListener {
             onClickViewProfileUser(friends[position].uid)

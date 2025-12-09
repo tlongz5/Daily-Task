@@ -9,4 +9,6 @@ data class Conversation (
     val lastMessage: String,
     val lastMessageTime: Long,
     var isRead: Boolean
-)
+){
+    constructor() : this("", "", "", "", "", "", 0, false)
+}

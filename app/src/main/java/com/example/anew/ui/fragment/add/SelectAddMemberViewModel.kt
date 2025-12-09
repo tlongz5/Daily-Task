@@ -30,7 +30,7 @@ class SelectAddMemberViewModel(
         }
     ).flow.cachedIn(viewModelScope)
 
-    private val _friendPickedState = MutableLiveData<List<User>>()
+    private val _friendPickedState = MutableLiveData<List<User>>(emptyList())
     val friendPickedState: LiveData<List<User>> = _friendPickedState
 
     fun updateFriendPickedState(checked:Boolean, friend: User){

@@ -6,24 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.home.profile.ViewAvatarFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:navigationIcon="@drawable/ic_back"
-            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-    </com.google.android.material.appbar.AppBarLayout>
     <ImageView
         android:id="@+id/avatar"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:background="@color/color_app"
         android:scaleType="fitCenter"
         tools:src="@tools:sample/avatars" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_app"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_back"
+        android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
 </FrameLayout>

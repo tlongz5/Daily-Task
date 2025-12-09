@@ -31,7 +31,7 @@ class MessageRepo {
     //save all conversation forEach user
     val userChatRef = db.getReference("user_chats")
 
-        // add message to chats and messages database
+    // add message to chats and messages database
     suspend fun pushMessage(chatId: String,
                             chatName:String,
 
@@ -126,7 +126,7 @@ class MessageRepo {
 
                 }
             }
-            val query = chatRef.child(userId).child(chatType)
+            val query = userChatRef.child(userId).child(chatType)
             query.addValueEventListener(valueListener)
             awaitClose {
                 query.removeEventListener(valueListener)

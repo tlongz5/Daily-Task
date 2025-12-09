@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentViewAvatarBinding
+import com.example.anew.support.downloadImgToLocal
 
 class ViewAvatarFragment : Fragment() {
     var _binding : FragmentViewAvatarBinding? =null
@@ -25,14 +27,24 @@ class ViewAvatarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().popBackStack()
+        }
+
+        //load image from bundle
+        val ImageUri= arguments?.getString("ImageUri")
+
+        if(ImageUri!=null){
+            Glide.with(requireContext())
+                .load(ImageUri)
+                .error(R.drawable.ic_launcher_background)
+                .into(binding.avatar)
         }
 
         binding.toolbar.inflateMenu(R.menu.view_avatar_menu)
         binding.toolbar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.save_image -> {
-                    saveImageToDevice()
+                    downloadImgToLocal(requireContext(),ImageUri!!)
                     Toast.makeText(requireContext(), "Saved image", Toast.LENGTH_SHORT).show()
                     true
                 }
@@ -40,21 +52,11 @@ class ViewAvatarFragment : Fragment() {
             }
         }
 
-        //load image from bundle
-        val ImageUri= arguments?.getString("ImageUri")
-
-        Glide.with(requireContext())
-            .load(ImageUri)
-            .error(R.drawable.ic_launcher_background)
-            .into(binding.avatar)
 
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-    private fun saveImageToDevice() {
-
     }
 }

@@ -18,8 +18,20 @@
         android:text="My Friend"
         android:layout_marginStart="4dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv_friend_list"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv_friend_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
 </LinearLayout>
