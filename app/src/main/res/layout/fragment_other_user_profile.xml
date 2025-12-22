@@ -120,6 +120,26 @@
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/textVi"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#908C8C"
+            android:textSize="20dp"
+            android:text="User name" />
+
+        <TextView
+            android:id="@+id/tvUsername2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:textSize="24dp"
+            android:text="Bui Thanh Long"
+            android:layout_marginStart="2dp"
+            android:textStyle="bold"/>
+
+        <TextView
             android:id="@+id/textView88"
             android:layout_marginTop="16dp"
             android:layout_weight="1"

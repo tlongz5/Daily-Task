@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="80dp"
+                android:layout_height="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/view_shimmer_layout"
+                android:text="Welcome"
+                android:textSize="15sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/view_shimmer_layout"
+                android:singleLine="true"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:adjustViewBounds="false"
+            android:background="@drawable/view_shimmer_layout" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/view_shimmer_layout"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:ems="10"
+        android:hint="Search task"
+        android:inputType="text"
+        android:textSize="36sp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="150dp"
+            android:layout_height="28dp"
+            android:background="@drawable/view_shimmer_layout"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_completed_task"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:background="@drawable/view_shimmer_layout"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="175dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:layout_marginEnd="20dp"
+            android:alpha="0.5"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:textSize="100dp"
+
+            android:textStyle="italic" />
+
+        <View
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:alpha="0.5"
+            android:background="@color/gray" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="28dp"
+            android:background="@drawable/view_shimmer_layout"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:background="@drawable/view_shimmer_layout"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:layout_marginBottom="8dp"
+            android:alpha="0.5"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:textSize="100dp"
+            android:textStyle="italic" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:alpha="0.5"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:textSize="100dp"
+            android:textStyle="italic" />
+    </LinearLayout>
+</LinearLayout>

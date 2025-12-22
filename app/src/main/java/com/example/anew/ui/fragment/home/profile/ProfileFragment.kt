@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentProfileBinding
 import com.example.anew.databinding.ProfileBottomSheetImageSourceBinding
+import com.example.anew.support.deleteUserFromSharePref
 import com.example.anew.support.fakeData
 import com.example.anew.ui.activity.login.LoginActivity
 import com.example.anew.viewmodelFactory.MyViewModelFactory
@@ -37,10 +39,11 @@ class ProfileFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        profileViewModel = ViewModelProvider(this, MyViewModelFactory).get(ProfileViewModel::class.java)
+        profileViewModel = ViewModelProvider(this, MyViewModelFactory)[ProfileViewModel::class.java]
 
         binding.edtName.setText(fakeData.user!!.name)
-        binding.tvEmail.setText(fakeData.user!!.email)
+        binding.edtUsername.setText("@${fakeData.user!!.username}")
+        binding.edtEmail.setText(fakeData.user!!.email)
         binding.edtPhoneNumber.setText(fakeData.user!!.phoneNumber)
 
 
@@ -54,30 +57,47 @@ class ProfileFragment: Fragment() {
             showBottomSheet()
         }
 
-
         binding.btnLogOut.setOnClickListener {
-            val intent = Intent(activity, LoginActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
+            try {
+                //signout account
+                profileViewModel.signOut(requireContext())
 
-            //signout account
-            profileViewModel.signOut(requireContext())
+                val intent = Intent(activity, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                activity?.finish()
+            }catch (e: Exception){
+                Toast.makeText(requireContext(), "Logout Error", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
-        binding.btnEditName.setOnClickListener {
+        binding.viewName.setEndIconOnClickListener {
             binding.edtName.isFocusableInTouchMode = true
             binding.edtName.requestFocus()
 
             val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(binding.edtName, InputMethodManager.SHOW_IMPLICIT)
-
         }
 
-        binding.btnEditPhone.setOnClickListener {
+        binding.viewPhone.setEndIconOnClickListener {
             binding.edtPhoneNumber.isFocusableInTouchMode = true
             binding.edtPhoneNumber.requestFocus()
             val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(binding.edtPhoneNumber, InputMethodManager.SHOW_IMPLICIT)
+        }
+
+        binding.viewUsername.setEndIconOnClickListener {
+            binding.edtUsername.isFocusableInTouchMode = true
+            binding.edtUsername.requestFocus()
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(binding.edtPhoneNumber, InputMethodManager.SHOW_IMPLICIT)
+        }
+
+        binding.root.setOnClickListener {
+            binding.viewName.clearFocus()
+            binding.viewPhone.clearFocus()
+            binding.viewUsername.clearFocus()
         }
 
     }

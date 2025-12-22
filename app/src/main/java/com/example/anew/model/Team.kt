@@ -1,6 +1,7 @@
 package com.example.anew.model
 
 data class Team( // represent each project
+    val id: String,
     val title: String,
     val description: String,
     val members: List<String>,
@@ -8,4 +9,6 @@ data class Team( // represent each project
     val completedPercent: Int,
     val dueTime: Long?,
     val inProgress: Boolean
-)
+){
+    constructor(): this("","","", listOf(),listOf(),0,null,false)
+}

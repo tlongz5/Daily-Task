@@ -8,6 +8,7 @@ import com.cloudinary.android.callback.UploadCallback
 import com.example.anew.model.Conversation
 import com.example.anew.model.ConversationInfo
 import com.example.anew.model.Message
+import com.example.anew.model.User
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -50,7 +51,7 @@ class MessageRepo {
             val key = messageRef.child(chatId).push().key
             if(key==null) return
             val message =
-                Message(key, senderId, nameSender,avatar,
+                Message(key, senderId,
                     lastMessage, imageUrlList, System.currentTimeMillis())
 
             val childUpdates = mutableMapOf<String, Any>()
@@ -60,25 +61,24 @@ class MessageRepo {
             if(chatType=="Private"){
                 childUpdates["/user_chats/$senderId/$chatType/$chatId"] = Conversation(
                     chatId, receiverName, senderId, nameSender, receiverAvatar,
-                    lastMessage, System.currentTimeMillis(), true
+                    "You: $lastMessage", System.currentTimeMillis(), true
                 )
                 childUpdates["/user_chats/$receiverId/$chatType/$chatId"] = Conversation(
                     chatId, nameSender, senderId, nameSender, avatar,
-                    lastMessage, System.currentTimeMillis(), false
+                    "$nameSender: $lastMessage", System.currentTimeMillis(), false
                 )
             }else{
-                val conservation = Conversation(
-                    chatId, chatName, senderId, nameSender, avatar,
-                    lastMessage, System.currentTimeMillis(), false
-                )
-
                 val info = chatRef.child(chatId).get().await()
                 val getInfo = info.getValue(ConversationInfo::class.java)
 
+                val conservation = Conversation(
+                    chatId, chatName, senderId, nameSender, getInfo!!.avatar,
+                    "$nameSender: $lastMessage", System.currentTimeMillis(), false
+                )
 
-                for(userID in getInfo!!.userId){
-                    if(userID==senderId) childUpdates["/user_chats/$userID/$chatType/$chatId"] = conservation.copy(isRead = true)
-                    else childUpdates["/user_chats/$userID/$chatType/$chatId"] = conservation
+                for(userId in getInfo!!.users){
+                    if(userId==senderId) childUpdates["/user_chats/$userId/$chatType/$chatId"] = conservation.copy(isRead = true, lastMessage = "You: $lastMessage")
+                    else childUpdates["/user_chats/$userId/$chatType/$chatId"] = conservation
                 }
             }
 
@@ -133,11 +133,37 @@ class MessageRepo {
             }
         }
 
+    suspend fun createGroup(name: String,avatar:String,adminId: String, users: List<String>,groupType: String){
+        val key = chatRef.push().key
+        if(key==null) return
+
+        val info = ConversationInfo(key, name, avatar, adminId, users)
+        val childUpdates = mutableMapOf<String, Any>()
+        childUpdates["/chats/$key"] = info
+        for(user in users){
+            childUpdates["/user_chats/$user/$groupType/$key"] =
+                Conversation(
+                    key,
+                    name,
+                    adminId,
+                    name,
+                    avatar,
+                    "Say hi to start conversation",
+                    System.currentTimeMillis(),
+                    true)
+        }
+
+        try {
+            db.reference.updateChildren(childUpdates).await()
+            Log.d("MessageRepo", "createGroup: Success")
+        }catch (e: Exception){
+            Log.d("MessageRepo", "createGroup: Error")
+        }
+    }
+
  ////  note
     suspend fun updateSeen(groupId: String, chatType: String, userId: String){
         userChatRef.child(userId).child(chatType)
             .child(groupId).updateChildren(mapOf("isRead" to true))
     }
-
-
 }

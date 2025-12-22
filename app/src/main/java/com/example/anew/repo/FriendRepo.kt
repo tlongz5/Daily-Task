@@ -64,7 +64,6 @@ class FriendRepo {
             .collection("friendsRequested").document(uid).get().await()
         if(snapshot2.exists()) return 0
         return -1
-
     }
 
     suspend fun requestFriend(uid: String, friendId: String){

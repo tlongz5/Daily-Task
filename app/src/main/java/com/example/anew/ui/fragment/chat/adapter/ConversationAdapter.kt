@@ -1,6 +1,8 @@
 package com.example.anew.ui.fragment.chat.adapter
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,7 +12,7 @@ import com.example.anew.databinding.ItemMessageBinding
 import com.example.anew.model.Conversation
 import com.example.anew.support.toRelativeTime
 
-class ConversationAdapter(private val callback: (String) -> Unit): ListAdapter<Conversation, ConversationAdapter.ConversationViewHolder>(ConversationDiffUtil()) {
+class ConversationAdapter(private val callback: (Conversation) -> Unit): ListAdapter<Conversation, ConversationAdapter.ConversationViewHolder>(ConversationDiffUtil()) {
     class ConversationViewHolder(val binding: ItemMessageBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
@@ -30,6 +32,8 @@ class ConversationAdapter(private val callback: (String) -> Unit): ListAdapter<C
             tvSenderMessage.text=item.lastMessage
             tvSenderName.text=item.chatName
             tvLastMessageTime.text=item.lastMessageTime.toRelativeTime()
+            if(!item.isRead) tvSenderMessage.setTypeface(null, Typeface.BOLD)
+            else tvSenderMessage.setTypeface(null, Typeface.NORMAL)
             Glide.with(holder.itemView.context)
                 .load(item.avatar)
                 .circleCrop()
@@ -37,7 +41,7 @@ class ConversationAdapter(private val callback: (String) -> Unit): ListAdapter<C
         }
 
         holder.itemView.setOnClickListener {
-            callback(item.roomId)
+            callback(item)
         }
     }
 

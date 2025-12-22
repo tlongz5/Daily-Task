@@ -43,7 +43,10 @@ class OtherUserProfileFragment : Fragment() {
         }
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
+            binding.tvName.text = user.name
             binding.tvDisplayName.text = user.name
+            binding.tvUsername.text = "@${user.username}"
+            binding.tvUsername2.text = "@${user.username}"
             binding.tvEmail.text = user.email
             binding.tvPhoneNumber.text = user.phoneNumber
             Glide.with(this)
@@ -98,7 +101,7 @@ class OtherUserProfileFragment : Fragment() {
                 binding.btnAddfriend.visibility = View.GONE
                 binding.btnUnFriend.visibility = View.GONE
                 binding.btnFriendRequested.visibility = View.VISIBLE
-            } else {
+            } else if(it==-1){
                 binding.btnAddfriend.visibility = View.VISIBLE
                 binding.btnUnFriend.visibility = View.GONE
                 binding.btnFriendRequested.visibility = View.GONE

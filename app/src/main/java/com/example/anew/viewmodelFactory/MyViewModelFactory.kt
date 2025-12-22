@@ -31,10 +31,10 @@ class MyViewModelFactory: ViewModelProvider.Factory {
                 ProfileViewModel(AuthRepo()) as T
             }
             modelClass.isAssignableFrom(SelectAddMemberViewModel::class.java) -> {
-                SelectAddMemberViewModel(FriendRepo(), AuthRepo(), fakeData.user!!.uid) as T
+                SelectAddMemberViewModel(FriendRepo(), MessageRepo(), fakeData.user!!.uid) as T
             }
             modelClass.isAssignableFrom(AddViewModel::class.java) -> {
-                AddViewModel(ProjectRepo()) as T
+                AddViewModel(ProjectRepo(),MessageRepo()) as T
             }
             modelClass.isAssignableFrom(FriendListViewModel::class.java) ->{
                 FriendListViewModel(FriendRepo(), AuthRepo()) as T
@@ -46,7 +46,7 @@ class MyViewModelFactory: ViewModelProvider.Factory {
                 FriendsRequestViewModel(AuthRepo(), FriendRepo()) as T
             }
             modelClass.isAssignableFrom(ChatRoomViewModel::class.java) ->{
-                ChatRoomViewModel(MessageRepo()) as T
+                ChatRoomViewModel(MessageRepo(),AuthRepo()) as T
             }
             modelClass.isAssignableFrom(ConversationViewModel::class.java) ->{
                 ConversationViewModel(MessageRepo()) as T

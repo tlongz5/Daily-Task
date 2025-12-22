@@ -2,6 +2,7 @@ package com.example.anew.ui.activity.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         val topLevelDestinations = setOf(
+            R.id.HomeFragment,
             R.id.ChatFragment,
             R.id.AddFragment,
             R.id.NotificationFragment,
@@ -33,12 +35,23 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                val navController = findNavController(R.id.fragmentContainerView)
+                if(!navController.popBackStack()) finish()
+            }
+        })
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.ChatFragment -> {
                     binding.toolbar.visibility = View.VISIBLE
                 }
-                R.id.chatRoomFragment -> {
+                R.id.chatRoomFragment,
+                R.id.HomeFragment,
+                R.id.AddFragment,
+                R.id.NotificationFragment,
+                R.id.CalendarFragment -> {
                     binding.toolbar.visibility = View.GONE
                 }
 
@@ -46,8 +59,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragmentContainerView)
-        return super.onSupportNavigateUp()|| navController.navigateUp()
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

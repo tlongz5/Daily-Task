@@ -83,6 +83,9 @@ dependencies {
 
     implementation("androidx.viewpager2:viewpager2:1.1.0")
 
+    //shimmer layout
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

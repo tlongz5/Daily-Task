@@ -51,6 +51,11 @@ fun mergeDateAndTime(date: Long, hour: Int, minute: Int): Long? {
     return resCalendar.timeInMillis
 }
 
+fun Long.toFullTime(): String{
+    val date = Date(this)
+    return SimpleDateFormat("HH:mm a dd/MM/yyyy", Locale.US).format(date)
+}
+
 fun String.toLongDate(): Long {
     val date = SimpleDateFormat("hh:mm a dd/MM/yyyy", Locale.US).parse(this)
     return date.time
@@ -71,7 +76,7 @@ fun getCurrentTime():String{
 
 fun getCurrentDate():String{
     val date = Date()
-    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(date)
+    return SimpleDateFormat("dd/MM", Locale.getDefault()).format(date)
 }
 
 

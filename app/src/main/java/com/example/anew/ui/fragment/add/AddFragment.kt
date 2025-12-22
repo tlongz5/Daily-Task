@@ -15,6 +15,7 @@ import com.example.anew.R
 import com.example.anew.databinding.BottomSheetSetTextAddBinding
 import com.example.anew.databinding.FragmentAddBinding
 import com.example.anew.model.Team
+import com.example.anew.support.fakeData
 import com.example.anew.support.getCurrentDate
 import com.example.anew.support.getCurrentTime
 import com.example.anew.support.mergeDateAndTime
@@ -74,11 +75,12 @@ class AddFragment : Fragment() {
             getBottomSheet(false)
         }
 
-        binding.dueTime.setOnClickListener {
+        binding.layoutTime.setOnClickListener {
             val materialTimePicker = MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_12H)
                 .setHour(12)
                 .setMinute(0)
+                .setTheme(R.style.TimePickerTheme)
                 .setTitleText("Set Time")
                 .build()
 
@@ -93,16 +95,17 @@ class AddFragment : Fragment() {
             materialTimePicker.show(childFragmentManager,"time_picker")
         }
 
-        binding.dueDate.setOnClickListener {
+        binding.layoutDate.setOnClickListener {
             val materialDatePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Set Date")
+                .setTheme(R.style.DatePickerTheme)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
 
             materialDatePicker.addOnPositiveButtonClickListener {
                 setDate = it
                 val date = Date(it)
-                val tranformDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val tranformDate = SimpleDateFormat("dd/MM", Locale.getDefault())
                 binding.tvDate.text = tranformDate.format(date)
             }
             materialDatePicker.show(childFragmentManager,"date_picker")
@@ -122,13 +125,14 @@ class AddFragment : Fragment() {
                 return@setOnClickListener
             }
             val team = Team(
+                "",
                 binding.tvProjectName.text.toString(),
                 binding.tvTaskDetail.text.toString(),
-                viewModel.teamState.value!!.map { it.uid },
-                viewModel.teamState.value!!.map { it.photoUrl }.take(4),
+                viewModel.teamState.value.plus(fakeData.user!!).map { it.uid },
+                viewModel.teamState.value.plus(fakeData.user!!).map { it.photoUrl }.take(4),
                 0,
                 mergeDateAndTime(setDate!!,setHour!!,setMinute!!),
-                false
+                true
             )
             viewModel.createProject(team)
             Toast.makeText(context, "Create Success", Toast.LENGTH_SHORT).show()

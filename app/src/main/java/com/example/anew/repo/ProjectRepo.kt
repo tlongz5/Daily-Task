@@ -12,7 +12,8 @@ class ProjectRepo {
 
     suspend fun createProject(team: Team){
         try {
-            db.collection("projects").add(team).await()
+            val documentRef = db.collection("projects").document()
+            db.collection("projects").add(team.copy(id = documentRef.id)).await()
             Log.d("project", "createProject success")
         }catch (e: Exception){
             Log.d("project", "createProject failed")

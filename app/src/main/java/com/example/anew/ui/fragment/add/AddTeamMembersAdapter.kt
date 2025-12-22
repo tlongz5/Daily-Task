@@ -28,13 +28,11 @@ class AddTeamMembersAdapter: ListAdapter<User, AddTeamMembersAdapter.ViewHolder>
         position: Int
     ) {
         val item = getItem(position)
-        holder.binding.tvName.text = item.name.split(" ").last()
         Glide.with(holder.itemView.context)
             .load(item.photoUrl)
             .circleCrop()
             .into(holder.binding.avatar)
     }
-
 
     companion object{
         val diffUtil = object : DiffUtil.ItemCallback<User>(){

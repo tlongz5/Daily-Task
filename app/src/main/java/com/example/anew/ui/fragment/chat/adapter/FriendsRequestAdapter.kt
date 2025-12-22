@@ -28,7 +28,7 @@ class FriendsRequestAdapter(
 
         with(holder.binding){
             tvName.text = friendRequest.name
-            tvUsername.text = friendRequest.name
+            tvUsername.text = "@${friendRequest.username}"
             btnAccept.setOnClickListener {
                 callbackAccept(friendRequest.uid)
             }

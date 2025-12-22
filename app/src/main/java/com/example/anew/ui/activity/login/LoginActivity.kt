@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.anew.databinding.ActivityLoginBinding
 import com.example.anew.model.User
 import com.example.anew.support.fakeData
+import com.example.anew.support.getCurrentTime
 import com.example.anew.support.saveUserToSharePrefAndDataLocal
 import com.example.anew.ui.activity.main.MainActivity
 import com.example.anew.viewmodelFactory.MyViewModelFactory
@@ -67,9 +68,9 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.userState.observe(this){ user ->
             if(user!=null){
+                saveUserToSharePrefAndDataLocal(user, this)
                 callIntent()
                 finish()
-                saveUserToSharePrefAndDataLocal(user, this)
             }
             else Log.d("user", "login failed")
         }
@@ -86,6 +87,7 @@ class LoginActivity : AppCompatActivity() {
             val url = swapDrawableToUrl()
             val user = User(
                 currentUser.uid,
+                "user${System.currentTimeMillis()}",
                 currentUser.displayName.toString(),
                 currentUser.email!!,
                 url,
@@ -108,8 +110,9 @@ class LoginActivity : AppCompatActivity() {
             val email = sharePref.getString("email", null)
             val avatar = sharePref.getString("avatar", null)
             val phoneNumber = sharePref.getString("phoneNumber", null)
+            val username = sharePref.getString("username", null)
 
-            fakeData.user = User(userId, name!!, email!!, avatar!!, phoneNumber!!)
+            fakeData.user = User(userId,username!!, name!!, email!!, avatar!!, phoneNumber!!)
 
             callIntent()
             finish()

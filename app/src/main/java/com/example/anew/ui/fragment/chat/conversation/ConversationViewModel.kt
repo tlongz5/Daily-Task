@@ -26,4 +26,9 @@ class ConversationViewModel(private val messageRepo: MessageRepo): ViewModel() {
         }
     }
 
+    fun updateSeen(groupId: String, chatType: String, userId: String){
+        viewModelScope.launch {
+            messageRepo.updateSeen(groupId, chatType, userId)
+        }
+    }
 }

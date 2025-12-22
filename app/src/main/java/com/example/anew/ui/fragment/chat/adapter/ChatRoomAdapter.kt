@@ -10,10 +10,11 @@ import com.bumptech.glide.Glide
 import com.example.anew.databinding.ItemChatRoomBinding
 import com.example.anew.databinding.ItemChatRoomSenderBinding
 import com.example.anew.model.Message
+import com.example.anew.model.MessageItem
 import com.example.anew.support.fakeData
 import com.example.anew.support.toTime
 
-class ChatRoomAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiffUtil()) {
+class ChatRoomAdapter : ListAdapter<MessageItem, RecyclerView.ViewHolder>(MessageDiffUtil()) {
     companion object{
         const val MESSAGE_TYPE_SENDER = 1
         const val MESSAGE_TYPE_RECEIVER = 0
@@ -60,17 +61,15 @@ class ChatRoomAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDif
         private val viewPool: RecyclerView.RecycledViewPool
     ) :
         RecyclerView.ViewHolder(binding.root){
-            fun bind(message: Message){
+            fun bind(message: MessageItem){
                 if(message.imageUrlList.isEmpty()) {
                     binding.rcvImage.visibility = View.GONE
-                    binding.tvMessage.visibility = View.VISIBLE
-                    binding.tvTime.visibility = View.VISIBLE
+                    binding.layoutMessage.visibility = View.VISIBLE
                     binding.tvMessage.text = message.message
                     binding.tvTime.text = message.time.toTime()
                 }
                 else{
-                    binding.tvMessage.visibility= View.GONE
-                    binding.tvTime.visibility= View.GONE
+                    binding.layoutMessage.visibility= View.GONE
                     binding.rcvImage.visibility = View.VISIBLE
                     binding.rcvImage.setRecycledViewPool(viewPool)
                     binding.rcvImage.adapter = LoadImageChatRoomAdapter(message.imageUrlList)
@@ -84,7 +83,7 @@ class ChatRoomAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDif
         private val viewPool: RecyclerView.RecycledViewPool
     ) :
         RecyclerView.ViewHolder(binding.root){
-            fun bind(message: Message){
+            fun bind(message: MessageItem){
                 binding.tvName.text = message.senderName
                 Glide.with(binding.root.context)
                     .load(message.senderAvatar)
@@ -92,13 +91,11 @@ class ChatRoomAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDif
                     .into(binding.imgReceiverAvatar)
                 if(message.imageUrlList.isEmpty()){
                     binding.rcvImage.visibility = View.GONE
-                    binding.tvMessage.visibility = View.VISIBLE
-                    binding.tvTime.visibility = View.VISIBLE
+                    binding.layoutMessage.visibility = View.VISIBLE
                     binding.tvMessage.text = message.message
                     binding.tvTime.text = message.time.toTime()
                 }else{
-                    binding.tvMessage.visibility= View.GONE
-                    binding.tvTime.visibility= View.GONE
+                    binding.layoutMessage.visibility= View.GONE
                     binding.rcvImage.visibility = View.VISIBLE
                     binding.rcvImage.setRecycledViewPool(viewPool)
                     binding.rcvImage.adapter = LoadImageChatRoomAdapter(message.imageUrlList)
@@ -122,17 +119,17 @@ class ChatRoomAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDif
         }
     }
 
-    class MessageDiffUtil : DiffUtil.ItemCallback<Message>() {
+    class MessageDiffUtil : DiffUtil.ItemCallback<MessageItem>() {
         override fun areItemsTheSame(
-            oldItem: Message,
-            newItem: Message
+            oldItem: MessageItem,
+            newItem: MessageItem
         ): Boolean {
             return oldItem.messageId == newItem.messageId
         }
 
         override fun areContentsTheSame(
-            oldItem: Message,
-            newItem: Message
+            oldItem: MessageItem,
+            newItem: MessageItem
         ): Boolean {
             return oldItem == newItem
         }

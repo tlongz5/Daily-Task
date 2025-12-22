@@ -4,16 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.anew.R
 import com.example.anew.databinding.FragmentSelectAddMemberBinding
-import com.example.anew.model.User
+import com.example.anew.support.MyHelper
+import com.example.anew.support.fakeData
 import com.example.anew.viewmodelFactory.MyViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -50,6 +50,7 @@ class SelectAddMemberFragment : Fragment() {
         selectAddMemberViewModel = ViewModelProvider(this, MyViewModelFactory)[SelectAddMemberViewModel::class.java]
         sharedAddFragment = ViewModelProvider(requireActivity(), MyViewModelFactory)[AddViewModel::class.java]
 
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.rcvFriends.adapter = pickFriendAdapter.withLoadStateFooter(FriendLoadStateAdapter { pickFriendAdapter.retry() })
         lifecycleScope.launch {
             selectAddMemberViewModel.friendPagingData.collectLatest { pagingData ->
@@ -65,8 +66,37 @@ class SelectAddMemberFragment : Fragment() {
             pickFriendAdapter.reloadPickedFriend(it.map { user -> user.uid })
         }
 
-//        setupActionBarWithNavController(findNavController(R.id.nav_graph), appBarConfiguration)
-        //NOTE
+        binding.btnSave.setOnClickListener {
+            if(selectAddMemberViewModel.friendPickedState.value.size<2){
+                Toast.makeText(requireContext(), "Please select at least 2 members", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if(arguments?.getString("chat_type")!=null) {
+                val dialog = CreateGroupDialog()
+                dialog.show(childFragmentManager, "createGroupDialog")
+            }
+            else {
+                sharedAddFragment.saveUser(selectAddMemberViewModel.friendPickedState.value)
+                findNavController().popBackStack()
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener("create_group", viewLifecycleOwner) { _, bundle ->
+            val groupName = bundle.getString("group_name")
+            try {
+                selectAddMemberViewModel.createGroup(
+                    groupName!!,
+                    MyHelper.groupAvatar.random(),
+                    fakeData.user!!.uid,
+                    selectAddMemberViewModel.friendPickedState.value.plus(fakeData.user!!).map { it.uid },
+                    "Group"
+                )
+                Toast.makeText(requireContext(), "Create Group Successfully", Toast.LENGTH_SHORT).show()
+            }catch (e: Exception){
+                Toast.makeText(requireContext(), "Error, please try again later", Toast.LENGTH_SHORT).show()
+            }
+            findNavController().popBackStack()
+        }
 
     }
 

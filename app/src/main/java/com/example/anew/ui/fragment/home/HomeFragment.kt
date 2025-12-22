@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentHomeBinding
@@ -34,7 +36,19 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel = ViewModelProvider(this, MyViewModelFactory).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(this, MyViewModelFactory)[HomeViewModel::class.java]
+
+        //init
+        binding.shimmerContainer.visibility = View.VISIBLE
+        binding.shimmerContainer.startShimmer()
+        binding.swipeRefreshLayout.visibility = View.GONE
+
+        homeViewModel.getProjectData()
+
+
+        binding.rcvOngoingProject.layoutManager = LinearLayoutManager(requireContext())
+        binding.rcvTaskCompleted.layoutManager = LinearLayoutManager(requireContext(),
+            LinearLayoutManager.HORIZONTAL,false)
 
         homeViewModel.projectState.observe(viewLifecycleOwner){
             homeViewModel.reloadProjectDataWithSearch("")
@@ -62,18 +76,30 @@ class HomeFragment : Fragment() {
             }
         }
 
+        homeViewModel.isCheckSwapScreen.observe(viewLifecycleOwner){
+            if(it==true){
+                binding.shimmerContainer.visibility = View.GONE
+                binding.shimmerContainer.stopShimmer()
+                binding.swipeRefreshLayout.visibility = View.VISIBLE
+            }
+        }
+
         binding.swipeRefreshLayout.setOnRefreshListener {
             homeViewModel.getProjectData()
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        binding.edtSearchTask.addTextChangedListener {
-            homeViewModel.reloadProjectDataWithSearch(it.toString())
-        }
+        binding.edtSearchTask.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean { return false }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                homeViewModel.reloadProjectDataWithSearch(newText.toString())
+                return true
+            }
+        })
 
 //      // handle load data user and click avatar
         binding.userName.text = fakeData.user!!.name
-        Glide.with(this)
+        Glide.with(view)
             .load(fakeData.user!!.photoUrl)
             .error(R.drawable.ic_launcher_background)
             .circleCrop()

@@ -1,27 +1,11 @@
 package com.example.anew.support
 
 import com.example.anew.R
-import com.example.anew.model.Member
 import com.example.anew.model.User
 
 object fakeData{
 
         var user: User? = null
-
-        val members: List<Member> = listOf(
-            Member(R.drawable.avt1, "david cot"),
-            Member(R.drawable.avt2, "david cot"),
-            Member(R.drawable.avt1, "david cot"),
-            Member(R.drawable.avt1, "david cot"),
-            Member(R.drawable.avt2, "david cot"),
-            Member(R.drawable.avt1, "david cot"),
-            Member(R.drawable.avt1, "david cot"),
-            Member(R.drawable.avt2, "david cot"),
-            Member(R.drawable.avt1, "david cot"),
-            Member(R.drawable.avt1, "david cot"),
-            Member(R.drawable.avt2, "david cot"),
-            Member(R.drawable.avt1, "david cot")
-        )
 
         val avatar = listOf(
             R.drawable.avatar1,

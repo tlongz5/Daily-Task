@@ -13,17 +13,13 @@ fun saveUserToSharePrefAndDataLocal(user: User, context: Context){
     editor.putString("email", user.email)
     editor.putString("avatar", user.photoUrl)
     editor.putString("phoneNumber",user.phoneNumber)
+    editor.putString("username", user.username)
     editor.apply()
 
     fakeData.user = user
 }
 
 fun getUserFromSharePref(context: Context) {
-    val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
-
-}
-
-fun editUserToSharePref(user: User, context: Context){
     val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
 }
 

@@ -78,10 +78,10 @@ class ChatRoomFragment : Fragment() {
         //getData from Bundle
         chatType = arguments?.getString("chat_type") ?: "Private"
         chatId = arguments?.getString("chatId") ?: ""
-        chatName = arguments?.getString("chat_name") ?: ""
-        receiverId = arguments?.getString("receiver_id") ?: ""
-        receiverName = arguments?.getString("receiver_name") ?: ""
-        receiverAvatar = arguments?.getString("receiver_avatar") ?: ""
+        chatName = arguments?.getString("chat_name") ?: "" // tag
+        receiverId = arguments?.getString("receiver_id") ?: ""  // tag
+        receiverName = arguments?.getString("receiver_name") ?: "" //tag
+        receiverAvatar = arguments?.getString("receiver_avatar") ?: "" //tag
         adminId = arguments?.getString("admin_id") ?: ""
 
         setupToolbar(chatType)
@@ -92,8 +92,8 @@ class ChatRoomFragment : Fragment() {
             .load(receiverAvatar)
             .circleCrop()
             .into(binding.imgAvatarToolbar)
-        binding.rcvMessage.layoutManager= LinearLayoutManager(requireContext())
 
+        binding.rcvMessage.layoutManager= LinearLayoutManager(requireContext())
         val adapter = ChatRoomAdapter()
         adapter.registerAdapterDataObserver(
             object : RecyclerView.AdapterDataObserver() {
@@ -205,7 +205,6 @@ class ChatRoomFragment : Fragment() {
                             binding.rcvMessage.visibility = View.GONE
                             Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                         }
-
                     }
                 }
             }

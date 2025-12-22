@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.ItemOngoingProjectCardBinding
 import com.example.anew.model.Team
+import com.example.anew.support.toFullTime
 import kotlin.math.min
 
 class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>): RecyclerView.Adapter<OngoingProjectAdapter.OngoingProjectViewHolder>() {
@@ -28,6 +29,7 @@ class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>): Recy
         with(holder.binding){
             projectTitle.text = ongoingProject[position].title
             projectProgress.progress = ongoingProject[position].completedPercent
+            dueTime.text = "Due on : ${ongoingProject[position].dueTime?.toFullTime()}"
             val members = ongoingProject[position].teamMembersImage
             val avatars = listOf(avt1,avt2,avt3,avt4)
             for(i in 0 until min(4, members.size)){

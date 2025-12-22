@@ -43,8 +43,13 @@ class ConversationFragment(): Fragment() {
         binding.rcvMessage.adapter = ConversationAdapter(callback = {
             findNavController().navigate(R.id.action_ChatFragment_to_chatRoomFragment, Bundle().apply {
                 putString("chat_type", chatType)
-                putString("chatId", it)
+                putString("chat_name", it.chatName)
+                putString("receiver_id", it.roomId.split("_").find { it != fakeData.user!!.uid })
+                putString("receiver_name", it.chatName)
+                putString("receiver_avatar", it.avatar)
+                putString("chatId", it.roomId)
             })
+            viewModel.updateSeen(it.roomId,chatType,fakeData.user!!.uid)
         })
 
         viewModel.getConversation(fakeData.user!!.uid,chatType)
@@ -56,7 +61,7 @@ class ConversationFragment(): Fragment() {
                             binding.progressBar.visibility = View.VISIBLE
                         }is UiState.Success -> {
                             binding.progressBar.visibility = View.GONE
-                        (binding.rcvMessage.adapter as ConversationAdapter).submitList(uiState.data)
+                            (binding.rcvMessage.adapter as ConversationAdapter).submitList(uiState.data)
                         }is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, uiState.message, Toast.LENGTH_SHORT).show()

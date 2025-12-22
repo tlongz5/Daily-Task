@@ -11,12 +11,13 @@ import androidx.paging.cachedIn
 import com.example.anew.model.User
 import com.example.anew.repo.AuthRepo
 import com.example.anew.repo.FriendRepo
+import com.example.anew.repo.MessageRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class SelectAddMemberViewModel(
     private val friendRepo: FriendRepo,
-    private val authRepo: AuthRepo,
+    private val messageRepo: MessageRepo,
     private val currentUserId: String
 ): ViewModel() {
 
@@ -38,6 +39,11 @@ class SelectAddMemberViewModel(
             _friendPickedState.value = _friendPickedState.value.plus(friend)
         }else{
             _friendPickedState.value = _friendPickedState.value.minus(friend)
+        }
+    }
+    fun createGroup(groupName: String, avatar: String, adminId: String, users: List<String>,groupType: String){
+        viewModelScope.launch {
+            messageRepo.createGroup(groupName, avatar, adminId, users,groupType)
         }
     }
 

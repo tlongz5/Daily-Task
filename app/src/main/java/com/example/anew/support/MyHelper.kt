@@ -26,4 +26,12 @@ object MyHelper {
         R.drawable.avatar17
     )
 
+    val groupAvatar = listOf(
+        "https://res.cloudinary.com/dyyhmesfp/image/upload/v1765634502/vwox4cxi8_gjwlgq.webp",
+        "https://res.cloudinary.com/dyyhmesfp/image/upload/v1765634503/Pngtree_vector_cartoon_cute_playing_monkey_5532785_neobyq.png",
+        "https://res.cloudinary.com/dyyhmesfp/image/upload/v1765634503/Pngtree_cool_monkey_playing_a_drum_5313469_poq0hq.png",
+        "https://res.cloudinary.com/dyyhmesfp/image/upload/v1765634503/Pngtree_vector_cartoon_illustration_of_cute_5532784_l2bwon.png",
+        "https://res.cloudinary.com/dyyhmesfp/image/upload/v1765634505/Pngtree_a_monkey_is_smoking_15632814_afhwnl.png"
+    )
+
 }

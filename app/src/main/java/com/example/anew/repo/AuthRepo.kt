@@ -10,6 +10,7 @@ import com.cloudinary.android.callback.UploadCallback
 import com.example.anew.R
 import com.example.anew.model.User
 import com.example.anew.support.convertUriToCloudinaryUrl
+import com.example.anew.support.deleteUserFromSharePref
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -53,14 +54,7 @@ class AuthRepo {
             .build()
         GoogleSignIn.getClient(context, gso).signOut().await()
 
-        //clear from sharePreference
-        val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
-        sharedPreferences.edit().clear().apply()
-//        fakeData.uid = null
-//        fakeData.name = null
-//        fakeData.email = null
-//        fakeData.avatarUrl = null
-//        fakeData.phoneNumber = null
+        deleteUserFromSharePref(context)
     }
 
     suspend fun getDataUser(user: User): User?{
