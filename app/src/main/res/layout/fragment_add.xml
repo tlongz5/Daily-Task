@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:padding="16dp"
             android:src="@android:drawable/ic_menu_revert"
-            app:tint="@color/light_orange" />
+            app:tint="@color/light_black" />
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
@@ -35,7 +35,7 @@
         android:textSize="32dp"
         android:layout_marginStart="16dp"
         android:textStyle="bold"
-        android:textColor="@color/dark_orange"
+        android:textColor="@color/orange"
         app:layout_constraintBottom_toBottomOf="@+id/materialCardView"
         app:layout_constraintStart_toEndOf="@+id/materialCardView"
         app:layout_constraintTop_toTopOf="@+id/materialCardView" />
@@ -45,9 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/materialButton"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
-        tools:layout_editor_absoluteX="24dp">
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,13 +80,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="10dp"
-                        android:alpha="0.6"
                         android:background="@null"
                         android:hint="Ex: Mobile app design"
                         android:inputType="text"
                         android:textColor="@color/light_black"
-                        android:textColorHint="@color/light_black"
-                        android:textSize="18dp"
+                        android:textColorHint="@color/light_black_hint"
+                        android:textSize="20dp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -181,7 +178,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="26/10"
-                                android:textColor="@color/dark_orange"
+                                android:alpha="0.8"
+                                android:textColor="@color/light_black"
                                 android:textSize="22dp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -238,7 +236,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
                                 android:text="10:00 AM"
-                                android:textColor="@color/dark_orange"
+                                android:alpha="0.8"
+                                android:textColor="@color/light_black"
                                 android:textSize="22dp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -260,7 +259,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="64dp"

@@ -7,11 +7,10 @@
     android:layout_height="match_parent">
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
+        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="match_parent">
         <androidx.core.widget.NestedScrollView
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
@@ -25,61 +24,70 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="20dp"
-                    android:background="@drawable/custom_view_home"
                     android:orientation="vertical">
-                    <LinearLayout
-                        android:padding="8dp"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="24dp"
                         android:orientation="horizontal">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/textView5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:letterSpacing="0.1"
+                            android:text="Today"
+                            android:textColor="@color/light_black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="32dp"
+                            android:layout_marginStart="24dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
 
-                            <TextView
-                                android:id="@+id/textView5"
-                                android:textSize="15sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:textStyle="italic"
-                                android:text="Welcome" />
+                        <TextView
+                            android:id="@+id/user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text="My Dashboard"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="@+id/textView5"
+                            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-                            <TextView
-                                android:id="@+id/user_name"
-                                android:textSize="24sp"
-                                android:textStyle="bold"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:singleLine="true"
-                                android:layout_weight="1"
-                                android:text="User Name" />
-                        </LinearLayout>
-
-                        <ImageButton
-                            android:id="@+id/avatar"
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/materialCardView4"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            android:background="@null"
-                            android:scaleType="centerCrop"
-                            android:contentDescription="avatar"
-                            android:adjustViewBounds="false"
-                            tools:src="@drawable/avt1" />
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="16dp"
+                            app:cardCornerRadius="60dp"
+                            app:cardElevation="6dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/user_name"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView5"
+                            app:strokeColor="@color/orange_main"
+                            app:strokeWidth="1dp">
 
-                    </LinearLayout>
+                            <ImageView
+                                android:id="@+id/avatar"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:adjustViewBounds="false"
+                                android:scaleType="centerCrop"
+                                tools:src="@drawable/avt1" />
+                        </com.google.android.material.card.MaterialCardView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <SearchView
                         android:id="@+id/edt_search_task"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:queryHint="Search your task ..."
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginTop="54dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@drawable/custom_search_view_2"/>
                 </LinearLayout>
 
@@ -101,11 +109,12 @@
 
                     <TextView
                         android:id="@+id/tv_completed_task"
-                        android:textStyle="italic"
+                        android:textStyle="italic|bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:text="See all"
+                        android:textColor="@color/orange_main"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -114,15 +123,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="175dp">
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="No data"
-                        android:alpha="0.5"
-                        android:textStyle="italic"
-                        android:textSize="100dp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:id="@+id/tv_no_data_in_completed_project"/>
+                        android:id="@+id/tv_no_data_in_completed_project"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:text="No completed tasks yet"
+                        android:textColor="@color/light_black_hint"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcv_task_completed"
                         android:visibility="gone"
@@ -148,11 +158,12 @@
 
                     <TextView
                         android:id="@+id/tv_ongoing_project"
-                        android:textStyle="italic"
+                        android:textStyle="italic|bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16dp"
                         android:text="See all"
+                        android:textColor="@color/orange_main"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -161,15 +172,37 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/tv_no_data_in_ongoing_project"
-                        android:textStyle="italic"
-                        android:textSize="100dp"
-                        android:text="No data"
-                        android:alpha="0.5"
-                        android:gravity="center"
+                    <LinearLayout
+                        android:id="@+id/layout_empty_ongoing_project"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="24dp"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:text="No ongoing projects yet. Let's create a new one!"
+                            android:textColor="@color/light_black_hint"
+                            android:textSize="14sp"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_create"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Create Project"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/orange_main"
+                            app:cornerRadius="20dp"
+                            app:icon="@drawable/ic_add"
+                            app:iconTint="#FFFFFF"/>
+                    </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcv_ongoing_project"
                         android:visibility="gone"
@@ -180,8 +213,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </FrameLayout>
-
-
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
@@ -191,7 +222,8 @@
         android:id="@+id/shimmer_container"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
         <include layout="@layout/shimmer_layout_home"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
 </FrameLayout>

@@ -8,6 +8,7 @@ import android.widget.SearchView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -25,7 +26,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +42,9 @@ class HomeFragment : Fragment() {
         binding.shimmerContainer.visibility = View.VISIBLE
         binding.shimmerContainer.startShimmer()
         binding.swipeRefreshLayout.visibility = View.GONE
-
+        binding.btnCreate.setOnClickListener {
+            findNavController().navigate(R.id.AddFragment)
+        }
         homeViewModel.getProjectData()
 
 
@@ -57,11 +59,15 @@ class HomeFragment : Fragment() {
         homeViewModel.ongoingProjectState.observe(viewLifecycleOwner){
             if(!it.isEmpty()){
                 binding.rcvOngoingProject.visibility = View.VISIBLE
-                binding.tvNoDataInOngoingProject.visibility = View.GONE
-                binding.rcvOngoingProject.adapter = OngoingProjectAdapter(it.take(20) as MutableList<Team>)
+                binding.layoutEmptyOngoingProject.visibility = View.GONE
+                binding.rcvOngoingProject.adapter = OngoingProjectAdapter(it.take(20) as MutableList<Team>){
+                    findNavController().navigate(R.id.action_HomeFragment_to_taskDetailFragment,Bundle().apply {
+                        putString("id",it)
+                    })
+                }
             }else{
                 binding.rcvOngoingProject.visibility = View.GONE
-                binding.tvNoDataInOngoingProject.visibility = View.VISIBLE
+                binding.layoutEmptyOngoingProject.visibility = View.VISIBLE
             }
         }
 
@@ -69,7 +75,11 @@ class HomeFragment : Fragment() {
             if(!it.isEmpty()){
                 binding.rcvTaskCompleted.visibility = View.VISIBLE
                 binding.tvNoDataInCompletedProject.visibility = View.GONE
-                binding.rcvTaskCompleted.adapter = CompletedProjectAdapter(it.take(20) as MutableList<Team>)
+                binding.rcvTaskCompleted.adapter = CompletedProjectAdapter(it.take(20) as MutableList<Team>){
+                    findNavController().navigate(R.id.action_HomeFragment_to_taskDetailFragment,Bundle().apply {
+                        putString("id",it)
+                    })
+                }
             }else{
                 binding.rcvTaskCompleted.visibility = View.GONE
                 binding.tvNoDataInCompletedProject.visibility = View.VISIBLE
@@ -103,7 +113,6 @@ class HomeFragment : Fragment() {
             .load(fakeData.user!!.photoUrl)
             .error(R.drawable.ic_launcher_background)
             .circleCrop()
-            .override(48,48)
             .into(binding.avatar)
 
         binding.avatar.setOnClickListener {

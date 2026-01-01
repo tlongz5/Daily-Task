@@ -19,6 +19,8 @@ import com.example.anew.support.fakeData
 import com.example.anew.support.getCurrentDate
 import com.example.anew.support.getCurrentTime
 import com.example.anew.support.mergeDateAndTime
+import com.example.anew.support.toDayAndMonth
+import com.example.anew.support.tranferToHourAndMinute
 import com.example.anew.viewmodelFactory.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -27,6 +29,7 @@ import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 class AddFragment : Fragment() {
     private val myViewModelFactory = MyViewModelFactory()
@@ -87,10 +90,7 @@ class AddFragment : Fragment() {
             materialTimePicker.addOnPositiveButtonClickListener {
                 setHour = materialTimePicker.hour
                 setMinute = materialTimePicker.minute
-                val bonus = if(setMinute!!<10) "0" else ""
-                val bonusEnd = if(setHour!!<12) " AM" else " PM"
-                val time = if(setHour!!>12) setHour!!-12 else setHour
-                binding.tvTime.text = "$time:$bonus$setMinute$bonusEnd"
+                binding.tvTime.text = tranferToHourAndMinute(setHour!!,setMinute!!)
             }
             materialTimePicker.show(childFragmentManager,"time_picker")
         }
@@ -104,9 +104,7 @@ class AddFragment : Fragment() {
 
             materialDatePicker.addOnPositiveButtonClickListener {
                 setDate = it
-                val date = Date(it)
-                val tranformDate = SimpleDateFormat("dd/MM", Locale.getDefault())
-                binding.tvDate.text = tranformDate.format(date)
+                binding.tvDate.text = it.toDayAndMonth()
             }
             materialDatePicker.show(childFragmentManager,"date_picker")
         }
@@ -124,10 +122,13 @@ class AddFragment : Fragment() {
                 Toast.makeText(context, "Please fill all information", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            // create team, bug change image from user but insignificant
             val team = Team(
-                "",
+                UUID.randomUUID().toString(),
                 binding.tvProjectName.text.toString(),
                 binding.tvTaskDetail.text.toString(),
+                fakeData.user!!.uid,
                 viewModel.teamState.value.plus(fakeData.user!!).map { it.uid },
                 viewModel.teamState.value.plus(fakeData.user!!).map { it.photoUrl }.take(4),
                 0,

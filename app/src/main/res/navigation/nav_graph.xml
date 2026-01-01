@@ -57,7 +57,11 @@
         android:id="@+id/taskDetailFragment"
         android:name="com.example.anew.ui.fragment.home.TaskDetailFragment"
         android:label="fragment_task_detail"
-        tools:layout="@layout/fragment_task_detail" />
+        tools:layout="@layout/fragment_task_detail" >
+        <action
+            android:id="@+id/action_taskDetailFragment_to_chatRoomFragment"
+            app:destination="@id/chatRoomFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.anew.ui.fragment.home.profile.ProfileFragment"

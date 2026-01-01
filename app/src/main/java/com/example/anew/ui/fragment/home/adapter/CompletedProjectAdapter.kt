@@ -3,6 +3,7 @@ package com.example.anew.ui.fragment.home.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.anew.R
@@ -10,7 +11,8 @@ import com.example.anew.databinding.ItemCompletedProjectCardBinding
 import com.example.anew.model.Team
 import kotlin.math.min
 
-class CompletedProjectAdapter(private val completedProject: MutableList<Team>): RecyclerView.Adapter<CompletedProjectAdapter.CompletedProjectViewHolder>() {
+class CompletedProjectAdapter(private val completedProject: MutableList<Team>,
+    val callback: (String) -> Unit): RecyclerView.Adapter<CompletedProjectAdapter.CompletedProjectViewHolder>() {
     class CompletedProjectViewHolder(val binding: ItemCompletedProjectCardBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
@@ -27,6 +29,14 @@ class CompletedProjectAdapter(private val completedProject: MutableList<Team>): 
         position: Int
     ) {
         with(holder.binding){
+            if(progress.progress==100){
+                successStatus.setImageResource(R.drawable.done)
+                mainLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.task_success))
+            }else {
+                successStatus.setImageResource(R.drawable.not_done)
+                mainLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.task_failed))
+            }
+
             projectTitle.text = completedProject[position].title
             progress.progress = completedProject[position].completedPercent
             tvProgress.text = "${completedProject[position].completedPercent}%"
@@ -46,6 +56,9 @@ class CompletedProjectAdapter(private val completedProject: MutableList<Team>): 
                         .into(avatars[i])
                 }
             }
+        }
+        holder.itemView.setOnClickListener {
+            callback(completedProject[position].id)
         }
     }
 

@@ -26,9 +26,6 @@ class ViewAvatarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
 
         //load image from bundle
         val ImageUri= arguments?.getString("ImageUri")
@@ -40,19 +37,14 @@ class ViewAvatarFragment : Fragment() {
                 .into(binding.avatar)
         }
 
-        binding.toolbar.inflateMenu(R.menu.view_avatar_menu)
-        binding.toolbar.setOnMenuItemClickListener {
-            when(it.itemId){
-                R.id.save_image -> {
-                    downloadImgToLocal(requireContext(),ImageUri!!)
-                    Toast.makeText(requireContext(), "Saved image", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                else -> false
-            }
+        binding.btnBack.setOnClickListener{
+            findNavController().popBackStack()
         }
 
-
+        binding.btnSaveImg.setOnClickListener {
+            downloadImgToLocal(requireContext(),ImageUri!!)
+            Toast.makeText(requireContext(), "Saved image", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {

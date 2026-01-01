@@ -29,7 +29,7 @@ class AddViewModel(
     fun createProject(team: Team){
         viewModelScope.launch {
             projectRepo.createProject(team)
-            messageRepo.createGroup(team.title, MyHelper.groupAvatar.random(),
+            messageRepo.createGroup(team.id,team.title, MyHelper.groupAvatar.random(),
                 fakeData.user!!.uid, team.members, "Project")
         }
     }

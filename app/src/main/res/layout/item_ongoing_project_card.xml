@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F3F4F6"
     app:cardCornerRadius="14dp"
     android:elevation="4dp"
-    android:layout_margin="4dp">
+    android:layout_margin="10dp">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:padding="8dp"
-        android:background="#DBEAFE"
+        android:padding="12dp"
+        android:background="#FFF7ED"
         android:layout_height="125dp">
 
         <TextView
@@ -32,6 +31,7 @@
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:text="Team members"
+            android:textColor="@color/light_black"
             app:layout_constraintStart_toStartOf="@+id/project_title"
             app:layout_constraintTop_toBottomOf="@+id/project_title" />
 

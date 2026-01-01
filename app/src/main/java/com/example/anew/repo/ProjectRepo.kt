@@ -12,8 +12,7 @@ class ProjectRepo {
 
     suspend fun createProject(team: Team){
         try {
-            val documentRef = db.collection("projects").document()
-            db.collection("projects").add(team.copy(id = documentRef.id)).await()
+            db.collection("projects").document(team.id).set(team).await()
             Log.d("project", "createProject success")
         }catch (e: Exception){
             Log.d("project", "createProject failed")
@@ -39,9 +38,15 @@ class ProjectRepo {
         return projectList
     }
 
-    suspend fun getUserFromUid(uid: String): User{
-        val snapshot = db.collection("users").document(uid).get().await()
-        return snapshot.toObject(User::class.java)!!
+    suspend fun getProjectFromId(id: String): Team{
+        try {
+            val snapshot = db.collection("projects")
+                .document(id).get().await()
+            return snapshot.toObject(Team::class.java)!!
+        }catch (e:Exception){
+            Log.d("project", "getProject failed")
+            throw e
+        }
     }
 
 }

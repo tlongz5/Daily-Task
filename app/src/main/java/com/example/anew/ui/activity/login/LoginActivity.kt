@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.example.anew.R
 import com.example.anew.databinding.ActivityLoginBinding
 import com.example.anew.model.User
 import com.example.anew.support.fakeData
@@ -23,6 +25,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import java.io.File
+import androidx.core.graphics.scale
+import androidx.lifecycle.lifecycleScope
+import com.example.anew.support.swapBitmapToUrl
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
@@ -49,6 +55,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //init
+        binding.imgLogo.setImageResource(R.drawable.logo)
 
         //check user login before
         checkLogin()
@@ -83,17 +92,19 @@ class LoginActivity : AppCompatActivity() {
 
     private fun initUser() {
         val currentUser = FirebaseAuth.getInstance().currentUser
-        if(currentUser != null){
-            val url = swapDrawableToUrl()
-            val user = User(
-                currentUser.uid,
-                "user${System.currentTimeMillis()}",
-                currentUser.displayName.toString(),
-                currentUser.email!!,
-                url,
-                ""
-            )
-            loginViewModel.initUser(user)
+        if (currentUser != null) {
+            lifecycleScope.launch {
+                val url = swapDrawableToUrl()
+                val user = User(
+                    currentUser.uid,
+                    "user${System.currentTimeMillis()}",
+                    currentUser.displayName.toString(),
+                    currentUser.email!!,
+                    url,
+                    ""
+                )
+                loginViewModel.initUser(user)
+            }
         }
     }
 
@@ -119,19 +130,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun swapDrawableToUrl(): String {
+    suspend fun swapDrawableToUrl(): String {
         //convert to bitmap
         val drawable = ContextCompat.getDrawable(this, fakeData.avatar.random())
-        var bitmap = (drawable as BitmapDrawable).bitmap
-        bitmap = Bitmap.createScaledBitmap(bitmap, 150, 150, false)
-
-        //bitmap convert to Uri
-        val file = File(this.cacheDir,"temp_image.png")
-        file.outputStream().use {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
-        }
-
-        return file.absolutePath
-
+        return swapBitmapToUrl(this,drawable!!)
     }
 }

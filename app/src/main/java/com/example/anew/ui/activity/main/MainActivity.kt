@@ -49,16 +49,17 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.chatRoomFragment,
                 R.id.HomeFragment,
-                R.id.AddFragment,
                 R.id.NotificationFragment,
                 R.id.CalendarFragment -> {
                     binding.toolbar.visibility = View.GONE
                 }
-
+                R.id.AddFragment -> {
+                    binding.toolbar.visibility = View.GONE
+                    binding.bottomNav.visibility= View.GONE
+                }
             }
         }
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragmentContainerView)

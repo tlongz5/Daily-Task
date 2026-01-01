@@ -11,7 +11,8 @@ import com.example.anew.model.Team
 import com.example.anew.support.toFullTime
 import kotlin.math.min
 
-class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>): RecyclerView.Adapter<OngoingProjectAdapter.OngoingProjectViewHolder>() {
+class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>,
+    val callback: (String) -> Unit): RecyclerView.Adapter<OngoingProjectAdapter.OngoingProjectViewHolder>() {
     class OngoingProjectViewHolder(val binding: ItemOngoingProjectCardBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
@@ -45,6 +46,9 @@ class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>): Recy
                         .into(avatars[i])
                 }
             }
+        }
+        holder.itemView.setOnClickListener {
+            callback(ongoingProject[position].id)
         }
     }
 

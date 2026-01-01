@@ -2,15 +2,19 @@ package com.example.anew.support
 
 import android.app.DownloadManager
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Environment
 import android.text.format.DateUtils
 import android.widget.Toast
+import androidx.core.graphics.scale
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.example.anew.R
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -23,6 +27,7 @@ fun Long.toRelativeTime(): String {
     return DateUtils.getRelativeTimeSpanString(this, now, DateUtils.MINUTE_IN_MILLIS).toString()
 }
 
+//tranfer Long to String Date
 fun Long.toTime(): String{
     val date = Date(this)
     val formatTime= SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -35,6 +40,27 @@ fun Long.toTime(): String{
         }
     }
 }
+
+//tranfer Long to Day and Month
+fun Long.toDayAndMonth(): String{
+    val date = Date(this)
+    val tranformDate = SimpleDateFormat("dd/MM", Locale.getDefault())
+    return tranformDate.format(date)
+}
+
+fun Long.toHourAndMinute(): String{
+    val date = Date(this)
+    val tranformDate = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return tranformDate.format(date)
+}
+
+fun tranferToHourAndMinute(hour: Int, minute: Int): String{
+    val bonus = if(minute<10) "0" else ""
+    val bonusEnd = if(hour<12) " AM" else " PM"
+    val time = if(hour>12) hour-12 else hour
+    return "$time:$bonus$minute$bonusEnd"
+}
+
 
 fun mergeDateAndTime(date: Long, hour: Int, minute: Int): Long? {
     val dateCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
@@ -97,6 +123,19 @@ fun downloadImgToLocal(context: Context, imgUrl: String){
     }
 }
 
+//NOTEEEEEEEEEE
+suspend fun swapBitmapToUrl(context: Context,drawable: Any): String{
+    var bitmap = (drawable as BitmapDrawable).bitmap
+    bitmap = bitmap.scale(150, 150, false)
+
+    //bitmap convert to Uri
+    val file = File(context.cacheDir,"temp_image.png")
+    file.outputStream().use {
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+    }
+
+    return file.absolutePath
+}
 suspend fun convertUriToCloudinaryUrl( imgUri: String): String = suspendCancellableCoroutine { continuation ->
     MediaManager.get().upload(imgUri)
         .unsigned("tl_default")

@@ -11,6 +11,7 @@ import com.example.anew.R
 import com.example.anew.model.User
 import com.example.anew.support.convertUriToCloudinaryUrl
 import com.example.anew.support.deleteUserFromSharePref
+import com.example.anew.support.fakeData
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -65,6 +66,40 @@ class AuthRepo {
         return if(data.exists()) data.toObject(User::class.java) else null
     }
 
+    suspend fun updateProfile(name: String, username: String, phoneNumber: String){
+        val data = hashMapOf(
+            "name" to name,
+            "username" to username,
+            "phoneNumber" to phoneNumber
+        )
+        db.collection("users")
+            .document(fakeData.user !!.uid)
+            .update(data as Map<String, Any>)
+            .addOnSuccessListener {
+                Log.d("User", "User updated successfully")
+            }
+            .addOnFailureListener {
+                Log.d("User", "User updated failed")
+                throw Exception("User updated failed")
+            }
+    }
+
+    suspend fun updateAvatar(imageUri: String) {
+        val data = hashMapOf(
+            "photoUrl" to imageUri
+        )
+        db.collection("users")
+            .document(fakeData.user !!.uid)
+            .update(data as Map<String, Any>)
+            .addOnSuccessListener {
+                Log.d("User", "User updated successfully")
+            }
+            .addOnFailureListener {
+                Log.d("User", "User updated failed")
+                throw Exception("User updated failed")
+            }
+    }
+
     suspend fun initUser(user: User){
         val url = convertUriToCloudinaryUrl(user.photoUrl)
         user.photoUrl = url
@@ -73,10 +108,10 @@ class AuthRepo {
             .document(user.uid)
             .set(user)
             .addOnSuccessListener {
-                Log.d("User", "User ${user.uid} created successfully")
+                Log.d("User", "User created successfully")
             }
             .addOnFailureListener {
-                Log.d("User", "User ${user.uid} created failed")
+                Log.d("User", "User created failed")
             }
     }
 
@@ -101,6 +136,15 @@ class AuthRepo {
             .get()
             .await()
         return data.documents[0].id
+    }
+
+    //if username already exists, user can't change it
+    suspend fun checkDuplicateUsername(username: String): Boolean {
+        val data = db.collection("users")
+            .whereEqualTo("username", username)
+            .get()
+            .await()
+        return !data.isEmpty
     }
 
 }

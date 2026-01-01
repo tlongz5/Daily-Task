@@ -11,4 +11,8 @@
     <color name="light_orange">#FFCCBC</color>
     <color name="orange_main">#FF7E5F</color>
     <color name="light_black">#636E72</color>
+    <color name="light_black_hint">#60636E72</color>
+
+    <color name="task_failed">#FEF2F2</color>
+    <color name="task_success">#ECFDF5</color>
 </resources>

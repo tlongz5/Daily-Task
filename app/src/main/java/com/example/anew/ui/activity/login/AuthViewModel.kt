@@ -36,12 +36,6 @@ class LoginViewModel(private val authRepo: AuthRepo): ViewModel()  {
         }
     }
 
-    fun signOut(context: Context){
-        viewModelScope.launch {
-            authRepo.signOut(context)
-        }
-    }
-
     fun getCurrentUser() : FirebaseUser? = authRepo.getCurrentUser()
 
     fun signInIntent(context: Context) : Intent = authRepo.getSignInIntent(context)

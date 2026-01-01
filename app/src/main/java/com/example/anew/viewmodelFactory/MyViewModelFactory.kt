@@ -16,6 +16,7 @@ import com.example.anew.ui.fragment.chat.friend.FriendListViewModel
 import com.example.anew.ui.fragment.chat.friend_request.FriendsRequestViewModel
 import com.example.anew.ui.fragment.chat.other_user.OtherUserProfileViewModel
 import com.example.anew.ui.fragment.home.HomeViewModel
+import com.example.anew.ui.fragment.home.TaskDetailViewModel
 import com.example.anew.ui.fragment.home.profile.ProfileViewModel
 
 class MyViewModelFactory: ViewModelProvider.Factory {
@@ -50,6 +51,9 @@ class MyViewModelFactory: ViewModelProvider.Factory {
             }
             modelClass.isAssignableFrom(ConversationViewModel::class.java) ->{
                 ConversationViewModel(MessageRepo()) as T
+            }
+            modelClass.isAssignableFrom(TaskDetailViewModel::class.java) ->{
+                TaskDetailViewModel(AuthRepo(),ProjectRepo(),MessageRepo()) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

@@ -133,9 +133,9 @@ class MessageRepo {
             }
         }
 
-    suspend fun createGroup(name: String,avatar:String,adminId: String, users: List<String>,groupType: String){
-        val key = chatRef.push().key
-        if(key==null) return
+    suspend fun createGroup(id:String,name: String,avatar:String,adminId: String, users: List<String>,groupType: String){
+        val key=id.ifEmpty { chatRef.push().key }
+        if(key.isNullOrEmpty()) return
 
         val info = ConversationInfo(key, name, avatar, adminId, users)
         val childUpdates = mutableMapOf<String, Any>()
@@ -165,5 +165,14 @@ class MessageRepo {
     suspend fun updateSeen(groupId: String, chatType: String, userId: String){
         userChatRef.child(userId).child(chatType)
             .child(groupId).updateChildren(mapOf("isRead" to true))
+    }
+
+    suspend fun getConversationInfo(groupId: String): ConversationInfo{
+        try {
+            val info = chatRef.child(groupId).get().await()
+            return info.getValue(ConversationInfo::class.java)!!
+        }catch (e: Exception){
+            throw e
+        }
     }
 }

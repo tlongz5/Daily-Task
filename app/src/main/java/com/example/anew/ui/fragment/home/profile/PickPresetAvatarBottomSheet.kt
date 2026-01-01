@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anew.databinding.BottomSheetPickPresetAvatarBinding
@@ -15,9 +16,7 @@ class PickPresetAvatarBottomSheet : BottomSheetDialogFragment() {
 
     var _binding: BottomSheetPickPresetAvatarBinding? = null
     private val binding get() = _binding!!
-
     private var saveImageItem:Int? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,14 +30,13 @@ class PickPresetAvatarBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //load data to recycler view and active save button when click item
-        binding.rcvImagePreset.adapter = AvatarPresetAdapter(){
+        binding.rcvImagePreset.adapter = AvatarPresetAdapter{
             Glide.with(requireContext())
                 .load(MyHelper.avatar[it])
-                .circleCrop()
+                .centerCrop()
                 .into(binding.avatar)
 
             saveImageItem = MyHelper.avatar[it]
-
             binding.tvSave.alpha=1f
             binding.tvSave.isEnabled=true
         }
@@ -48,7 +46,7 @@ class PickPresetAvatarBottomSheet : BottomSheetDialogFragment() {
 
         Glide.with(requireContext())
             .load(fakeData.user!!.photoUrl)
-            .circleCrop()
+            .centerCrop()
             .into(binding.avatar)
 
         binding.tvCancel.setOnClickListener {
@@ -57,7 +55,12 @@ class PickPresetAvatarBottomSheet : BottomSheetDialogFragment() {
 
         //save to bundle and back to profile fragment
         binding.tvSave.setOnClickListener {
-
+            if(saveImageItem!=null){
+                val bundle = Bundle()
+                bundle.putInt("ImageUri", saveImageItem!!)
+                setFragmentResult("requestKey", bundle)
+                dismiss()
+            }
         }
     }
 

@@ -41,9 +41,9 @@ class SelectAddMemberViewModel(
             _friendPickedState.value = _friendPickedState.value.minus(friend)
         }
     }
-    fun createGroup(groupName: String, avatar: String, adminId: String, users: List<String>,groupType: String){
+    fun createGroup(id: String, groupName: String, avatar: String, adminId: String, users: List<String>,groupType: String){
         viewModelScope.launch {
-            messageRepo.createGroup(groupName, avatar, adminId, users,groupType)
+            messageRepo.createGroup(id,groupName, avatar, adminId, users,groupType)
         }
     }
 

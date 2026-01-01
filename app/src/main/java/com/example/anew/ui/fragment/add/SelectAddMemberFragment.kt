@@ -85,6 +85,7 @@ class SelectAddMemberFragment : Fragment() {
             val groupName = bundle.getString("group_name")
             try {
                 selectAddMemberViewModel.createGroup(
+                    "",
                     groupName!!,
                     MyHelper.groupAvatar.random(),
                     fakeData.user!!.uid,
