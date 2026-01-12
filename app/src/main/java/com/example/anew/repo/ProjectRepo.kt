@@ -3,6 +3,7 @@ package com.example.anew.repo
 import android.util.Log
 import com.example.anew.model.Team
 import com.example.anew.model.User
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -48,5 +49,21 @@ class ProjectRepo {
             throw e
         }
     }
+
+    suspend fun updateProgress(id: String, isChecked: Boolean, percent: Int, userId:String): Team?{
+        return try {
+            db.runTransaction { transaction ->
+                val snapshot = db.collection("projects").document(id)
+                transaction.update(snapshot, "completedPercent", percent)
+                transaction.update(snapshot, "membersCompleted", if(isChecked) FieldValue.arrayUnion(userId) else FieldValue.arrayRemove(userId))
+                transaction.get(snapshot)
+            }.await().toObject(Team::class.java)
+
+        }catch (e : Exception){
+            Log.d("project", "updateProgress failed")
+            null
+        } as Team?
+    }
+
 
 }

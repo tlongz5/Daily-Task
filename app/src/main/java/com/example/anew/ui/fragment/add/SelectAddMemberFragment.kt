@@ -50,7 +50,6 @@ class SelectAddMemberFragment : Fragment() {
         selectAddMemberViewModel = ViewModelProvider(this, MyViewModelFactory)[SelectAddMemberViewModel::class.java]
         sharedAddFragment = ViewModelProvider(requireActivity(), MyViewModelFactory)[AddViewModel::class.java]
 
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
         binding.rcvFriends.adapter = pickFriendAdapter.withLoadStateFooter(FriendLoadStateAdapter { pickFriendAdapter.retry() })
         lifecycleScope.launch {
             selectAddMemberViewModel.friendPagingData.collectLatest { pagingData ->
@@ -64,6 +63,10 @@ class SelectAddMemberFragment : Fragment() {
         selectAddMemberViewModel.friendPickedState.observe(viewLifecycleOwner){
             membersPickedAdapter.submitList(it)
             pickFriendAdapter.reloadPickedFriend(it.map { user -> user.uid })
+        }
+
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         binding.btnSave.setOnClickListener {

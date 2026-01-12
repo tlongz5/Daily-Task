@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:padding="24dp"
     tools:context=".ui.fragment.add.AddFragment">
 
@@ -47,11 +48,23 @@
         android:layout_height="wrap_content"
         android:progress="75"
         app:indicatorColor="@color/orange"
-        app:indicatorSize="40dp"
+        app:indicatorSize="50dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.733"
         app:trackColor="@color/light_orange" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/cb_icon"
+        app:buttonTint="@color/cb_tint"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_ring"
+        app:layout_constraintEnd_toEndOf="@+id/progress_ring"
+        app:layout_constraintStart_toStartOf="@+id/progress_ring"
+        app:layout_constraintTop_toTopOf="@+id/progress_ring" />
 
     <TextView
         android:id="@+id/tv_percent"
@@ -59,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="75%"
-        android:textColor="#FF7E5F"
+        android:textColor="@color/orange_main"
         android:textSize="12dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/progress_ring"
@@ -226,7 +239,6 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:letterSpacing="0.1"
                                 android:text="DUE TIME"
                                 android:textColor="@color/orange_main"
@@ -237,7 +249,6 @@
                                 android:id="@+id/tv_time"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3"
                                 android:alpha="0.8"
                                 android:text="10:00 AM"
                                 android:textColor="@color/light_black"
@@ -278,9 +289,7 @@
                     <ImageView
                         android:id="@+id/avtAdmin"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="14dp"
-                        app:tint="@color/orange_main" />
+                        android:layout_height="match_parent" />
 
                 </com.google.android.material.card.MaterialCardView>
 

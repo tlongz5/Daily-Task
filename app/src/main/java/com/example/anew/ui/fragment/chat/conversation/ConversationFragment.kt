@@ -1,6 +1,7 @@
 package com.example.anew.ui.fragment.chat.conversation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,8 @@ class ConversationFragment(): Fragment() {
                 putString("receiver_avatar", it.avatar)
                 putString("chatId", it.roomId)
             })
+
+            //Update seen message
             viewModel.updateSeen(it.roomId,chatType,fakeData.user!!.uid)
         })
 

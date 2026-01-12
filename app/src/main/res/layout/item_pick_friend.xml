@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/custom_common"
-    android:padding="8dp">
+    android:padding="16dp"
+    android:layout_margin="8dp">
 
     <ImageView
         android:id="@+id/avatar"
@@ -30,5 +31,7 @@
     <CheckBox
         android:id="@+id/btn_pick_member"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:button="@drawable/cb_icon"
+        app:buttonTint="@color/cb_tint"/>
 </LinearLayout>

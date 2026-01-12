@@ -29,7 +29,8 @@ class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>,
     ) {
         with(holder.binding){
             projectTitle.text = ongoingProject[position].title
-            projectProgress.progress = ongoingProject[position].completedPercent
+            progressRing.progress = ongoingProject[position].completedPercent
+            tvProgress.text = ongoingProject[position].completedPercent.toString() + "%"
             dueTime.text = "Due on : ${ongoingProject[position].dueTime?.toFullTime()}"
             val members = ongoingProject[position].teamMembersImage
             val avatars = listOf(avt1,avt2,avt3,avt4)

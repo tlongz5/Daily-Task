@@ -4,13 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:contentPadding="12dp"
-    app:cardCornerRadius="20dp"
-    android:backgroundTint="#EFFBEC">
+    app:cardCornerRadius="30dp"
+    android:backgroundTint="@color/light_orange"
+    app:strokeWidth="0dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
+        android:padding="8dp"
         android:orientation="horizontal">
 
         <ImageView

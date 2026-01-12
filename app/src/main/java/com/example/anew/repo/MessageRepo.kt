@@ -77,7 +77,7 @@ class MessageRepo {
                 )
 
                 for(userId in getInfo!!.users){
-                    if(userId==senderId) childUpdates["/user_chats/$userId/$chatType/$chatId"] = conservation.copy(isRead = true, lastMessage = "You: $lastMessage")
+                    if(userId==senderId) childUpdates["/user_chats/$userId/$chatType/$chatId"] = conservation.copy(checkRead = true, lastMessage = "You: $lastMessage")
                     else childUpdates["/user_chats/$userId/$chatType/$chatId"] = conservation
                 }
             }
@@ -161,10 +161,16 @@ class MessageRepo {
         }
     }
 
- ////  note
+ ////  update seen when user check message
     suspend fun updateSeen(groupId: String, chatType: String, userId: String){
         userChatRef.child(userId).child(chatType)
-            .child(groupId).updateChildren(mapOf("isRead" to true))
+            .child(groupId).updateChildren(mapOf("checkRead" to true))
+            .addOnSuccessListener {
+                Log.d("MessageRepo", "updateSeen: Success")
+            }
+            .addOnFailureListener {
+                Log.d("MessageRepo", "updateSeen: Error")
+            }
     }
 
     suspend fun getConversationInfo(groupId: String): ConversationInfo{

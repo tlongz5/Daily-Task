@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
+    android:background="@color/white"
     tools:context=".ui.fragment.add.AddFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -71,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.1"
                         android:text="PROJECT NAME"
-                        android:textColor="@color/orange_main"
+                        android:textColor="@color/orange"
                         android:textStyle="bold" />
 
                     <TextView
@@ -109,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:letterSpacing="0.1"
                         android:text="DESCRIPTION"
-                        android:textColor="@color/orange_main"
+                        android:textColor="@color/orange"
                         android:textStyle="bold" />
 
                     <TextView
@@ -169,7 +170,7 @@
                                 android:layout_height="wrap_content"
                                 android:letterSpacing="0.1"
                                 android:text="DUE DATE"
-                                android:textColor="@color/orange_main"
+                                android:textColor="@color/orange"
                                 android:textSize="12dp"
                                 android:textStyle="bold" />
 
@@ -226,7 +227,7 @@
                                 android:layout_weight="1"
                                 android:letterSpacing="0.1"
                                 android:text="DUE TIME"
-                                android:textColor="@color/orange_main"
+                                android:textColor="@color/orange"
                                 android:textSize="12dp"
                                 android:textStyle="bold" />
 
@@ -253,7 +254,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="TEAM MEMBERS"
-                android:textColor="@color/orange_main"
+                android:textColor="@color/orange"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
@@ -270,7 +271,7 @@
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="30dp"
                     app:cardElevation="4dp"
-                    app:strokeColor="@color/orange_main">
+                    app:strokeColor="@color/orange">
 
                     <ImageView
                         android:id="@+id/btn_add_member"
@@ -278,7 +279,7 @@
                         android:layout_height="match_parent"
                         android:padding="14dp"
                         android:src="@drawable/ic_add_member"
-                        app:tint="@color/orange_main" />
+                        app:tint="@color/orange" />
 
                 </com.google.android.material.card.MaterialCardView>
 

@@ -4,18 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.fragment.chat.other_user.OtherUserProfileFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/light_orange"
+        app:strokeWidth="1dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/light_black" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/avatar"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:src="@drawable/avatar6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/CircleImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+        app:shapeAppearanceOverlay="@style/CircleImageView"
+        app:strokeColor="@color/orange"
+        app:strokeWidth="2dp" />
 
     <TextView
         android:id="@+id/tvUsername"
@@ -23,8 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="\@tlongz5"
-        android:textSize="16dp"
         android:textColor="#908C8C"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="@+id/tvName"
         app:layout_constraintStart_toStartOf="@+id/tvName"
         app:layout_constraintTop_toBottomOf="@+id/tvName" />
@@ -35,8 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Bui Thanh Long"
-        android:textStyle="bold"
         android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/avatar"
         app:layout_constraintStart_toStartOf="@+id/avatar"
         app:layout_constraintTop_toBottomOf="@+id/avatar" />
@@ -45,45 +71,134 @@
         android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername">
 
-        <FrameLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/orange"
+            app:strokeWidth="1dp">
 
-            <ImageButton
-                android:id="@+id/btnAddfriend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:src="@drawable/ic_add_friend" />
-
-            <ImageButton
-                android:id="@+id/btnUnFriend"
+            <LinearLayout
+                android:id="@+id/btnAddFriend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_unfriend"
-                android:background="@null"
-                android:visibility="gone" />
+                android:paddingHorizontal="32dp"
+                android:paddingVertical="15dp">
 
-            <ImageButton
+                <ImageView
+                    android:id="@+id/imgAddFriend"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_add_friend"
+                    app:tint="@color/orange" />
+
+                <TextView
+                    android:id="@+id/tvAddFriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    android:text="Add Friend"
+                    android:textColor="@color/orange"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/btnFriendRequested"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_friend_requested"
-                android:background="@null"
-                android:visibility="gone" />
-        </FrameLayout>
+                android:paddingHorizontal="32dp"
+                android:paddingVertical="15dp"
+                android:visibility="gone">
 
-        <ImageButton
-            android:id="@+id/btnSendMessage"
+                <ImageView
+                    android:id="@+id/imgFriendRequested"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_friend_requested"
+                    app:tint="@color/orange" />
+
+                <TextView
+                    android:id="@+id/tvFriendRequested"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    android:text="Sent Friend Request"
+                    android:textColor="@color/orange"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnUnFriend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:paddingHorizontal="32dp"
+                android:paddingVertical="15dp">
+
+                <ImageView
+                    android:id="@+id/imgUnFriend"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_unfriend"
+                    app:tint="@color/orange" />
+
+                <TextView
+                    android:id="@+id/tvUnFriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    android:text="Unfriend"
+                    android:textColor="@color/orange"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:src="@drawable/ic_mess" />
+            android:layout_marginStart="16dp"
+            app:cardBackgroundColor="@color/orange"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:id="@+id/btnSendMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="32dp"
+                android:paddingVertical="15dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_mess"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    android:text="Message"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
 
     </LinearLayout>
@@ -91,93 +206,104 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/custom_bottom_sheet_layout"
         android:orientation="vertical"
-        android:layout_marginTop="32dp"
         android:padding="16dp"
-        android:gravity="center"
-        android:background= "@drawable/custom_bottom_sheet_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
 
         <TextView
-            android:id="@+id/textView25"
-            android:layout_marginTop="12dp"
+            android:id="@+id/te"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#908C8C"
-            android:textSize="20dp"
-            android:text="Display name" />
-
-        <TextView
-            android:id="@+id/tvDisplayName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:textSize="24dp"
-            android:text="Bui Thanh Long"
-            android:layout_marginStart="2dp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/textVi"
-            android:layout_marginTop="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#908C8C"
-            android:textSize="20dp"
-            android:text="User name" />
-
-        <TextView
-            android:id="@+id/tvUsername2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:textSize="24dp"
-            android:text="Bui Thanh Long"
-            android:layout_marginStart="2dp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/textView88"
             android:layout_marginTop="16dp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#908C8C"
-            android:textSize="20dp"
-            android:text="Email" />
-
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_weight="1.5"
-            android:text="long26102005@gmail.com"
-            android:textSize="24dp"
+            android:text="Contact Info"
+            android:textColor="@color/black"
+            android:textSize="36dp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView75"
-            android:layout_weight="1"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#908C8C"
-            android:textSize="20dp"
-            android:text="Phone number" />
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvPhoneNumber"
-            android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_login_email"
+                app:tint="@color/orange_main" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView88"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="#908C8C"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="long26102005@gmail.com"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:textSize="24dp"
-            android:text="+84387920450"
-            android:layout_marginStart="2dp"
-            android:textStyle="bold"/>
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_setting_phone"
+                app:tint="#59B1F2" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Phone"
+                    android:textColor="#908C8C"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="+84387920450"
+                    android:textSize="24dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 

@@ -31,6 +31,21 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.btnFriend.setOnClickListener {
+            findNavController().navigate(R.id.action_ChatFragment_to_friendListFragment)
+        }
+
+        binding.btnGroup.setOnClickListener {
+            findNavController().navigate(R.id.action_ChatFragment_to_selectAddMemberFragment,
+                Bundle().apply {
+                    putString("chat_type", "Group")
+                })
+        }
+
+        binding.btnFriendRequested.setOnClickListener {
+            findNavController().navigate(R.id.action_ChatFragment_to_friendsRequestFragment)
+        }
+
         // ViewPager2 + TabLayout
         val fragments = listOf(
             ConversationFragment.newInstance("Private"),
@@ -54,8 +69,6 @@ class ChatFragment : Fragment() {
             tab.text = titles[position]
         }.attach()
 
-        customToolbar()
-
     }
 
     override fun onDestroyView() {
@@ -63,30 +76,4 @@ class ChatFragment : Fragment() {
         _binding =null
     }
 
-
-
-    private fun customToolbar() {
-        val menuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.chat_toolbar_menu, menu)
-            }
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                if(menuItem.itemId == R.id.contact){
-                    findNavController().navigate(R.id.action_ChatFragment_to_friendListFragment)
-                    return true
-                }else if(menuItem.itemId == R.id.new_friend){
-                    findNavController().navigate(R.id.action_ChatFragment_to_friendsRequestFragment)
-                    return true
-                }else if(menuItem.itemId == R.id.create_group){
-                    findNavController().navigate(R.id.action_ChatFragment_to_selectAddMemberFragment,
-                        Bundle().apply {
-                            putString("chat_type", "Group")
-                        })
-                }
-                return false
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
-    }
 }

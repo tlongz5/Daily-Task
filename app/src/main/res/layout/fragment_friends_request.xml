@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white"
     tools:context=".ui.fragment.chat.friend_request.FriendsRequestFragment">
 
 
@@ -18,7 +20,7 @@
         android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/custom_search_view"
+        android:background="@drawable/custom_search_view_2"
         app:layout_constraintTop_toTopOf="parent" />
 
 

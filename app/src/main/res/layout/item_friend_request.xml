@@ -6,7 +6,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
-    android:backgroundTint="@android:color/white"
+    android:backgroundTint="#FBF6F6"
     app:contentPadding="12dp">
 
     <LinearLayout
@@ -64,7 +64,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAccept"
                 android:layout_width="0dp"
-                android:layout_height="44dp"
+                android:layout_height="45dp"
                 android:layout_weight="1"
                 android:text="Accept"
                 android:textColor="@android:color/white"
@@ -76,12 +76,12 @@
                 android:id="@+id/btnDecline"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="44dp"
+                android:layout_height="45dp"
                 android:layout_weight="1"
                 android:text="Decline"
-                android:textColor="#FB8C00"
+                android:textColor="@color/orange"
                 app:cornerRadius="22dp"
-                app:strokeColor="#FB8C00"
+                app:strokeColor="@color/orange"
                 app:strokeWidth="2dp" />
         </LinearLayout>
     </LinearLayout>

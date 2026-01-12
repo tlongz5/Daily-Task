@@ -4,10 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:paddingBottom="32dp">
 
         <ImageView
@@ -134,7 +136,7 @@
                 android:text="Full Name"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="@color/orange_main"
+                android:textColor="@color/orange"
                 android:letterSpacing="0.1"/>
             <EditText
                 android:id="@+id/edt_name"
@@ -157,7 +159,7 @@
                 android:layout_marginTop="16dp"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="@color/orange_main"
+                android:textColor="@color/orange"
                 android:letterSpacing="0.1"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -193,7 +195,7 @@
                 android:text="Email"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="@color/orange_main"
+                android:textColor="@color/orange"
                 android:letterSpacing="0.1"/>
             <EditText
                 android:id="@+id/edt_email"
@@ -216,7 +218,7 @@
                 android:layout_marginTop="16dp"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="@color/orange_main"
+                android:textColor="@color/orange"
                 android:letterSpacing="0.1"/>
             <EditText
                 android:id="@+id/edt_phone_number"
@@ -238,11 +240,11 @@
                 android:layout_height="56dp"
                 android:layout_marginTop="40dp"
                 android:text="Log Out"
-                android:textColor="#FF7E5F"
+                android:textColor="@color/orange"
                 android:textStyle="bold"
                 app:cornerRadius="28dp"
                 app:backgroundTint="#FFF5F5"
-                app:strokeColor="#FF7E5F"
+                app:strokeColor="@color/orange"
                 app:strokeWidth="2dp"
                 app:elevation="0dp" />
 

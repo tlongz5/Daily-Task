@@ -19,9 +19,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:background="@drawable/custom_tv_sender"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/img_receiver_avatar"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -45,15 +45,16 @@
             android:id="@+id/layout_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_tv_sender"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
-                android:paddingEnd="8dp"
                 android:text="Text massage"
                 android:textSize="18sp" />
 

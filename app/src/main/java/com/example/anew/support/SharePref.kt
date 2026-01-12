@@ -31,6 +31,6 @@ fun deleteUserFromSharePref(context: Context){
 
 fun updateAvatarFromSharePref(context: Context, url: String){
     val sharedPreferences = context.getSharedPreferences("user", MODE_PRIVATE)
-    sharedPreferences.edit().putString("avatar",url)
+    sharedPreferences.edit().putString("avatar",url).apply()
     fakeData.user!!.photoUrl = url
 }

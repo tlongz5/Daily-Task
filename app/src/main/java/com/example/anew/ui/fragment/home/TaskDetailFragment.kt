@@ -51,8 +51,16 @@ class TaskDetailFragment : Fragment() {
             binding.progressRing.progress = it.completedPercent
             binding.tvPercent.text = "${it.completedPercent}%"
 
-            viewModel.getUserDataFromUid(it.admin, it.members)
-            viewModel.getImgGroupData(it.id)
+            binding.checkBox.setOnCheckedChangeListener(null)
+            binding.checkBox.isChecked = it.membersCompleted.contains(fakeData.user!!.uid)
+            binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateProgress(isChecked)
+            }
+
+            if((binding.rcvTeamMembers.adapter as AddTeamMembersAdapter).currentList.isEmpty()) {
+                viewModel.getUserDataFromUid(it.admin, it.members)
+                viewModel.getImgGroupData(it.id)
+            }
         }
 
         viewModel.adminState.observe(viewLifecycleOwner) {
@@ -61,7 +69,6 @@ class TaskDetailFragment : Fragment() {
                 .error(R.drawable.avt1)
                 .centerCrop()
                 .into(binding.avtAdmin)
-
         }
 
         viewModel.membersState.observe(viewLifecycleOwner) {

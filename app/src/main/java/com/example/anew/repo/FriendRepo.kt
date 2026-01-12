@@ -60,8 +60,8 @@ class FriendRepo {
             .collection("friends").document(friendId).get().await()
         if(snapshot.exists()) return 1
 
-        val snapshot2 = db.collection("users").document(friendId)
-            .collection("friendsRequested").document(uid).get().await()
+        val snapshot2 = db.collection("users").document(uid)
+            .collection("friendsRequested").document(friendId).get().await()
         if(snapshot2.exists()) return 0
         return -1
     }

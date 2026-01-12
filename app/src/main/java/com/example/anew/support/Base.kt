@@ -50,10 +50,11 @@ fun Long.toDayAndMonth(): String{
 
 fun Long.toHourAndMinute(): String{
     val date = Date(this)
-    val tranformDate = SimpleDateFormat("HH:mm", Locale.getDefault())
+    val tranformDate = SimpleDateFormat("HH:mm aa", Locale.getDefault())
     return tranformDate.format(date)
 }
 
+//format to hour and minute type AM, PM
 fun tranferToHourAndMinute(hour: Int, minute: Int): String{
     val bonus = if(minute<10) "0" else ""
     val bonusEnd = if(hour<12) " AM" else " PM"

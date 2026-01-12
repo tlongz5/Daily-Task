@@ -11,7 +11,8 @@ data class Team( // represent each project
     val teamMembersImage: List<String>, // load image present on item max 3
     val completedPercent: Int,
     val dueTime: Long?,
-    val inProgress: Boolean
+    val inProgress: Boolean,
+    val membersCompleted: List<String>
 ){
-    constructor(): this("","","","", listOf(),listOf(),0,null,false)
+    constructor(): this("","","","", listOf(),listOf(),0,null,false,listOf())
 }

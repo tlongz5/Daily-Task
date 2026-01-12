@@ -4,31 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FDFDFD"
     android:orientation="vertical"
     tools:context=".ui.fragment.chat.chat_room.ChatRoomFragment">
 
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/matterial"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/materialCardView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_back">
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/img_avatar_toolbar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="4dp"
-            app:shapeAppearanceOverlay="@style/CircleImageView"
-            app:srcCompat="@drawable/avatar1" />
+        app:layout_constraintTop_toTopOf="@+id/materialCardView"
+        app:strokeWidth="0dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_avatar_toolbar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="4dp"
+                app:shapeAppearanceOverlay="@style/CircleImageView"
+                app:srcCompat="@drawable/avatar1" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -52,16 +59,40 @@
                     android:textSize="12dp" />
             </LinearLayout>
         </LinearLayout>
-    </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="40dp"
+        app:cardElevation="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/light_orange"
+        app:strokeWidth="1dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/orange" />
+    </com.google.android.material.card.MaterialCardView>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_message"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout8"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="-32dp" />
+        app:layout_constraintTop_toBottomOf="@+id/matterial"
+        android:layout_marginTop="16dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -71,7 +102,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/matterial" />
 
     <LinearLayout
         android:id="@+id/linearLayout8"
@@ -93,26 +124,27 @@
             android:hint="Message..."
             android:paddingHorizontal="12dp" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btnPickImage"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
-            android:background="@null"
-            android:src="@drawable/add_photo_from_gallery" />
+            android:src="@drawable/add_photo_from_gallery"
+            app:tint="@color/orange" />
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnSendMessage"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginEnd="8dp"
+                android:padding="4dp"
                 android:background="@drawable/bg_send_button"
                 android:src="@android:drawable/ic_menu_send" />
         </FrameLayout>

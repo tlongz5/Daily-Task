@@ -84,7 +84,7 @@ class ChatRoomFragment : Fragment() {
         receiverAvatar = arguments?.getString("receiver_avatar") ?: "" //tag
         adminId = arguments?.getString("admin_id") ?: ""
 
-        setupToolbar(chatType)
+//        setupToolbar(chatType)
         setUpViewModel(chatId!!)
 
         binding.tvNameToolbar.text = chatName
@@ -106,6 +106,9 @@ class ChatRoomFragment : Fragment() {
         })
         binding.rcvMessage.adapter = adapter
 
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
         binding.btnSendMessage.setOnClickListener {
             val message = binding.editMessage.text.toString()
             binding.editMessage.clearFocus()
@@ -139,50 +142,50 @@ class ChatRoomFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    private fun setupToolbar(chatType: String) {
-        binding.toolbar.apply {
-            setNavigationOnClickListener {
-                findNavController().popBackStack()
-            }
-            inflateMenu(R.menu.chat_room_menu)
-            menu.setGroupVisible(R.id.common_actions, true)
-            if(chatType=="Private") {
-                menu.setGroupVisible(R.id.group_actions, false)
-                menu.setGroupVisible(R.id.admin_actions, false)
-                menu.setGroupVisible(R.id.project_action, false)
-                menu.setGroupVisible(R.id.private_actions, true)
-            }else{
-                menu.setGroupVisible(R.id.group_actions, true)
-                menu.setGroupVisible(R.id.project_action, true)
-                menu.setGroupVisible(R.id.private_actions, false)
-                if(adminId == fakeData.user!!.uid) menu.setGroupVisible(R.id.admin_actions, true)
-                else menu.setGroupVisible(R.id.admin_actions, false)
-            }
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.voice_call -> {
-                        true
-                    }
-                    R.id.group_info -> {
-                        true
-                    }
-                    R.id.add_member -> {
-                        true
-                    }
-                    R.id.leave_group -> {
-                        true
-                    }
-                    R.id.delete_group -> {
-                        true
-                    }
-                    R.id.make_admin -> {
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }
-    }
+//    private fun setupToolbar(chatType: String) {
+//        binding.toolbar.apply {
+//            setNavigationOnClickListener {
+//                findNavController().popBackStack()
+//            }
+//            inflateMenu(R.menu.chat_room_menu)
+//            menu.setGroupVisible(R.id.common_actions, true)
+//            if(chatType=="Private") {
+//                menu.setGroupVisible(R.id.group_actions, false)
+//                menu.setGroupVisible(R.id.admin_actions, false)
+//                menu.setGroupVisible(R.id.project_action, false)
+//                menu.setGroupVisible(R.id.private_actions, true)
+//            }else{
+//                menu.setGroupVisible(R.id.group_actions, true)
+//                menu.setGroupVisible(R.id.project_action, true)
+//                menu.setGroupVisible(R.id.private_actions, false)
+//                if(adminId == fakeData.user!!.uid) menu.setGroupVisible(R.id.admin_actions, true)
+//                else menu.setGroupVisible(R.id.admin_actions, false)
+//            }
+//            setOnMenuItemClickListener {
+//                when (it.itemId) {
+//                    R.id.voice_call -> {
+//                        true
+//                    }
+//                    R.id.group_info -> {
+//                        true
+//                    }
+//                    R.id.add_member -> {
+//                        true
+//                    }
+//                    R.id.leave_group -> {
+//                        true
+//                    }
+//                    R.id.delete_group -> {
+//                        true
+//                    }
+//                    R.id.make_admin -> {
+//                        true
+//                    }
+//                    else -> false
+//                }
+//            }
+//        }
+//    }
     private fun setUpViewModel(chatId: String) {
         viewModel.getMessages(chatId)
 

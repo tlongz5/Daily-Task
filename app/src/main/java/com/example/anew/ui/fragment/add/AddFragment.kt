@@ -21,6 +21,7 @@ import com.example.anew.support.getCurrentTime
 import com.example.anew.support.mergeDateAndTime
 import com.example.anew.support.toDayAndMonth
 import com.example.anew.support.tranferToHourAndMinute
+import com.example.anew.ui.activity.main.MainActivity
 import com.example.anew.viewmodelFactory.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -54,6 +55,9 @@ class AddFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //hide bottomNav for fragment
+        (requireActivity() as MainActivity).showBottomNav(false)
 
         viewModel = ViewModelProvider(requireActivity(), myViewModelFactory)[AddViewModel::class.java]
         viewModel.teamState.observe(viewLifecycleOwner){
@@ -113,6 +117,10 @@ class AddFragment : Fragment() {
             findNavController().navigate(R.id.action_AddFragment_to_selectAddMemberFragment)
         }
 
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         //NOTEEEEEEE
         binding.btnCreateNewTask.setOnClickListener {
             if(binding.tvProjectName.text.isEmpty() ||
@@ -133,7 +141,8 @@ class AddFragment : Fragment() {
                 viewModel.teamState.value.plus(fakeData.user!!).map { it.photoUrl }.take(4),
                 0,
                 mergeDateAndTime(setDate!!,setHour!!,setMinute!!),
-                true
+                true,
+                listOf()
             )
             viewModel.createProject(team)
             Toast.makeText(context, "Create Success", Toast.LENGTH_SHORT).show()
@@ -175,5 +184,6 @@ class AddFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        (requireActivity() as MainActivity).showBottomNav(true)
     }
 }

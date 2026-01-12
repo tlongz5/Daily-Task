@@ -44,18 +44,17 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.ChatFragment -> {
-                    binding.toolbar.visibility = View.VISIBLE
-                }
-                R.id.chatRoomFragment,
                 R.id.HomeFragment,
+                R.id.ChatFragment,
                 R.id.NotificationFragment,
+                R.id.AddFragment,
                 R.id.CalendarFragment -> {
                     binding.toolbar.visibility = View.GONE
+                    binding.bottomNav.visibility = View.VISIBLE
                 }
-                R.id.AddFragment -> {
+                else -> {
                     binding.toolbar.visibility = View.GONE
-                    binding.bottomNav.visibility= View.GONE
+                    binding.bottomNav.visibility = View.GONE
                 }
             }
         }
@@ -64,5 +63,9 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragmentContainerView)
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    fun showBottomNav(type: Boolean){
+        binding.bottomNav.visibility = if(type) View.VISIBLE else View.GONE
     }
 }

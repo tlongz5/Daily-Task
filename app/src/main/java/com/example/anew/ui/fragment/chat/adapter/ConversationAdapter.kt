@@ -32,7 +32,7 @@ class ConversationAdapter(private val callback: (Conversation) -> Unit): ListAda
             tvSenderMessage.text=item.lastMessage
             tvSenderName.text=item.chatName
             tvLastMessageTime.text=item.lastMessageTime.toRelativeTime()
-            if(!item.isRead) tvSenderMessage.setTypeface(null, Typeface.BOLD)
+            if(!item.checkRead) tvSenderMessage.setTypeface(null, Typeface.BOLD)
             else tvSenderMessage.setTypeface(null, Typeface.NORMAL)
             Glide.with(holder.itemView.context)
                 .load(item.avatar)

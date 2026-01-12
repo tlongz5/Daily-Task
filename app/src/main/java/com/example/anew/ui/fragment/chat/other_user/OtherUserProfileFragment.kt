@@ -36,6 +36,8 @@ class OtherUserProfileFragment : Fragment() {
 
         viewModel= ViewModelProvider(this, MyViewModelFactory)[OtherUserProfileViewModel::class.java]
         val bundle = arguments
+
+        //get data, update UI
         if (bundle != null) {
             val uid = bundle.getString("uid")
             checkFriend(uid!!)
@@ -44,9 +46,7 @@ class OtherUserProfileFragment : Fragment() {
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
             binding.tvName.text = user.name
-            binding.tvDisplayName.text = user.name
             binding.tvUsername.text = "@${user.username}"
-            binding.tvUsername2.text = "@${user.username}"
             binding.tvEmail.text = user.email
             binding.tvPhoneNumber.text = user.phoneNumber
             Glide.with(this)
@@ -54,7 +54,13 @@ class OtherUserProfileFragment : Fragment() {
                 .circleCrop()
                 .into(binding.avatar)
 
-            binding.btnAddfriend.setOnClickListener {
+
+
+            binding.btnBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
+            binding.btnAddFriend.setOnClickListener {
                 viewModel.requestFriend(user.uid)
                 Toast.makeText(context, "Request sent", Toast.LENGTH_SHORT).show()
             }
@@ -94,15 +100,15 @@ class OtherUserProfileFragment : Fragment() {
 
         viewModel.isFriend.observe(viewLifecycleOwner) {
             if (it==1) {
-                binding.btnAddfriend.visibility = View.GONE
+                binding.btnAddFriend.visibility = View.GONE
                 binding.btnUnFriend.visibility = View.VISIBLE
                 binding.btnFriendRequested.visibility = View.GONE
             } else if (it==0) {
-                binding.btnAddfriend.visibility = View.GONE
+                binding.btnAddFriend.visibility = View.GONE
                 binding.btnUnFriend.visibility = View.GONE
                 binding.btnFriendRequested.visibility = View.VISIBLE
             } else if(it==-1){
-                binding.btnAddfriend.visibility = View.VISIBLE
+                binding.btnAddFriend.visibility = View.VISIBLE
                 binding.btnUnFriend.visibility = View.GONE
                 binding.btnFriendRequested.visibility = View.GONE
             }
