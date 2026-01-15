@@ -5,7 +5,7 @@ data class ConversationInfo(
     val chatName: String,
     val avatar: String,
     val adminId: String,
-    val users: List<String>
+    val users: Map<String, Boolean>
 ){
-    constructor() : this("", "", "", "", emptyList())
+    constructor() : this("", "", "", "", mapOf())
 }

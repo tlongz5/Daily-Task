@@ -11,7 +11,9 @@ import com.example.anew.model.User
 
 class FriendsRequestAdapter(
     private val callbackAccept: (String) -> Unit,
-    private val callbackDecline: (String) -> Unit): ListAdapter<User, FriendsRequestAdapter.ViewHolder>(FriendsRequestDiffUtil()) {
+    private val callbackDecline: (String) -> Unit,
+    private val callbackCheckProfile: (String) -> Unit
+): ListAdapter<User, FriendsRequestAdapter.ViewHolder>(FriendsRequestDiffUtil()) {
     class ViewHolder(val binding: ItemFriendRequestBinding): RecyclerView.ViewHolder(binding.root)
 
 
@@ -36,7 +38,7 @@ class FriendsRequestAdapter(
                 callbackDecline(friendRequest.uid)
             }
             avatar.setOnClickListener {
-
+                callbackCheckProfile(friendRequest.uid)
             }
             Glide.with(holder.itemView.context)
                 .load(friendRequest.photoUrl)

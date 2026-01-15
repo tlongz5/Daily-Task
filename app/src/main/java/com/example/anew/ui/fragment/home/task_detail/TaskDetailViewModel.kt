@@ -1,4 +1,4 @@
-package com.example.anew.ui.fragment.home
+package com.example.anew.ui.fragment.home.task_detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -69,10 +69,7 @@ class TaskDetailViewModel(
 
     fun updateProgress(isChecked: Boolean){
         viewModelScope.launch {
-            val cntDone = projectState.value!!.membersCompleted.size + (if (isChecked) 1 else -1)
-            val cntAll = projectState.value!!.members.size
-            val progress = (100f/cntAll *cntDone).toInt()
-            val newUpdateTeam = projectRepo.updateProgress(projectState.value!!.id, isChecked, progress, fakeData.user!!.uid)
+            val newUpdateTeam = projectRepo.updateProgress(projectState.value!!.id, isChecked, fakeData.user!!.uid)
             if(newUpdateTeam!=null) {
                 _projectState.value = newUpdateTeam
             }

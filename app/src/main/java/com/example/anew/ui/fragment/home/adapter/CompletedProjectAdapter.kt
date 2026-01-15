@@ -29,6 +29,10 @@ class CompletedProjectAdapter(private val completedProject: MutableList<Team>,
         position: Int
     ) {
         with(holder.binding){
+            projectTitle.text = completedProject[position].title
+            progress.progress = completedProject[position].completedPercent
+            tvProgress.text = "${completedProject[position].completedPercent}%"
+            
             if(progress.progress==100){
                 successStatus.setImageResource(R.drawable.done)
                 mainLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.task_success))
@@ -36,10 +40,6 @@ class CompletedProjectAdapter(private val completedProject: MutableList<Team>,
                 successStatus.setImageResource(R.drawable.not_done)
                 mainLayout.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.task_failed))
             }
-
-            projectTitle.text = completedProject[position].title
-            progress.progress = completedProject[position].completedPercent
-            tvProgress.text = "${completedProject[position].completedPercent}%"
 
             val members = completedProject[position].teamMembersImage
             val avatars = listOf(avt1,avt2,avt3,avt4)

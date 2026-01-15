@@ -55,7 +55,7 @@
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/taskDetailFragment"
-        android:name="com.example.anew.ui.fragment.home.TaskDetailFragment"
+        android:name="com.example.anew.ui.fragment.home.task_detail.TaskDetailFragment"
         android:label="fragment_task_detail"
         tools:layout="@layout/fragment_task_detail" >
         <action
@@ -118,5 +118,8 @@
         <action
             android:id="@+id/action_chatRoomFragment_to_otherUserProfileFragment"
             app:destination="@id/otherUserProfileFragment" />
+        <action
+            android:id="@+id/action_chatRoomFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
     </fragment>
 </navigation>

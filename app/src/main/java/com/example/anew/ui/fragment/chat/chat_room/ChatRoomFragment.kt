@@ -7,21 +7,36 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.anew.R
+import com.example.anew.databinding.DialogAddMemberBinding
+import com.example.anew.databinding.DialogConfirmLeaveBinding
+import com.example.anew.databinding.DialogDeleteMemberBinding
+import com.example.anew.databinding.DialogGroupOptionBinding
+import com.example.anew.databinding.DialogPrivateOptionBinding
+import com.example.anew.databinding.DialogProjectOptionBinding
 import com.example.anew.databinding.FragmentChatRoomBinding
 import com.example.anew.model.UiState
+import com.example.anew.model.User
+import com.example.anew.support.DataTranfer
 import com.example.anew.support.fakeData
+import com.example.anew.ui.fragment.add.PickFriendAdapter
+import com.example.anew.ui.fragment.chat.EditGroupNameDiaLog
 import com.example.anew.ui.fragment.chat.adapter.ChatRoomAdapter
+import com.example.anew.ui.fragment.chat.adapter.DeleteMemberAdapter
 import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import kotlin.String
 
@@ -37,12 +52,19 @@ class ChatRoomFragment : Fragment() {
     private lateinit var receiverId: String
     private lateinit var receiverName: String
     private lateinit var receiverAvatar: String
-
     private lateinit var adminId: String
 
+    //list to save user picked from add members to group
+    private val listUserPicked = mutableListOf<String>()
+
+    private var listMember = mutableListOf<User>()
+
+    private val listFriend = mutableListOf<User>()
+
     private val pickImg = registerForActivityResult(
-        ActivityResultContracts.PickMultipleVisualMedia(10)){ uris ->
-        if(uris.isNotEmpty()){
+        ActivityResultContracts.PickMultipleVisualMedia(10)
+    ) { uris ->
+        if (uris.isNotEmpty()) {
             viewModel.pushMessage(
                 chatId,
                 chatName,
@@ -62,6 +84,26 @@ class ChatRoomFragment : Fragment() {
         }
     }
 
+    private val pickOneImgOnly = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        if (uri != null) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    viewModel.changeAvatar(chatType, chatId, uri)
+                    binding.imgAvatarToolbar.setImageURI(uri)
+                    Snackbar.make(
+                        binding.root,
+                        "Waiting...",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }catch (e:Exception){
+                    Toast.makeText(requireContext(),"Something went wrong, please try again",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -78,14 +120,20 @@ class ChatRoomFragment : Fragment() {
         //getData from Bundle
         chatType = arguments?.getString("chat_type") ?: "Private"
         chatId = arguments?.getString("chatId") ?: ""
-        chatName = arguments?.getString("chat_name") ?: "" // tag
-        receiverId = arguments?.getString("receiver_id") ?: ""  // tag
-        receiverName = arguments?.getString("receiver_name") ?: "" //tag
-        receiverAvatar = arguments?.getString("receiver_avatar") ?: "" //tag
+        chatName = arguments?.getString("chat_name") ?: ""
+        receiverId = arguments?.getString("receiver_id") ?: ""
+        receiverName = arguments?.getString("receiver_name") ?: ""
+        receiverAvatar = arguments?.getString("receiver_avatar") ?: ""
         adminId = arguments?.getString("admin_id") ?: ""
 
-//        setupToolbar(chatType)
         setUpViewModel(chatId!!)
+
+        //init
+        if (chatType == "Project") {
+            //get data for progress
+            viewModel.getProject(chatId)
+        }
+
 
         binding.tvNameToolbar.text = chatName
         Glide.with(this)
@@ -93,17 +141,17 @@ class ChatRoomFragment : Fragment() {
             .circleCrop()
             .into(binding.imgAvatarToolbar)
 
-        binding.rcvMessage.layoutManager= LinearLayoutManager(requireContext())
+        binding.rcvMessage.layoutManager = LinearLayoutManager(requireContext())
         val adapter = ChatRoomAdapter()
         adapter.registerAdapterDataObserver(
             object : RecyclerView.AdapterDataObserver() {
                 override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                    if(!binding.rcvMessage.canScrollVertically(1))
+                    if (!binding.rcvMessage.canScrollVertically(1))
                         binding.rcvMessage.post {
-                            binding.rcvMessage.scrollToPosition(adapter.itemCount-1)
+                            binding.rcvMessage.scrollToPosition(adapter.itemCount - 1)
                         }
                 }
-        })
+            })
         binding.rcvMessage.adapter = adapter
 
         binding.btnBack.setOnClickListener {
@@ -113,7 +161,7 @@ class ChatRoomFragment : Fragment() {
             val message = binding.editMessage.text.toString()
             binding.editMessage.clearFocus()
             binding.editMessage.text.clear()
-            if(message.isEmpty() || message.isBlank()) return@setOnClickListener
+            if (message.isEmpty() || message.isBlank()) return@setOnClickListener
             viewModel.pushMessage(
                 chatId,
                 chatName,
@@ -136,58 +184,67 @@ class ChatRoomFragment : Fragment() {
         binding.btnPickImage.setOnClickListener {
             pickImg.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+
+        binding.btnShow.setOnClickListener {
+            when (chatType) {
+                "Group" -> showDialogGroupOptions()
+                "Private" -> showDialogPrivateOptions()
+                else -> showDialogProjectOptions()
+            }
+        }
+
+        parentFragmentManager.setFragmentResultListener(
+            "edit_name",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val groupName = bundle.getString("edit_name")
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.editGroupName(chatType,chatId, groupName!!)
+                //giai phap tam thoi vi chua dam bao tinh atomic, co time thi fix
+                if (chatType=="Project") viewModel.editNameProject(chatId,groupName)
+
+                binding.tvNameToolbar.text = groupName
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-//    private fun setupToolbar(chatType: String) {
-//        binding.toolbar.apply {
-//            setNavigationOnClickListener {
-//                findNavController().popBackStack()
-//            }
-//            inflateMenu(R.menu.chat_room_menu)
-//            menu.setGroupVisible(R.id.common_actions, true)
-//            if(chatType=="Private") {
-//                menu.setGroupVisible(R.id.group_actions, false)
-//                menu.setGroupVisible(R.id.admin_actions, false)
-//                menu.setGroupVisible(R.id.project_action, false)
-//                menu.setGroupVisible(R.id.private_actions, true)
-//            }else{
-//                menu.setGroupVisible(R.id.group_actions, true)
-//                menu.setGroupVisible(R.id.project_action, true)
-//                menu.setGroupVisible(R.id.private_actions, false)
-//                if(adminId == fakeData.user!!.uid) menu.setGroupVisible(R.id.admin_actions, true)
-//                else menu.setGroupVisible(R.id.admin_actions, false)
-//            }
-//            setOnMenuItemClickListener {
-//                when (it.itemId) {
-//                    R.id.voice_call -> {
-//                        true
-//                    }
-//                    R.id.group_info -> {
-//                        true
-//                    }
-//                    R.id.add_member -> {
-//                        true
-//                    }
-//                    R.id.leave_group -> {
-//                        true
-//                    }
-//                    R.id.delete_group -> {
-//                        true
-//                    }
-//                    R.id.make_admin -> {
-//                        true
-//                    }
-//                    else -> false
-//                }
-//            }
-//        }
-//    }
+
     private fun setUpViewModel(chatId: String) {
         viewModel.getMessages(chatId)
+        if (chatType != "Private") viewModel.getConversationInfo(chatId)
+
+        viewModel.conversationInfoState.observe(viewLifecycleOwner) {
+            adminId = it.adminId
+            binding.tvDynamic.text = "${it.users.size} members"
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.loadData(it.users.keys.toList())
+                listMember = it.users.keys.map { it -> DataTranfer.userCache[it]!! }.toMutableList()
+            }
+        }
+
+        viewModel.projectState.observe(viewLifecycleOwner) {
+
+            binding.progressRing.visibility = View.VISIBLE
+            binding.checkBox.visibility = View.VISIBLE
+            binding.progressRing.progress = it.completedPercent
+            binding.checkBox.setOnCheckedChangeListener(null)
+            binding.checkBox.isChecked = it.membersCompleted.contains(fakeData.user!!.uid)
+
+            binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateProgress(isChecked)
+            }
+        }
+
+        viewModel.getFriendListData(fakeData.user!!.uid)
+        viewModel.friendListState.observe(viewLifecycleOwner) {
+            listFriend.clear()
+            listFriend.addAll(it)
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -197,12 +254,14 @@ class ChatRoomFragment : Fragment() {
                             binding.progressBar.visibility = View.VISIBLE
                             binding.rcvMessage.visibility = View.GONE
                         }
+
                         is UiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             binding.rcvMessage.visibility = View.VISIBLE
                             (binding.rcvMessage.adapter as ChatRoomAdapter).submitList(it.data)
 
                         }
+
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
                             binding.rcvMessage.visibility = View.GONE
@@ -213,4 +272,331 @@ class ChatRoomFragment : Fragment() {
             }
         }
     }
+
+    // Process each option
+    private fun showDialogGroupOptions() {
+        val dialogBinding = DialogGroupOptionBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        if(adminId!=fakeData.user!!.uid){
+            dialogBinding.btnDeleteMember.visibility = View.GONE
+            dialogBinding.btnChangeLeader.visibility = View.GONE
+        }
+
+        dialogBinding.btnChangeGroupPhoto.setOnClickListener {
+            pickOneImgOnly.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        dialogBinding.btnEditName.setOnClickListener {
+            setupChangeNameLogic()
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnDeleteMember.setOnClickListener {
+            setupDeleteMemberLogic(dialog)
+        }
+
+        dialogBinding.btnAddMember.setOnClickListener {
+            setupAddMemberLogic(dialog)
+        }
+
+        dialogBinding.btnChangeLeader.setOnClickListener {
+            setupChangeLeaderLogic(dialog)
+        }
+
+        dialogBinding.btnLeaveGroup.setOnClickListener {
+            setupLeaveGroupLogic(dialog)
+        }
+
+        dialog.show()
+    }
+
+    private fun showDialogPrivateOptions() {
+        val dialogBinding = DialogPrivateOptionBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnProfile.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_chatRoomFragment_to_otherUserProfileFragment,
+                Bundle().apply {
+                    putString("uid", receiverId)
+                })
+        }
+
+        //2 tinh nang nua
+
+        dialog.show()
+
+    }
+
+    private fun showDialogProjectOptions() {
+        val dialogBinding = DialogProjectOptionBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        if(adminId!=fakeData.user!!.uid){
+            dialogBinding.btnDeleteMember.visibility = View.GONE
+            dialogBinding.btnChangeLeader.visibility = View.GONE
+        }
+
+        dialogBinding.btnChangeGroupPhoto.setOnClickListener {
+            setupChangeAvatarLogic()
+        }
+
+        dialogBinding.btnEditName.setOnClickListener {
+            setupChangeNameLogic()
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnDeleteMember.setOnClickListener {
+            setupDeleteMemberLogic(dialog)
+        }
+
+        dialogBinding.btnAddMember.setOnClickListener {
+            setupAddMemberLogic(dialog)
+        }
+
+        dialogBinding.btnChangeLeader.setOnClickListener {
+            setupChangeLeaderLogic(dialog)
+        }
+
+        dialogBinding.btnLeaveGroup.setOnClickListener {
+            setupLeaveGroupLogic(dialog)
+        }
+
+        dialogBinding.btnCheckProject.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_chatRoomFragment_to_taskDetailFragment,
+                Bundle().apply {
+                    putString("id", chatId)
+                })
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun setupChangeNameLogic() {
+        val dialog = EditGroupNameDiaLog()
+        dialog.show(parentFragmentManager, "edit_name")
+    }
+
+    private fun setupChangeAvatarLogic() {
+        pickOneImgOnly.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    private fun setupDeleteMemberLogic(dialog: AlertDialog) {
+        val dialogDeleteBinding = DialogDeleteMemberBinding.inflate(layoutInflater)
+        val dialogDelete = AlertDialog.Builder(requireContext())
+            .setView(dialogDeleteBinding.root)
+            .create()
+        dialogDelete.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        //init
+        dialogDeleteBinding.rcvMembers.layoutManager = LinearLayoutManager(requireContext())
+        dialogDeleteBinding.rcvMembers.adapter = DeleteMemberAdapter(adminId) {
+            val acceptDialog = AlertDialog.Builder(requireContext())
+                .setMessage("Are you sure to delete this member?")
+                .setPositiveButton("Yes") { _, _ ->
+                    viewLifecycleOwner.lifecycleScope.launch {
+
+                        //Note for update after
+                        removeMember(chatType,chatId,it)
+                        dialogDelete.dismiss()
+                    }
+                }
+                .setNegativeButton("No") { _, _ ->
+                }
+                .create()
+
+            acceptDialog.show()
+            acceptDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
+        }
+        (dialogDeleteBinding.rcvMembers.adapter as DeleteMemberAdapter).submitList(listMember)
+
+        dialogDeleteBinding.btnCancel.setOnClickListener {
+            dialogDelete.dismiss()
+        }
+
+        dialogDelete.show()
+        dialog.dismiss()
+    }
+
+    private fun setupLeaveGroupLogic(dialog: AlertDialog) {
+        val dialogLeaveBinding = DialogConfirmLeaveBinding.inflate(layoutInflater)
+        val dialogLeave = AlertDialog.Builder(requireContext())
+            .setView(dialogLeaveBinding.root)
+            .create()
+        dialogLeave.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        dialogLeaveBinding.btnCancel.setOnClickListener {
+            dialogLeave.dismiss()
+        }
+
+        dialogLeaveBinding.btnConfirm.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    removeMember(chatType,chatId,fakeData.user!!.uid)
+                    Snackbar.make(
+                        binding.root,
+                        "Leave group successfully",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    dialogLeave.dismiss()
+                    findNavController().popBackStack()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Something went wrong, please try again",
+                        Toast.LENGTH_SHORT
+                    )
+                }
+            }
+
+        }
+        dialogLeave.show()
+        dialog.dismiss()
+    }
+
+    suspend fun removeMember(chatType: String, chatId: String, it: String) {
+        viewModel.removeMemberFromGroup(chatType, chatId, it)
+        if (chatType=="Project") viewModel.updateDataAfterAddOrDelete(false,listOf(it))
+        if(adminId == it){
+            val newListMember = listMember.filter { user -> user.uid!= adminId}
+            if(newListMember.isNotEmpty()){
+                viewModel.changeLeader(chatId, adminId)
+                adminId = newListMember.random().uid
+                listMember = newListMember.toMutableList()
+                binding.tvDynamic.text = "${listMember.size} members"
+            }
+
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun setupAddMemberLogic(dialog: AlertDialog) {
+        //clear after add
+        listUserPicked.clear()
+
+        //reuse adapter pick friend to use add member
+        val dialogAddBinding = DialogAddMemberBinding.inflate(layoutInflater)
+        val dialogAdd = AlertDialog.Builder(requireContext())
+            .setView(dialogAddBinding.root)
+            .create()
+        dialogAdd.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        //init
+        dialogAddBinding.rcvFriends.layoutManager = LinearLayoutManager(requireContext())
+        dialogAddBinding.rcvFriends.adapter = PickFriendAdapter { isChecked, user ->
+            if (isChecked) listUserPicked.add(user.uid)
+            else listUserPicked.remove(user.uid)
+
+            if (listUserPicked.isEmpty()) {
+                dialogAddBinding.btnAdd.isEnabled = false
+                dialogAddBinding.btnAdd.alpha = 0.5f
+            } else {
+                dialogAddBinding.btnAdd.isEnabled = true
+                dialogAddBinding.btnAdd.alpha = 1f
+            }
+        }
+
+        //cast fix temp
+        viewLifecycleOwner.lifecycleScope.launch {
+            (dialogAddBinding.rcvFriends.adapter as PickFriendAdapter).submitData(
+                PagingData.from(listFriend - listMember )
+            )
+        }
+
+        dialogAddBinding.btnCancel.setOnClickListener {
+            dialogAdd.dismiss()
+        }
+
+        dialogAddBinding.btnAdd.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+    //giai phap tam thoi vi chua dam bao tinh atomic, co time thi quay lai fix
+
+                    //handle if chatType is Project
+                    if(chatType=="Project") viewModel.updateDataAfterAddOrDelete(true,listUserPicked)
+
+                    viewModel.addMember(chatType, chatId, listUserPicked)
+                    listMember.addAll(listUserPicked.map { DataTranfer.userCache[it]!! })
+                    binding.tvDynamic.text = "${listMember.size} members"
+                    Snackbar.make(binding.root, "Add member successfully", Snackbar.LENGTH_SHORT)
+                        .show()
+                    dialogAdd.dismiss()
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Something went wrong, please try again",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+        }
+
+        dialogAdd.show()
+        dialog.dismiss()
+    }
+
+    private fun setupChangeLeaderLogic(dialog: AlertDialog) {
+        val dialogDeleteBinding = DialogDeleteMemberBinding.inflate(layoutInflater)
+        val dialogDelete = AlertDialog.Builder(requireContext())
+            .setView(dialogDeleteBinding.root)
+            .create()
+        dialogDelete.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        //init
+        dialogDeleteBinding.tvTitle.text = "Change Leader"
+        dialogDeleteBinding.tvDescription.text = "Select member to change leader"
+        dialogDeleteBinding.rcvMembers.layoutManager = LinearLayoutManager(requireContext())
+        dialogDeleteBinding.rcvMembers.adapter = DeleteMemberAdapter(adminId) {
+            val acceptDialog = AlertDialog.Builder(requireContext())
+                .setMessage("Are you sure you want to change leader?")
+                .setPositiveButton("Yes") { _, _ ->
+                    dialogDelete.dismiss()
+                    viewModel.changeLeader(chatId, it)
+                }
+                .setNegativeButton("No") { _, _ ->
+                }
+                .create()
+
+            acceptDialog.show()
+            acceptDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
+        }
+        (dialogDeleteBinding.rcvMembers.adapter as DeleteMemberAdapter).submitList(listMember)
+
+        dialogDeleteBinding.btnCancel.setOnClickListener {
+            dialogDelete.dismiss()
+        }
+
+        dialogDelete.show()
+        dialog.dismiss()
+    }
+
+
 }

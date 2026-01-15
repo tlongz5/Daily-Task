@@ -9,11 +9,13 @@ import com.example.anew.model.Conversation
 import com.example.anew.model.ConversationInfo
 import com.example.anew.model.Message
 import com.example.anew.model.User
+import com.example.anew.support.fakeData
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -60,7 +62,7 @@ class MessageRepo {
 
             if(chatType=="Private"){
                 childUpdates["/user_chats/$senderId/$chatType/$chatId"] = Conversation(
-                    chatId, receiverName, senderId, nameSender, receiverAvatar,
+                    chatId,  receiverName, senderId, nameSender, receiverAvatar,
                     "You: $lastMessage", System.currentTimeMillis(), true
                 )
                 childUpdates["/user_chats/$receiverId/$chatType/$chatId"] = Conversation(
@@ -76,7 +78,7 @@ class MessageRepo {
                     "$nameSender: $lastMessage", System.currentTimeMillis(), false
                 )
 
-                for(userId in getInfo!!.users){
+                getInfo!!.users.keys.forEach{ userId ->
                     if(userId==senderId) childUpdates["/user_chats/$userId/$chatType/$chatId"] = conservation.copy(checkRead = true, lastMessage = "You: $lastMessage")
                     else childUpdates["/user_chats/$userId/$chatType/$chatId"] = conservation
                 }
@@ -137,7 +139,10 @@ class MessageRepo {
         val key=id.ifEmpty { chatRef.push().key }
         if(key.isNullOrEmpty()) return
 
-        val info = ConversationInfo(key, name, avatar, adminId, users)
+        //update: convert list<string> users to HashMap for easier handle
+        val info = ConversationInfo(key, name, avatar,
+            adminId, users.associateWith{ true })
+
         val childUpdates = mutableMapOf<String, Any>()
         childUpdates["/chats/$key"] = info
         for(user in users){
@@ -181,4 +186,74 @@ class MessageRepo {
             throw e
         }
     }
+
+    //process option
+    suspend fun changeAvatar(chatType: String,chatId: String, avatar: String, members: List<String>) {
+        try {
+            val updateData = mutableMapOf<String,Any>()
+            updateData["/chats/$chatId/avatar"] = avatar
+            for(user in members) {
+                updateData["/user_chats/$user/$chatType/$chatId/avatar"] = avatar
+            }
+            db.reference.updateChildren(updateData).await()
+            Log.d("MessageRepo", "changeAvatar: Success")
+        }catch (e: Exception){
+            Log.d("MessageRepo", "changeAvatar: Error")
+            throw e
+        }
+    }
+
+    suspend fun editGroupName(chatType: String,chatId: String, groupName: String, members: List<String>) {
+        try {
+            val updateData = mutableMapOf<String,Any>()
+            updateData["/chats/$chatId/chatName"] = groupName
+            for(user in members){
+                updateData["/user_chats/$user/$chatType/$chatId/chatName"] = groupName
+            }
+            db.reference.updateChildren(updateData).await()
+            Log.d("MessageRepo", "EditGroupName: Success")
+        }catch (e: Exception){
+            Log.d("MessageRepo", "EditGroupName: Error")
+            throw e
+        }
+    }
+
+    suspend fun changeLeader(chatId: String, userId: String) {
+        try {
+            db.reference.updateChildren(mapOf(
+                "/chats/$chatId/adminId" to userId,
+            )).await()
+        }catch (e: Exception){
+            throw e
+        }
+    }
+
+    suspend fun removeMemberFromGroup(chatType: String,chatId: String, user: String) {
+        try {
+            db.reference.updateChildren(mapOf(
+                "/chats/$chatId/users/$user" to null,
+                "/user_chats/$user/$chatType/$chatId" to null
+            )).await()
+        }catch (e: Exception){
+            throw e
+        }
+    }
+
+    suspend fun addMember(chatType: String,chatId: String, users: List<String>) {
+        try {
+            val info = userChatRef.child(fakeData.user!!.uid)
+                .child(chatType).child(chatId).get().await()
+                .getValue(Conversation::class.java)
+            val updateData = mutableMapOf<String,Any>()
+            users.forEach { user ->
+                //add each member to chat
+                updateData["/chats/$chatId/users/$user"] = true
+                updateData["/user_chats/$user/$chatType/$chatId"] = info!!.copy(checkRead = false)
+            }
+            db.reference.updateChildren(updateData).await()
+        }catch (e: Exception){
+            throw e
+        }
+    }
+
 }

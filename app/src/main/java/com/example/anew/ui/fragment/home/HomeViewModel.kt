@@ -27,14 +27,28 @@ class HomeViewModel(private val projectRepo: ProjectRepo): ViewModel() {
     fun getProjectData(){
         viewModelScope.launch {
             val projectList = projectRepo.getProjectsData(fakeData.user!!.uid)
-            _projectState.value = projectList
+            val currentTime = System.currentTimeMillis()
+
+            val listToUpdate = mutableListOf<String>()
+            val updatedList = projectList.map { it ->
+                if(it.inProgress && (it.dueTime!! <= currentTime)){
+                    val project = it.copy(inProgress = false)
+                    listToUpdate.add(project.id)
+                    project
+                }else it
+            }
+
+            //update firebase
+            projectRepo.updateStatusProject(listToUpdate)
+
+            _projectState.value = updatedList as MutableList<Team>
             _isCheckSwapScreen.value = true
         }
     }
 
     fun reloadProjectDataWithSearch(text: String){
-        _completedProjectState.value = _projectState.value?.filter { it.inProgress == false && checkTextData(it,text) } as MutableList<Team>
-        _ongoingProjectState.value = _projectState.value?.filter { it.inProgress == true && checkTextData(it,text) } as MutableList<Team>
+        _completedProjectState.value = projectState.value.filter { !it.inProgress && checkTextData(it,text) } as MutableList<Team>
+        _ongoingProjectState.value = projectState.value.filter { it.inProgress  && checkTextData(it,text) } as MutableList<Team>
     }
 
     private fun checkTextData( team: Team, text: String): Boolean {

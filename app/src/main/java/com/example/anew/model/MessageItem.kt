@@ -1,5 +1,6 @@
 package com.example.anew.model
 
+//this type to read data and show in recyclerview
 data class MessageItem(
     val messageId: String,
     val senderId: String,

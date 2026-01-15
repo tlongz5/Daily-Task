@@ -46,6 +46,7 @@ class ConversationFragment(): Fragment() {
                 putString("chat_type", chatType)
                 putString("chat_name", it.chatName)
                 putString("receiver_id", it.roomId.split("_").find { it != fakeData.user!!.uid })
+                // if type!=private, receiverName=chatName
                 putString("receiver_name", it.chatName)
                 putString("receiver_avatar", it.avatar)
                 putString("chatId", it.roomId)

@@ -1,4 +1,4 @@
-package com.example.anew.ui.fragment.home
+package com.example.anew.ui.fragment.home.task_detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,20 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentTaskDetailBinding
-import com.example.anew.model.User
-import com.example.anew.support.DataTranfer
 import com.example.anew.support.fakeData
 import com.example.anew.support.toDayAndMonth
 import com.example.anew.support.toHourAndMinute
 import com.example.anew.ui.fragment.add.AddTeamMembersAdapter
 import com.example.anew.viewmodelFactory.MyViewModelFactory
-import kotlinx.coroutines.launch
 
 class TaskDetailFragment : Fragment() {
     private val myViewModelFactory = MyViewModelFactory()
@@ -92,6 +88,7 @@ class TaskDetailFragment : Fragment() {
                         putString("receiver_name", conversationInfo.chatName)
                         putString("receiver_avatar", conversationInfo.avatar)
                         putString("chatId", conversationInfo.roomId)
+                        putString("admin_id", conversationInfo.adminId)
                     }
                 )
             }

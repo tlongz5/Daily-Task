@@ -6,6 +6,7 @@
     <color name="green">#F3F4F6</color>
     <color name="gray">#808080</color>
     <color name="orange">#FF6B6B</color>
+    <color name="orange_hint">#50FF6B6B</color>
     <color name="dark_orange">#BF360C</color>
     <color name="orange_layout">#FFF5F5</color>
     <color name="light_orange">#FFCCBC</color>

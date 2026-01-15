@@ -7,12 +7,12 @@ data class Team( // represent each project
     val title: String,
     val description: String,
     val admin: String,
-    val members: List<String>,
+    var members: List<String>,
     val teamMembersImage: List<String>, // load image present on item max 3
-    val completedPercent: Int,
+    var completedPercent: Int,
     val dueTime: Long?,
-    val inProgress: Boolean,
-    val membersCompleted: List<String>
+    var inProgress: Boolean,
+    var membersCompleted: List<String>
 ){
     constructor(): this("","","","", listOf(),listOf(),0,null,false,listOf())
 }

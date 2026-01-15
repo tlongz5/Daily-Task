@@ -44,7 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/project_title"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/project_title">
 
             <TextView
@@ -52,7 +53,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="12dp"
                 android:text="Team members"
                 android:textColor="@color/light_black"
                 android:textSize="12dp"
@@ -60,38 +60,35 @@
 
             <ImageView
                 android:id="@+id/avt1"
-                android:visibility="gone"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:visibility="gone"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageView
                 android:id="@+id/avt2"
-                android:visibility="gone"
-                android:layout_marginStart="-8dp"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_weight="1"
+                android:layout_marginStart="-8dp"
+                android:visibility="gone"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageView
                 android:id="@+id/avt3"
-                android:visibility="gone"
-                android:layout_marginStart="-8dp"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_weight="1"
+                android:layout_marginStart="-8dp"
+                android:visibility="gone"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageView
                 android:id="@+id/avt4"
-                android:visibility="gone"
-                android:alpha="0.4"
-                android:layout_marginStart="-8dp"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_weight="1"
+                android:layout_marginStart="-8dp"
+                android:alpha="0.4"
+                android:visibility="gone"
                 tools:srcCompat="@tools:sample/avatars" />
         </LinearLayout>
 

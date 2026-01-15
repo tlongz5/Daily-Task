@@ -22,6 +22,7 @@
         app:strokeWidth="0dp">
 
         <LinearLayout
+            android:id="@+id/btn_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -51,7 +52,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvDynamicToolbar"
+                    android:id="@+id/tvDynamic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="online"
@@ -84,7 +85,33 @@
             app:tint="@color/orange" />
     </com.google.android.material.card.MaterialCardView>
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_ring"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progress="75"
+        app:indicatorColor="@color/orange"
+        app:indicatorSize="60dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/matterial"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/matterial"
+        app:trackColor="@color/light_orange" />
 
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/cb_icon"
+        app:buttonTint="@color/cb_tint"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/progress_ring"
+        app:layout_constraintEnd_toEndOf="@+id/progress_ring"
+        app:layout_constraintStart_toStartOf="@+id/progress_ring"
+        app:layout_constraintTop_toTopOf="@+id/progress_ring" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_message"

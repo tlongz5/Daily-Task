@@ -1,4 +1,4 @@
-package com.example.anew.ui.fragment.add
+package com.example.anew.ui.fragment.chat
 
 import android.os.Bundle
 import android.view.View
@@ -7,10 +7,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.example.anew.R
 import com.example.anew.databinding.DialogCreateGroupBinding
-import kotlin.apply
+import com.example.anew.databinding.DialogEditNameBinding
 
-class CreateGroupDialog: DialogFragment(R.layout.dialog_create_group) {
-    private lateinit var binding: DialogCreateGroupBinding
+class EditGroupNameDiaLog : DialogFragment(R.layout.dialog_edit_name) {
+    private lateinit var binding: DialogEditNameBinding
 
     override fun onStart() {
         super.onStart()
@@ -23,7 +23,7 @@ class CreateGroupDialog: DialogFragment(R.layout.dialog_create_group) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = DialogCreateGroupBinding.bind(view)
+        binding = DialogEditNameBinding.bind(view)
         binding.btnCancel.setOnClickListener {
             dismiss()
         }
@@ -34,9 +34,9 @@ class CreateGroupDialog: DialogFragment(R.layout.dialog_create_group) {
             }else {
                 binding.edtGroupName.error = null
                 val bundle = Bundle().apply {
-                    putString("group_name", groupName)
+                    putString("edit_name", groupName)
                 }
-                setFragmentResult("create_group", bundle)
+                setFragmentResult("edit_name", bundle)
                 dismiss()
             }
         }

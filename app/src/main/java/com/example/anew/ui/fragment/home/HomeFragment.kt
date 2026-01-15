@@ -45,6 +45,8 @@ class HomeFragment : Fragment() {
         binding.btnCreate.setOnClickListener {
             findNavController().navigate(R.id.AddFragment)
         }
+
+        //check data in firebase if no change and update in UI
         homeViewModel.getProjectData()
 
 

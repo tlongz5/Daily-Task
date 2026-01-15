@@ -75,6 +75,7 @@ class SelectAddMemberFragment : Fragment() {
                 return@setOnClickListener
             }
             if(arguments?.getString("chat_type")!=null) {
+
                 val dialog = CreateGroupDialog()
                 dialog.show(childFragmentManager, "createGroupDialog")
             }

@@ -50,20 +50,83 @@ class ProjectRepo {
         }
     }
 
-    suspend fun updateProgress(id: String, isChecked: Boolean, percent: Int, userId:String): Team?{
+    suspend fun updateStatusProject(listToUpdate: List<String>){
+        try {
+            val docRef = db.collection("projects")
+            db.runBatch { batch ->
+                listToUpdate.forEach {
+                    batch.update(docRef.document(it), "inProgress", false)
+                }
+            }.await()
+        }catch (e: Exception){
+            Log.d("project", "updateStatusProject failed")
+        }
+    }
+
+    suspend fun updateProgress(id: String, isChecked: Boolean, userId:String): Team?{
         return try {
             db.runTransaction { transaction ->
                 val snapshot = db.collection("projects").document(id)
-                transaction.update(snapshot, "completedPercent", percent)
-                transaction.update(snapshot, "membersCompleted", if(isChecked) FieldValue.arrayUnion(userId) else FieldValue.arrayRemove(userId))
-                transaction.get(snapshot)
-            }.await().toObject(Team::class.java)
+                val team = transaction.get(snapshot).toObject(Team::class.java)
+                if(isChecked) team!!.membersCompleted += userId
+                else team!!.membersCompleted -= userId
 
+                val cntDone = team!!.membersCompleted.size
+                val cntAll = team.members.size
+                val percent = (100f/cntAll *cntDone).toInt()
+
+                team!!.completedPercent = percent
+                transaction.update(snapshot, "completedPercent", percent)
+                transaction.update(snapshot, "membersCompleted", team.membersCompleted)
+                if(percent==100) {
+                    transaction.update(snapshot, "inProgress", false)
+                    team!!.inProgress=false
+                }
+                Log.d("project", "updateProgress")
+                team
+            }.await()
         }catch (e : Exception){
             Log.d("project", "updateProgress failed")
             null
         } as Team?
     }
+
+    suspend fun updateDataAfterAddOrDelete(id: String, isAdd: Boolean, userIdList: List<String>): Team?{
+        return try {
+            db.runTransaction { transaction ->
+                val snapshot = db.collection("projects").document(id)
+                val team = transaction.get(snapshot).toObject(Team::class.java)
+                team!!.membersCompleted -= userIdList
+                if(isAdd) team!!.members += userIdList else team!!.members-=userIdList
+
+
+                val cntDone = team.membersCompleted.size
+                val cntAll = team.members.size
+                val percent = (100f/cntAll *cntDone).toInt()
+
+                team!!.completedPercent = percent
+                transaction.update(snapshot, "completedPercent", percent)
+                transaction.update(snapshot, "membersCompleted", team.membersCompleted)
+                transaction.update(snapshot, "members", team.members)
+
+                Log.d("project", "updateProgress success")
+                team
+            }.await()
+        }catch (e : Exception){
+            Log.d("project", "updateProgress failed")
+            null
+        } as Team?
+    }
+
+    suspend fun editNameProject(id: String, groupName: String){
+        try {
+            db.collection("projects").document(id)
+                .update("name",groupName).await()
+        }catch (e: Exception){
+            Log.d("project", "editNameProject failed")
+        }
+    }
+
 
 
 }

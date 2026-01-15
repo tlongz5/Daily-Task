@@ -51,6 +51,11 @@ class FriendsRequestFragment : BottomSheetDialogFragment() {
             },
             callbackDecline = {
                 viewModel.removeRequestFriend(it)
+            },
+            callbackCheckProfile = {
+                findNavController().navigate(R.id.action_friendsRequestFragment_to_otherUserProfileFragment, Bundle().apply {
+                    putString("uid", it)
+                })
             }
         )
         binding.rcvFriendsRequest.layoutManager = LinearLayoutManager(requireContext())

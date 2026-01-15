@@ -16,7 +16,7 @@ import com.example.anew.ui.fragment.chat.friend.FriendListViewModel
 import com.example.anew.ui.fragment.chat.friend_request.FriendsRequestViewModel
 import com.example.anew.ui.fragment.chat.other_user.OtherUserProfileViewModel
 import com.example.anew.ui.fragment.home.HomeViewModel
-import com.example.anew.ui.fragment.home.TaskDetailViewModel
+import com.example.anew.ui.fragment.home.task_detail.TaskDetailViewModel
 import com.example.anew.ui.fragment.home.profile.ProfileViewModel
 
 class MyViewModelFactory: ViewModelProvider.Factory {
@@ -47,7 +47,7 @@ class MyViewModelFactory: ViewModelProvider.Factory {
                 FriendsRequestViewModel(AuthRepo(), FriendRepo()) as T
             }
             modelClass.isAssignableFrom(ChatRoomViewModel::class.java) ->{
-                ChatRoomViewModel(MessageRepo(),AuthRepo()) as T
+                ChatRoomViewModel(AuthRepo(), MessageRepo(), ProjectRepo(),FriendRepo()) as T
             }
             modelClass.isAssignableFrom(ConversationViewModel::class.java) ->{
                 ConversationViewModel(MessageRepo()) as T

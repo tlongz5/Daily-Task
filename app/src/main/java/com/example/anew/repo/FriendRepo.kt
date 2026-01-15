@@ -55,6 +55,13 @@ class FriendRepo {
         return snapshot.documents.map{it.id}
     }
 
+    suspend fun getFriendListUser(uid: String): List<String>{
+        val snapshot = db.collection("users").document(uid)
+            .collection("friends").get().await()
+        return snapshot.documents.map{it.id}
+    }
+
+
     suspend fun checkFriend(uid: String, friendId: String): Int{
         val snapshot = db.collection("users").document(uid)
             .collection("friends").document(friendId).get().await()
