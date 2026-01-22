@@ -49,7 +49,7 @@ class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>,
             }
         }
         holder.itemView.setOnClickListener {
-            callback(ongoingProject[position].id)
+            callback(ongoingProject[position].projectId)
         }
     }
 

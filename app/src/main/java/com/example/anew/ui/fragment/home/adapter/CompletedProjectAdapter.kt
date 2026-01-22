@@ -58,7 +58,7 @@ class CompletedProjectAdapter(private val completedProject: MutableList<Team>,
             }
         }
         holder.itemView.setOnClickListener {
-            callback(completedProject[position].id)
+            callback(completedProject[position].projectId)
         }
     }
 

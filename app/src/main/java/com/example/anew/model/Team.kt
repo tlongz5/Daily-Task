@@ -3,9 +3,11 @@ package com.example.anew.model
 import android.os.Parcelable
 
 data class Team( // represent each project
-    val id: String,
+    val projectId: String,
     val title: String,
     val description: String,
+    val avatar: String,
+
     val admin: String,
     var members: List<String>,
     val teamMembersImage: List<String>, // load image present on item max 3
@@ -14,5 +16,5 @@ data class Team( // represent each project
     var inProgress: Boolean,
     var membersCompleted: List<String>
 ){
-    constructor(): this("","","","", listOf(),listOf(),0,null,false,listOf())
+    constructor(): this("","","","","", listOf(),listOf(),0,null,false,listOf())
 }

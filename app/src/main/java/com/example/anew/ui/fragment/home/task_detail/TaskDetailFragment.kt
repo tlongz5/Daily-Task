@@ -48,14 +48,23 @@ class TaskDetailFragment : Fragment() {
             binding.tvPercent.text = "${it.completedPercent}%"
 
             binding.checkBox.setOnCheckedChangeListener(null)
+            binding.checkBox.isEnabled= false
+            binding.checkBox.alpha = 0.6f
+            binding.progressRing.alpha = 0.6f
             binding.checkBox.isChecked = it.membersCompleted.contains(fakeData.user!!.uid)
-            binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.updateProgress(isChecked)
+
+            if(it.inProgress){
+                binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
+                    viewModel.updateProgress(isChecked)
+                }
+                binding.checkBox.isEnabled= true
+                binding.checkBox.alpha = 1f
+                binding.progressRing.alpha = 1f
             }
 
             if((binding.rcvTeamMembers.adapter as AddTeamMembersAdapter).currentList.isEmpty()) {
                 viewModel.getUserDataFromUid(it.admin, it.members)
-                viewModel.getImgGroupData(it.id)
+                viewModel.getImgGroupData(it.projectId)
             }
         }
 

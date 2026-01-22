@@ -11,7 +11,7 @@ import com.example.anew.repo.FriendRepo
 import kotlinx.coroutines.launch
 
 class OtherUserProfileViewModel(private val authRepo: AuthRepo,
-    private val FriendRepo: FriendRepo
+    private val friendRepo: FriendRepo
 ): ViewModel() {
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> = _user
@@ -24,22 +24,22 @@ class OtherUserProfileViewModel(private val authRepo: AuthRepo,
     }
 
     fun checkFriend(uid: String) = viewModelScope.launch {
-        _isFriend.value = FriendRepo.checkFriend(fakeData.user!!.uid,uid)
+        _isFriend.value = friendRepo.checkFriend(fakeData.user!!.uid,uid)
     }
 
     ///NOTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE/./
-    fun requestFriend(friendId: String) = viewModelScope.launch {
-        FriendRepo.requestFriend(fakeData.user!!.uid, friendId)
-        _isFriend.value = FriendRepo.checkFriend(fakeData.user!!.uid,friendId)
+    fun requestFriend(user: User) = viewModelScope.launch {
+        friendRepo.requestFriend(fakeData.user!!, user.uid)
+        _isFriend.value = friendRepo.checkFriend(fakeData.user!!.uid,user.uid)
     }
 
     fun unFriend(friendId: String) = viewModelScope.launch {
-        FriendRepo.unFriend(fakeData.user!!.uid, friendId)
+        friendRepo.unFriend(fakeData.user!!.uid, friendId)
         _isFriend.value = -1
     }
 
     fun fromRequestToCancel(friendId: String) = viewModelScope.launch {
-        FriendRepo.fromRequestToCancel(fakeData.user!!.uid, friendId)
+        friendRepo.fromRequestToCancel(fakeData.user!!.uid, friendId)
         _isFriend.value = -1
     }
 }

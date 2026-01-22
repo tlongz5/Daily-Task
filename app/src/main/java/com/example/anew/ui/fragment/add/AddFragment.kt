@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.BottomSheetSetTextAddBinding
 import com.example.anew.databinding.FragmentAddBinding
+import com.example.anew.model.Notification
 import com.example.anew.model.Team
+import com.example.anew.support.MyHelper
 import com.example.anew.support.fakeData
 import com.example.anew.support.getCurrentDate
 import com.example.anew.support.getCurrentTime
@@ -136,6 +138,7 @@ class AddFragment : Fragment() {
                 UUID.randomUUID().toString(),
                 binding.tvProjectName.text.toString(),
                 binding.tvTaskDetail.text.toString(),
+                MyHelper.groupAvatar.random(),
                 fakeData.user!!.uid,
                 viewModel.teamState.value.plus(fakeData.user!!).map { it.uid },
                 viewModel.teamState.value.plus(fakeData.user!!).map { it.photoUrl }.take(4),
@@ -144,6 +147,7 @@ class AddFragment : Fragment() {
                 true,
                 listOf()
             )
+
             viewModel.createProject(team)
             Toast.makeText(context, "Create Success", Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()

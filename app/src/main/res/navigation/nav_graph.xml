@@ -6,7 +6,7 @@
     app:startDestination="@id/HomeFragment">
     <fragment
         android:id="@+id/HomeFragment"
-        android:name="com.example.anew.ui.fragment.home.HomeFragment"
+        android:name="com.example.anew.ui.fragment.home.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -47,12 +47,26 @@
         android:id="@+id/CalendarFragment"
         android:name="com.example.anew.ui.fragment.calendar.CalendarFragment"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_CalendarFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/NotificationFragment"
         android:name="com.example.anew.ui.fragment.notification.NotificationFragment"
         android:label="fragment_notification"
-        tools:layout="@layout/fragment_notification" />
+        tools:layout="@layout/fragment_notification" >
+        <action
+            android:id="@+id/action_NotificationFragment_to_otherUserProfileFragment"
+            app:destination="@id/otherUserProfileFragment" />
+        <action
+            android:id="@+id/action_NotificationFragment_to_friendsRequestFragment"
+            app:destination="@id/friendsRequestFragment" />
+        <action
+            android:id="@+id/action_NotificationFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/taskDetailFragment"
         android:name="com.example.anew.ui.fragment.home.task_detail.TaskDetailFragment"

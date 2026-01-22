@@ -85,6 +85,8 @@ dependencies {
 
     //shimmer layout
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+    //material calendar
+    implementation("com.prolificinteractive:material-calendarview:1.4.3")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

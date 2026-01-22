@@ -61,6 +61,10 @@ class ChatRoomFragment : Fragment() {
 
     private val listFriend = mutableListOf<User>()
 
+    private var isFriend = false
+    private var dialogPrivateBinding: DialogPrivateOptionBinding? = null
+
+
     private val pickImg = registerForActivityResult(
         ActivityResultContracts.PickMultipleVisualMedia(10)
     ) { uris ->
@@ -90,7 +94,9 @@ class ChatRoomFragment : Fragment() {
         if (uri != null) {
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
+                    //chua Dam bao thuoC tinh atomic
                     viewModel.changeAvatar(chatType, chatId, uri)
+                    viewModel.changeAvatarProject( chatId, uri)
                     binding.imgAvatarToolbar.setImageURI(uri)
                     Snackbar.make(
                         binding.root,
@@ -133,7 +139,7 @@ class ChatRoomFragment : Fragment() {
             //get data for progress
             viewModel.getProject(chatId)
         }
-
+        if(chatType == "Private") viewModel.checkFriend(receiverId)
 
         binding.tvNameToolbar.text = chatName
         Glide.with(this)
@@ -233,10 +239,26 @@ class ChatRoomFragment : Fragment() {
             binding.checkBox.visibility = View.VISIBLE
             binding.progressRing.progress = it.completedPercent
             binding.checkBox.setOnCheckedChangeListener(null)
+            binding.checkBox.isEnabled= false
+            binding.checkBox.alpha = 0.6f
+            binding.progressRing.alpha = 0.6f
             binding.checkBox.isChecked = it.membersCompleted.contains(fakeData.user!!.uid)
 
-            binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.updateProgress(isChecked)
+            if(it.inProgress){
+                binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
+                    viewModel.updateProgress(isChecked)
+                }
+                binding.checkBox.isEnabled= true
+                binding.checkBox.alpha = 1f
+                binding.progressRing.alpha = 1f
+            }
+        }
+
+        viewModel.checkFriendState.observe(viewLifecycleOwner){
+            isFriend = (it==1)
+
+            dialogPrivateBinding?.let { dialogPrivateBinding ->
+                updateDialogBinding(dialogPrivateBinding)
             }
         }
 
@@ -320,8 +342,9 @@ class ChatRoomFragment : Fragment() {
 
     private fun showDialogPrivateOptions() {
         val dialogBinding = DialogPrivateOptionBinding.inflate(layoutInflater)
+        dialogPrivateBinding = dialogBinding
         val dialog = AlertDialog.Builder(requireContext())
-            .setView(dialogBinding.root)
+            .setView( dialogBinding.root)
             .create()
 
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -336,12 +359,36 @@ class ChatRoomFragment : Fragment() {
                 Bundle().apply {
                     putString("uid", receiverId)
                 })
+            dialog.dismiss()
         }
 
-        //2 tinh nang nua
+        updateDialogBinding( dialogBinding)
+
+        dialogBinding.btnMakeFriend.setOnClickListener {
+            viewModel.requestFriend(receiverId)
+        }
+
+        dialogBinding.btnUnfriend.setOnClickListener {
+            viewModel.unFriend(receiverId)
+        }
+
 
         dialog.show()
 
+    }
+
+    private fun updateDialogBinding( dialogBinding: DialogPrivateOptionBinding) {
+        if(!isFriend){
+            dialogBinding.btnMakeFriend.isEnabled =true
+            dialogBinding.btnMakeFriend.alpha = 1f
+            dialogBinding.btnUnfriend.isEnabled = false
+            dialogBinding.btnUnfriend.alpha = 0.5f
+        }else{
+            dialogBinding.btnMakeFriend.isEnabled = false
+            dialogBinding.btnMakeFriend.alpha = 0.5f
+            dialogBinding.btnUnfriend.isEnabled = true
+            dialogBinding.btnUnfriend.alpha = 1f
+        }
     }
 
     private fun showDialogProjectOptions() {
@@ -536,7 +583,7 @@ class ChatRoomFragment : Fragment() {
         dialogAddBinding.btnAdd.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
-    //giai phap tam thoi vi chua dam bao tinh atomic, co time thi quay lai fix
+    //giai phap tam thoi vi chua dam bao tinh atomic, bh co time thi fix
 
                     //handle if chatType is Project
                     if(chatType=="Project") viewModel.updateDataAfterAddOrDelete(true,listUserPicked)

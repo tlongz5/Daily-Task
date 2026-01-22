@@ -13,6 +13,7 @@ import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.example.anew.R
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.File
 import java.text.SimpleDateFormat
@@ -22,9 +23,21 @@ import java.util.Locale
 import java.util.TimeZone
 import kotlin.coroutines.resume
 
+//support func
+
 fun Long.toRelativeTime(): String {
     val now = System.currentTimeMillis()
     return DateUtils.getRelativeTimeSpanString(this, now, DateUtils.MINUTE_IN_MILLIS).toString()
+}
+
+fun Long.toTimeUI():String{
+    return SimpleDateFormat("EEEE, d MMM", Locale.ENGLISH).format(this)
+}
+
+fun Long.toCalendarDay(): CalendarDay{
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = this
+    return CalendarDay.from(calendar)
 }
 
 //tranfer Long to String Date

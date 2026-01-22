@@ -10,7 +10,7 @@ import com.example.anew.databinding.ItemFriendRequestBinding
 import com.example.anew.model.User
 
 class FriendsRequestAdapter(
-    private val callbackAccept: (String) -> Unit,
+    private val callbackAccept: (User) -> Unit,
     private val callbackDecline: (String) -> Unit,
     private val callbackCheckProfile: (String) -> Unit
 ): ListAdapter<User, FriendsRequestAdapter.ViewHolder>(FriendsRequestDiffUtil()) {
@@ -32,7 +32,7 @@ class FriendsRequestAdapter(
             tvName.text = friendRequest.name
             tvUsername.text = "@${friendRequest.username}"
             btnAccept.setOnClickListener {
-                callbackAccept(friendRequest.uid)
+                callbackAccept(friendRequest)
             }
             btnDecline.setOnClickListener {
                 callbackDecline(friendRequest.uid)

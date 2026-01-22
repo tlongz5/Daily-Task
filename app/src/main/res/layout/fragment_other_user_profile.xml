@@ -213,6 +213,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_black_hint"/>
+
         <TextView
             android:id="@+id/te"
             android:layout_width="match_parent"

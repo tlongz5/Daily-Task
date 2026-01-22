@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.anew.model.Conversation
+import com.example.anew.model.Notification
 import com.example.anew.model.Team
 import com.example.anew.model.User
 import com.example.anew.repo.MessageRepo
@@ -13,6 +15,7 @@ import com.example.anew.support.MyHelper
 import com.example.anew.support.fakeData
 import com.example.anew.support.mergeDateAndTime
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class AddViewModel(
     private val projectRepo: ProjectRepo,
@@ -28,9 +31,24 @@ class AddViewModel(
 
     fun createProject(team: Team){
         viewModelScope.launch {
-            projectRepo.createProject(team)
-            messageRepo.createGroup(team.id,team.title, MyHelper.groupAvatar.random(),
-                fakeData.user!!.uid, team.members, "Project")
+
+            // chua Dam bao thuoc tinh atomic
+            val notification = Notification(
+                UUID.randomUUID().toString(),
+                "Project Team",
+                "Your project has been created",
+                System.currentTimeMillis(),
+                false,
+                team.avatar,
+                "create_project",
+                team.projectId,
+                "",
+                ""
+            )
+//chua dam bao tính atomic
+            projectRepo.createProject(team,notification)
+            messageRepo.createGroup(team.projectId,team.title,team.avatar,
+                fakeData.user!!.uid,team.members,"Project")
         }
     }
 

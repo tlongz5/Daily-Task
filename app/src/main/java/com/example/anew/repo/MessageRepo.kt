@@ -2,6 +2,7 @@ package com.example.anew.repo
 
 import android.net.Uri
 import android.util.Log
+import androidx.room.Transaction
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
@@ -136,7 +137,7 @@ class MessageRepo {
         }
 
     suspend fun createGroup(id:String,name: String,avatar:String,adminId: String, users: List<String>,groupType: String){
-        val key=id.ifEmpty { chatRef.push().key }
+        val key= id.ifEmpty { chatRef.push().key }
         if(key.isNullOrEmpty()) return
 
         //update: convert list<string> users to HashMap for easier handle

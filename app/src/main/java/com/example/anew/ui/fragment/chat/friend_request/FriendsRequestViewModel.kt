@@ -32,9 +32,9 @@ class FriendsRequestViewModel(
         }
     }
 
-    fun addFriend(uidRequestFriend: String) = viewModelScope.launch {
-        friendRepo.addFriend(fakeData.user!!.uid, uidRequestFriend)
-        _friendsRequest.value = _friendsRequest.value.filter { it.uid != uidRequestFriend }
+    fun addFriend(requestFriend: User) = viewModelScope.launch {
+        friendRepo.addFriend(fakeData.user!!.uid, requestFriend)
+        _friendsRequest.value = _friendsRequest.value.filter { it.uid != requestFriend.uid }
     }
 
     suspend fun checkSearchFriend(email: String): Boolean = authRepo.checkEmailExist(email)

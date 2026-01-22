@@ -4,5 +4,17 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    
+    <style name="CalHeader" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/light_black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CalDate" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/light_black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

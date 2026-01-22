@@ -11,8 +11,16 @@
     <color name="orange_layout">#FFF5F5</color>
     <color name="light_orange">#FFCCBC</color>
     <color name="orange_main">#FF7E5F</color>
+    <color name="orange_main_hint">#50FF7E5F</color>
     <color name="light_black">#636E72</color>
     <color name="light_black_hint">#60636E72</color>
+
+    <color name="task_success_bg">#E6F4EA</color>
+    <color name="task_success_tv">#1E8E3E</color>
+    <color name="task_failed_bg">#FCE8E6</color>
+    <color name="task_failed_tv">#D93025</color>
+    <color name="task_in_progress_bg">#E8F0FE</color>
+    <color name="task_in_progress_tv">#1967D2</color>
 
     <color name="task_failed">#FEF2F2</color>
     <color name="task_success">#ECFDF5</color>

@@ -46,6 +46,9 @@ class ChatRoomViewModel(
     private val _friendListState = MutableLiveData<List<User>>()
     val friendListState: MutableLiveData<List<User>> = _friendListState
 
+    private val _checkFriendState = MutableLiveData<Int>()
+    val checkFriendState: MutableLiveData<Int> = _checkFriendState
+
     //NOTEEEE HÔM SAU CHECK
     fun getMessages(roomId: String) {
         viewModelScope.launch {
@@ -139,6 +142,13 @@ class ChatRoomViewModel(
         }
     }
 
+    fun changeAvatarProject(chatId: String, uri: Uri){
+        viewModelScope.launch {
+            projectRepo.changeAvatarProject(chatId,
+                convertUriToCloudinaryUrl(uri))
+        }
+    }
+
     fun addMember(chatType: String,chatId: String, users: List<String>) {
         viewModelScope.launch {
             messageRepo.addMember(chatType,chatId, users)
@@ -166,13 +176,13 @@ class ChatRoomViewModel(
 
     fun updateProgress(isCompleted: Boolean) {
         viewModelScope.launch {
-            _projectState.value = projectRepo.updateProgress(projectState.value!!.id, isCompleted, fakeData.user!!.uid)
+            _projectState.value = projectRepo.updateProgress(projectState.value!!.projectId, isCompleted, fakeData.user!!.uid)
         }
     }
 
     fun updateDataAfterAddOrDelete(isAdd: Boolean, userIdList: List<String>){
         viewModelScope.launch {
-            _projectState.value = projectRepo.updateDataAfterAddOrDelete(projectState.value!!.id, isAdd, userIdList)
+            _projectState.value = projectRepo.updateDataAfterAddOrDelete(projectState.value!!.projectId, isAdd, userIdList)
         }
     }
 
@@ -182,6 +192,24 @@ class ChatRoomViewModel(
             loadData(userListId)
             _friendListState.value = userListId.map { DataTranfer.userCache[it]!! }
         }
+    }
+
+    fun requestFriend(userId: String) {
+        viewModelScope.launch {
+            friendRepo.requestFriend(fakeData.user!!, userId)
+            _checkFriendState.value = friendRepo.checkFriend(fakeData.user!!.uid, userId)
+        }
+    }
+
+    fun checkFriend(userId: String) {
+        viewModelScope.launch {
+            _checkFriendState.value = friendRepo.checkFriend(fakeData.user!!.uid, userId)
+        }
+    }
+
+    fun unFriend(friendId: String) = viewModelScope.launch {
+        friendRepo.unFriend(fakeData.user!!.uid, friendId)
+        _checkFriendState.value = -1
     }
 
 }

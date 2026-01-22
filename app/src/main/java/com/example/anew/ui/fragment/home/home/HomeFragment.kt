@@ -1,14 +1,12 @@
-package com.example.anew.ui.fragment.home
+package com.example.anew.ui.fragment.home.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -16,6 +14,7 @@ import com.example.anew.R
 import com.example.anew.databinding.FragmentHomeBinding
 import com.example.anew.model.Team
 import com.example.anew.support.fakeData
+import com.example.anew.support.toTimeUI
 import com.example.anew.ui.fragment.home.adapter.CompletedProjectAdapter
 import com.example.anew.ui.fragment.home.adapter.OngoingProjectAdapter
 import com.example.anew.viewmodelFactory.MyViewModelFactory
@@ -45,6 +44,7 @@ class HomeFragment : Fragment() {
         binding.btnCreate.setOnClickListener {
             findNavController().navigate(R.id.AddFragment)
         }
+        binding.tvTime.text = System.currentTimeMillis().toTimeUI()
 
         //check data in firebase if no change and update in UI
         homeViewModel.getProjectData()

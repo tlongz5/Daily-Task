@@ -35,11 +35,11 @@ class TaskDetailViewModel(
 
 
     //delete AdminId from list before load
-    fun getUserDataFromUid(AdminUid: String, membersUid: List<String>) {
+    fun getUserDataFromUid(AdminId: String, membersUid: List<String>) {
         viewModelScope.launch {
-            _adminState.value = async { getUserExístOrSaveToGlobal(AdminUid) }.await()
+            _adminState.value = async { getUserExístOrSaveToGlobal(AdminId) }.await()
             _membersState.value = async {
-                membersUid.filter { it != AdminUid }
+                membersUid.filter { it != AdminId }
                     .map { async { getUserExístOrSaveToGlobal(it) }.await() }
             }.await()
         }
@@ -69,7 +69,7 @@ class TaskDetailViewModel(
 
     fun updateProgress(isChecked: Boolean){
         viewModelScope.launch {
-            val newUpdateTeam = projectRepo.updateProgress(projectState.value!!.id, isChecked, fakeData.user!!.uid)
+            val newUpdateTeam = projectRepo.updateProgress(projectState.value!!.projectId, isChecked, fakeData.user!!.uid)
             if(newUpdateTeam!=null) {
                 _projectState.value = newUpdateTeam
             }

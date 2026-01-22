@@ -1,6 +1,5 @@
-package com.example.anew.ui.fragment.home
+package com.example.anew.ui.fragment.home.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.anew.model.Team
 import com.example.anew.support.fakeData
 import com.example.anew.repo.ProjectRepo
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val projectRepo: ProjectRepo): ViewModel() {
@@ -29,11 +27,11 @@ class HomeViewModel(private val projectRepo: ProjectRepo): ViewModel() {
             val projectList = projectRepo.getProjectsData(fakeData.user!!.uid)
             val currentTime = System.currentTimeMillis()
 
-            val listToUpdate = mutableListOf<String>()
+            val listToUpdate = mutableListOf<Team>()
             val updatedList = projectList.map { it ->
                 if(it.inProgress && (it.dueTime!! <= currentTime)){
                     val project = it.copy(inProgress = false)
-                    listToUpdate.add(project.id)
+                    listToUpdate.add(project)
                     project
                 }else it
             }

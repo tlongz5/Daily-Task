@@ -61,7 +61,7 @@ class OtherUserProfileFragment : Fragment() {
             }
 
             binding.btnAddFriend.setOnClickListener {
-                viewModel.requestFriend(user.uid)
+                viewModel.requestFriend(user)
                 Toast.makeText(context, "Request sent", Toast.LENGTH_SHORT).show()
             }
 
