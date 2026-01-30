@@ -1,95 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="24dp"
-    tools:context=".ui.fragment.add.AddFragment">
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/light_orange"
-        app:strokeWidth="1dp">
-
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp"
-            android:src="@android:drawable/ic_menu_revert"
-            app:tint="@color/light_black" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Review"
-        android:textColor="@color/orange"
-        android:textSize="32dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/materialCardView"
-        app:layout_constraintStart_toEndOf="@+id/materialCardView"
-        app:layout_constraintTop_toTopOf="@+id/materialCardView" />
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progress_ring"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:progress="75"
-        app:indicatorColor="@color/orange"
-        app:indicatorSize="50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.733"
-        app:trackColor="@color/light_orange" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:button="@drawable/cb_icon"
-        app:buttonTint="@color/cb_tint"
-        app:layout_constraintBottom_toBottomOf="@+id/progress_ring"
-        app:layout_constraintEnd_toEndOf="@+id/progress_ring"
-        app:layout_constraintStart_toStartOf="@+id/progress_ring"
-        app:layout_constraintTop_toTopOf="@+id/progress_ring" />
-
-    <TextView
-        android:id="@+id/tv_percent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="75%"
-        android:textColor="@color/orange_main"
-        android:textSize="12dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/progress_ring"
-        app:layout_constraintStart_toStartOf="@id/progress_ring"
-        app:layout_constraintTop_toBottomOf="@id/progress_ring" />
-
+    android:layout_height="match_parent">
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/tv_percent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_present"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="24dp"
+        tools:context=".ui.fragment.add.AddFragment">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/light_orange"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:src="@android:drawable/ic_menu_revert"
+                app:tint="@color/light_black" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Review"
+            android:textColor="@color/orange"
+            android:textSize="32dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/materialCardView"
+            app:layout_constraintStart_toEndOf="@+id/materialCardView"
+            app:layout_constraintTop_toTopOf="@+id/materialCardView" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_ring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="0"
+            app:indicatorColor="@color/orange"
+            app:indicatorSize="50dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView2"
+            app:layout_constraintVertical_bias="0.733"
+            app:trackColor="@color/light_orange" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="48dp"
+            android:layout_height="53dp"
+            android:button="@drawable/cb_icon"
+            app:buttonTint="@color/cb_tint"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_ring"
+            app:layout_constraintEnd_toEndOf="@+id/progress_ring"
+            app:layout_constraintStart_toStartOf="@+id/progress_ring"
+            app:layout_constraintTop_toTopOf="@+id/progress_ring" />
+
+        <TextView
+            android:id="@+id/tv_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="75%"
+            android:textColor="@color/orange_main"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/progress_ring"
+            app:layout_constraintStart_toStartOf="@id/progress_ring"
+            app:layout_constraintTop_toBottomOf="@id/progress_ring" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/tv_percent"
+            android:layout_marginTop="32dp">
 
             <TextView
                 android:id="@+id/tv_project_name"
@@ -113,7 +118,7 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="8dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -155,7 +160,7 @@
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="24dp"
-                    app:cardElevation="4dp">
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:id="@+id/layout_date"
@@ -212,7 +217,7 @@
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="24dp"
-                    app:cardElevation="4dp">
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:id="@+id/layout_time"
@@ -283,7 +288,7 @@
                     android:layout_marginStart="4dp"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="50dp"
-                    app:cardElevation="4dp"
+                    app:cardElevation="0dp"
                     app:strokeColor="@color/orange_main">
 
                     <ImageView
@@ -314,7 +319,7 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/light_black"
                 app:cardCornerRadius="24dp"
-                app:cardElevation="8dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -384,6 +389,12 @@
 
         </LinearLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/layout_error"
+        layout="@layout/layout_access_denied"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+</FrameLayout>

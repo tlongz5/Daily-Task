@@ -95,14 +95,14 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_unfriend"
-                app:tint="@color/orange_hint" />
+                app:tint="@color/orange" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="Unfriend"
-                android:textColor="@color/orange_hint"
+                android:textColor="@color/orange"
                 android:textSize="16dp"
                 android:textStyle="bold" />
         </LinearLayout>

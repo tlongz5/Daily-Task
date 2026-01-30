@@ -12,6 +12,7 @@ import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.FragmentFriendsRequestBinding
@@ -55,6 +56,12 @@ class FriendsRequestFragment : BottomSheetDialogFragment() {
             callbackCheckProfile = {
                 findNavController().navigate(R.id.action_friendsRequestFragment_to_otherUserProfileFragment, Bundle().apply {
                     putString("uid", it)
+                },navOptions {
+                    anim {
+                        enter = R.anim.side_in_right
+                        popEnter = android.R.anim.fade_in
+                        popExit = android.R.anim.slide_out_right
+                    }
                 })
             }
         )
@@ -69,6 +76,13 @@ class FriendsRequestFragment : BottomSheetDialogFragment() {
                     if(viewModel.checkSearchFriend(query)){
                         findNavController().navigate(R.id.action_friendsRequestFragment_to_otherUserProfileFragment, Bundle().apply {
                             putString("uid", viewModel.getUidDataFromEmail(query))
+                        },navOptions {
+                            anim {
+                                enter = R.anim.side_in_right
+                                exit = android.R.anim.fade_out
+                                popEnter = android.R.anim.fade_in
+                                popExit = android.R.anim.slide_out_right
+                            }
                         })
                     }else {
                         Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show()

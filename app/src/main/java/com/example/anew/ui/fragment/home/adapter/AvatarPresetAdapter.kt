@@ -1,4 +1,4 @@
-package com.example.anew.ui.fragment.home.profile
+package com.example.anew.ui.fragment.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

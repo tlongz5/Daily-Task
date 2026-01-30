@@ -10,11 +10,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,9 +32,11 @@ import com.example.anew.databinding.FragmentChatRoomBinding
 import com.example.anew.model.UiState
 import com.example.anew.model.User
 import com.example.anew.support.DataTranfer
+import com.example.anew.support.animCb
+import com.example.anew.support.animProgress
 import com.example.anew.support.fakeData
 import com.example.anew.ui.fragment.add.PickFriendAdapter
-import com.example.anew.ui.fragment.chat.EditGroupNameDiaLog
+import com.example.anew.ui.fragment.chat.chat_room.EditGroupNameDiaLog
 import com.example.anew.ui.fragment.chat.adapter.ChatRoomAdapter
 import com.example.anew.ui.fragment.chat.adapter.DeleteMemberAdapter
 import com.example.anew.viewmodelFactory.MyViewModelFactory
@@ -159,6 +163,14 @@ class ChatRoomFragment : Fragment() {
                 }
             })
         binding.rcvMessage.adapter = adapter
+        binding.rcvMessage.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if(!binding.rcvMessage.canScrollVertically(-1)){
+                    viewModel.loadMoreMessages(chatId, adapter.currentList.first().messageId)
+                }
+            }
+        })
 
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
@@ -178,7 +190,7 @@ class ChatRoomFragment : Fragment() {
 
                 receiverId,
                 receiverName,
-                receiverAvatar, //save all avatar, group or private
+                receiverAvatar, //save all avatar group or private
 
                 message,
                 emptyList(),
@@ -208,7 +220,6 @@ class ChatRoomFragment : Fragment() {
                 viewModel.editGroupName(chatType,chatId, groupName!!)
                 //giai phap tam thoi vi chua dam bao tinh atomic, co time thi fix
                 if (chatType=="Project") viewModel.editNameProject(chatId,groupName)
-
                 binding.tvNameToolbar.text = groupName
             }
         }
@@ -237,16 +248,21 @@ class ChatRoomFragment : Fragment() {
 
             binding.progressRing.visibility = View.VISIBLE
             binding.checkBox.visibility = View.VISIBLE
-            binding.progressRing.progress = it.completedPercent
+            animProgress(binding.progressRing, null,
+                binding.progressRing.progress,it.completedPercent)
+
             binding.checkBox.setOnCheckedChangeListener(null)
             binding.checkBox.isEnabled= false
             binding.checkBox.alpha = 0.6f
             binding.progressRing.alpha = 0.6f
-            binding.checkBox.isChecked = it.membersCompleted.contains(fakeData.user!!.uid)
+            val isChecked = it.membersCompleted.contains(fakeData.user!!.uid)
+            binding.checkBox.isChecked = isChecked
+            binding.checkBox.animCb(isChecked)
 
             if(it.inProgress){
                 binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
                     viewModel.updateProgress(isChecked)
+                    binding.checkBox.animCb(isChecked)
                 }
                 binding.checkBox.isEnabled= true
                 binding.checkBox.alpha = 1f
@@ -274,7 +290,6 @@ class ChatRoomFragment : Fragment() {
                     when (it) {
                         is UiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
-                            binding.rcvMessage.visibility = View.GONE
                         }
 
                         is UiState.Success -> {
@@ -358,6 +373,13 @@ class ChatRoomFragment : Fragment() {
                 R.id.action_chatRoomFragment_to_otherUserProfileFragment,
                 Bundle().apply {
                     putString("uid", receiverId)
+                },navOptions {
+                    anim {
+                        enter = R.anim.side_in_right
+                        exit = android.R.anim.fade_out
+                        popEnter = android.R.anim.fade_in
+                        popExit = android.R.anim.slide_out_right
+                    }
                 })
             dialog.dismiss()
         }
@@ -437,6 +459,13 @@ class ChatRoomFragment : Fragment() {
                 R.id.action_chatRoomFragment_to_taskDetailFragment,
                 Bundle().apply {
                     putString("id", chatId)
+                },navOptions {
+                    anim {
+                        enter = R.anim.side_in_right
+                        exit = android.R.anim.fade_out
+                        popEnter = android.R.anim.fade_in
+                        popExit = android.R.anim.slide_out_right
+                    }
                 })
             dialog.dismiss()
         }
@@ -467,9 +496,10 @@ class ChatRoomFragment : Fragment() {
                 .setMessage("Are you sure to delete this member?")
                 .setPositiveButton("Yes") { _, _ ->
                     viewLifecycleOwner.lifecycleScope.launch {
-
                         //Note for update after
-                        removeMember(chatType,chatId,it)
+                        removeMember(chatType,chatId,it.uid)
+                        listMember-=it
+                        binding.tvDynamic.text = "${listMember.size} members"
                         dialogDelete.dismiss()
                     }
                 }
@@ -512,7 +542,6 @@ class ChatRoomFragment : Fragment() {
                         Snackbar.LENGTH_SHORT
                     ).show()
                     dialogLeave.dismiss()
-                    findNavController().popBackStack()
                 } catch (e: Exception) {
                     Toast.makeText(
                         requireContext(),
@@ -527,20 +556,31 @@ class ChatRoomFragment : Fragment() {
         dialog.dismiss()
     }
 
-    suspend fun removeMember(chatType: String, chatId: String, it: String) {
-        viewModel.removeMemberFromGroup(chatType, chatId, it)
-        if (chatType=="Project") viewModel.updateDataAfterAddOrDelete(false,listOf(it))
-        if(adminId == it){
-            val newListMember = listMember.filter { user -> user.uid!= adminId}
-            if(newListMember.isNotEmpty()){
-                viewModel.changeLeader(chatId, adminId)
-                adminId = newListMember.random().uid
-                listMember = newListMember.toMutableList()
-                binding.tvDynamic.text = "${listMember.size} members"
-            }
-
+    suspend fun removeMember(chatType: String, chatId: String, userId: String) {
+        viewModel.removeMemberFromGroup(chatType, chatId, userId)
+        if (chatType=="Project") viewModel.updateDataAfterAddOrDelete(false,listOf(userId))
+        // if leave group
+        if(userId==fakeData.user!!.uid) {
+            putBundle()
             findNavController().popBackStack()
         }
+
+        //if admin leave group or admin DELETE themself
+        else if(userId==adminId){
+            val newListMember = listMember.filter { user -> user.uid!= adminId}
+            if(newListMember.isNotEmpty()){
+                adminId = newListMember.random().uid
+                viewModel.changeLeader(chatId, adminId)
+            }
+            putBundle()
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun putBundle() {
+        val bundle = Bundle().apply { putBoolean("swap_screen", true) }
+        requireActivity().supportFragmentManager.setFragmentResult("request", bundle)
+        findNavController().popBackStack()
     }
 
     private fun setupAddMemberLogic(dialog: AlertDialog) {
@@ -624,8 +664,24 @@ class ChatRoomFragment : Fragment() {
             val acceptDialog = AlertDialog.Builder(requireContext())
                 .setMessage("Are you sure you want to change leader?")
                 .setPositiveButton("Yes") { _, _ ->
-                    dialogDelete.dismiss()
-                    viewModel.changeLeader(chatId, it)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        try {
+                            viewModel.changeLeader(chatId, it.uid)
+                            adminId = it.uid
+                            dialogDelete.dismiss()
+                            Snackbar.make(
+                                binding.root,
+                                "Change leader successfully",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }catch (e: Exception) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Something went wrong, please try again",
+                                Toast.LENGTH_SHORT
+                            )
+                        }
+                    }
                 }
                 .setNegativeButton("No") { _, _ ->
                 }

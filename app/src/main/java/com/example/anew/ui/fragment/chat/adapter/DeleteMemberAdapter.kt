@@ -12,7 +12,7 @@ import com.example.anew.model.User
 
 class DeleteMemberAdapter(
     private val adminId: String,
-    private val callback: (String) -> Unit
+    private val callback: (User) -> Unit
 ) : ListAdapter<User, DeleteMemberAdapter.ViewHolder>(DiffCallback) {
     class ViewHolder(val binding: ItemDeleteMemberBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -45,7 +45,7 @@ class DeleteMemberAdapter(
             .into(holder.binding.avatar)
 
         holder.itemView.setOnClickListener {
-            callback(item.uid)
+            callback(item)
         }
     }
 

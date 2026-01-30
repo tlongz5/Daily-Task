@@ -1,16 +1,21 @@
 package com.example.anew.ui.fragment.home.task_detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
+import androidx.paging.LOG_TAG
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.FragmentTaskDetailBinding
+import com.example.anew.support.animCb
+import com.example.anew.support.animProgress
 import com.example.anew.support.fakeData
 import com.example.anew.support.toDayAndMonth
 import com.example.anew.support.toHourAndMinute
@@ -22,6 +27,8 @@ class TaskDetailFragment : Fragment() {
     private lateinit var viewModel: TaskDetailViewModel
     private var _binding: FragmentTaskDetailBinding? = null
     val binding get() = _binding!!
+
+    var checkSwap =false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,26 +43,43 @@ class TaskDetailFragment : Fragment() {
 
         val id = arguments?.getString("id")
 
+        // check if usr not in group
+        requireActivity().supportFragmentManager.setFragmentResultListener("request", viewLifecycleOwner) { _, bundle ->
+            val swapScreen = bundle.getBoolean("swap_screen")
+            if(swapScreen) checkSwap = true
+        }
+
         //init view model
         viewModel = ViewModelProvider(this, myViewModelFactory)[TaskDetailViewModel::class.java]
         viewModel.getProjectData(id!!)
         viewModel.projectState.observe(viewLifecycleOwner) {
+            if(checkSwap || !it.members.contains(fakeData.user!!.uid)){
+                Log.d("checkSwap", "viw")
+                swapScreen()
+                return@observe
+            }
+
+            Log.d("checkSwap","viewModel")
             binding.tvProjectName.text = it.title
             binding.tvTaskDetail.text = it.description
             binding.tvDate.text = it.dueTime!!.toDayAndMonth()
             binding.tvTime.text = it.dueTime!!.toHourAndMinute()
-            binding.progressRing.progress = it.completedPercent
-            binding.tvPercent.text = "${it.completedPercent}%"
+
+            animProgress(binding.progressRing, binding.tvPercent,
+                binding.progressRing.progress,it.completedPercent)
 
             binding.checkBox.setOnCheckedChangeListener(null)
             binding.checkBox.isEnabled= false
             binding.checkBox.alpha = 0.6f
             binding.progressRing.alpha = 0.6f
-            binding.checkBox.isChecked = it.membersCompleted.contains(fakeData.user!!.uid)
+            val isChecked = it.membersCompleted.contains(fakeData.user!!.uid)
+            binding.checkBox.isChecked = isChecked
+            binding.checkBox.animCb(isChecked)
 
             if(it.inProgress){
                 binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
                     viewModel.updateProgress(isChecked)
+                    binding.checkBox.animCb(isChecked)
                 }
                 binding.checkBox.isEnabled= true
                 binding.checkBox.alpha = 1f
@@ -98,11 +122,21 @@ class TaskDetailFragment : Fragment() {
                         putString("receiver_avatar", conversationInfo.avatar)
                         putString("chatId", conversationInfo.roomId)
                         putString("admin_id", conversationInfo.adminId)
+                    },navOptions {
+                        anim {
+                            enter = R.anim.side_in_right
+                            exit = android.R.anim.fade_out
+                            popEnter = android.R.anim.fade_in
+                            popExit = android.R.anim.slide_out_right
+                        }
                     }
                 )
             }
-        }
 
+        }
+        binding.layoutError.btnBack2.setOnClickListener {
+            findNavController().popBackStack()
+        }
 
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
@@ -113,6 +147,11 @@ class TaskDetailFragment : Fragment() {
             LinearLayoutManager.HORIZONTAL, false
         )
 
+    }
+
+    private fun swapScreen() {
+        binding.layoutPresent.visibility = View.GONE
+        binding.layoutError.root.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {

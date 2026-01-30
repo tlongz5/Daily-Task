@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anew.R
@@ -18,6 +21,7 @@ import com.example.anew.support.toTimeUI
 import com.example.anew.ui.fragment.home.adapter.CompletedProjectAdapter
 import com.example.anew.ui.fragment.home.adapter.OngoingProjectAdapter
 import com.example.anew.viewmodelFactory.MyViewModelFactory
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
@@ -49,7 +53,6 @@ class HomeFragment : Fragment() {
         //check data in firebase if no change and update in UI
         homeViewModel.getProjectData()
 
-
         binding.rcvOngoingProject.layoutManager = LinearLayoutManager(requireContext())
         binding.rcvTaskCompleted.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL,false)
@@ -58,6 +61,7 @@ class HomeFragment : Fragment() {
             homeViewModel.reloadProjectDataWithSearch("")
         }
 
+        // take 20 lastest data from projectList to show
         homeViewModel.ongoingProjectState.observe(viewLifecycleOwner){
             if(!it.isEmpty()){
                 binding.rcvOngoingProject.visibility = View.VISIBLE
@@ -65,6 +69,13 @@ class HomeFragment : Fragment() {
                 binding.rcvOngoingProject.adapter = OngoingProjectAdapter(it.take(20) as MutableList<Team>){
                     findNavController().navigate(R.id.action_HomeFragment_to_taskDetailFragment,Bundle().apply {
                         putString("id",it)
+                    },navOptions {
+                        anim {
+                            enter = R.anim.side_in_right
+                            exit = android.R.anim.fade_out
+                            popEnter = android.R.anim.fade_in
+                            popExit = android.R.anim.slide_out_right
+                        }
                     })
                 }
             }else{
@@ -80,6 +91,13 @@ class HomeFragment : Fragment() {
                 binding.rcvTaskCompleted.adapter = CompletedProjectAdapter(it.take(20) as MutableList<Team>){
                     findNavController().navigate(R.id.action_HomeFragment_to_taskDetailFragment,Bundle().apply {
                         putString("id",it)
+                    },navOptions {
+                        anim {
+                            enter = R.anim.side_in_right
+                            exit = android.R.anim.fade_out
+                            popEnter = android.R.anim.fade_in
+                            popExit = android.R.anim.slide_out_right
+                        }
                     })
                 }
             }else{
@@ -97,8 +115,10 @@ class HomeFragment : Fragment() {
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            homeViewModel.getProjectData()
-            binding.swipeRefreshLayout.isRefreshing = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                homeViewModel.getProjectData()
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
         }
 
         binding.edtSearchTask.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -114,11 +134,12 @@ class HomeFragment : Fragment() {
         Glide.with(view)
             .load(fakeData.user!!.photoUrl)
             .error(R.drawable.ic_launcher_background)
-            .circleCrop()
             .into(binding.avatar)
 
         binding.avatar.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_profileFragment)
+            findNavController().navigate(R.id.action_HomeFragment_to_profileFragment,
+                null,null, FragmentNavigatorExtras(binding.cvAvatar to "avatar")
+            )
         }
 
     }

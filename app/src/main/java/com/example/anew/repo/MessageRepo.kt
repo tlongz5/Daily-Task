@@ -93,14 +93,14 @@ class MessageRepo {
     }
 
     suspend fun getMessages(groupId: String): Flow<List<Message>> = callbackFlow {
-        val query = messageRef.child(groupId).limitToLast(50)
+        val query = messageRef.child(groupId).orderByKey().limitToLast(50)
 
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val messages = snapshot.children.mapNotNull { child ->
                     child.getValue(Message::class.java)
                 }
-                trySend(messages.sortedBy { it.time })
+                trySend(messages)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -111,6 +111,17 @@ class MessageRepo {
         awaitClose {
             query.removeEventListener(listener)
         }
+    }
+
+    suspend fun loadMoreMessages(groupId: String, lastMessageId: String): List<Message> {
+        val query = messageRef.child(groupId).orderByKey().limitToLast(51)
+            .endAt(lastMessageId).get().await()
+        val messages = query.children.mapNotNull { child ->
+            child.getValue(Message::class.java)
+        }
+        if(messages.isNotEmpty() && messages.last().messageId==lastMessageId)
+            messages.toMutableList().removeAt(messages.lastIndex)
+        return messages
     }
 
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.FragmentNotificationBinding
@@ -49,12 +50,28 @@ class NotificationFragment : Fragment() {
                 "create_project" -> {
                     val bundle = Bundle()
                     bundle.putString("id", projectId)
-                    findNavController().navigate(R.id.action_NotificationFragment_to_taskDetailFragment, bundle)
+                    findNavController().navigate(R.id.action_NotificationFragment_to_taskDetailFragment,
+                        bundle,navOptions {
+                            anim {
+                                enter = R.anim.side_in_right
+                                exit = android.R.anim.fade_out
+                                popEnter = android.R.anim.fade_in
+                                popExit = android.R.anim.slide_out_right
+                            }
+                        })
                 }
                 "end_project" -> {
                     val bundle = Bundle()
                     bundle.putString("id", projectId)
-                    findNavController().navigate(R.id.action_NotificationFragment_to_taskDetailFragment, bundle)
+                    findNavController().navigate(R.id.action_NotificationFragment_to_taskDetailFragment,
+                        bundle,navOptions {
+                            anim {
+                                enter = R.anim.side_in_right
+                                exit = android.R.anim.fade_out
+                                popEnter = android.R.anim.fade_in
+                                popExit = android.R.anim.slide_out_right
+                            }
+                        })
                 }
                 "request_friend" -> {
                     findNavController().navigate(R.id.action_NotificationFragment_to_friendsRequestFragment)
@@ -62,7 +79,15 @@ class NotificationFragment : Fragment() {
                 "become_friend" -> {
                     val bundle = Bundle()
                     bundle.putString("uid", userId)
-                    findNavController().navigate(R.id.action_NotificationFragment_to_otherUserProfileFragment, bundle)
+                    findNavController().navigate(R.id.action_NotificationFragment_to_otherUserProfileFragment, bundle,
+                        navOptions {
+                            anim {
+                                enter = R.anim.side_in_right
+                                exit = android.R.anim.fade_out
+                                popEnter = android.R.anim.fade_in
+                                popExit = android.R.anim.slide_out_right
+                            }
+                        })
                 }
             }
         }

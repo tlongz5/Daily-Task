@@ -49,29 +49,57 @@ class ChatRoomViewModel(
     private val _checkFriendState = MutableLiveData<Int>()
     val checkFriendState: MutableLiveData<Int> = _checkFriendState
 
-    //NOTEEEE HÔM SAU CHECK
+    private val allMessage = mutableListOf<MessageItem>()
+    private var isContinue = true
+
     fun getMessages(roomId: String) {
         viewModelScope.launch {
             _messageState.value = UiState.Loading
             messageRepo.getMessages(roomId).catch {
                 _messageState.value = UiState.Error(it.message.toString())
             }.collect { listMessage ->
-                val loadUserId = listMessage.map { it.senderId }.distinct()
-                    .filter { !DataTranfer.userCache.containsKey(it) }
-                loadData(loadUserId)
-                _messageState.value = UiState.Success(listMessage.map { message ->
-                    MessageItem(
-                        message.messageId,
-                        message.senderId,
-                        DataTranfer.userCache[message.senderId]!!.name,
-                        DataTranfer.userCache[message.senderId]!!.photoUrl,
-                        message.message,
-                        message.imageUrlList,
-                        message.time
-                    )
-                })
+                val newList =listMessage.filter { newMsg->
+                    allMessage.none { realMsg -> realMsg.messageId == newMsg.messageId }
+                }
+                addToList(newList,true)
             }
         }
+    }
+
+    fun loadMoreMessages(roomId: String, lastMessageId: String) {
+        viewModelScope.launch {
+            try {
+                if(!isContinue) return@launch
+                val olderMessage = messageRepo.loadMoreMessages(roomId, lastMessageId)
+                addToList(olderMessage,false)
+            }catch (e: Exception){
+                _messageState.value = UiState.Error(e.message.toString())
+            }
+        }
+    }
+
+    private suspend fun addToList(newList: List<Message>, isNew: Boolean) {
+        if(newList.isEmpty()) return
+
+        val loadUserId = newList.map { it.senderId }.distinct()
+            .filter { !DataTranfer.userCache.containsKey(it) }
+        loadData(loadUserId)
+        val newOrOlderMessageItem = newList.map { message ->
+            MessageItem(
+                message.messageId,
+                message.senderId,
+                DataTranfer.userCache[message.senderId]!!.name,
+                DataTranfer.userCache[message.senderId]!!.photoUrl,
+                message.message,
+                message.imageUrlList,
+                message.time
+            )
+        }
+        if (isNew) allMessage.addAll(newOrOlderMessageItem)
+        else allMessage.addAll(0, newOrOlderMessageItem)
+        _messageState.value = UiState.Success(if (allMessage.isEmpty()) emptyList() else allMessage.toList())
+
+        if(!isNew && newList.size<50) isContinue=false
     }
 
     suspend fun loadData(listUserId: List<String>) = withContext(Dispatchers.IO){
@@ -161,10 +189,8 @@ class ChatRoomViewModel(
         }
     }
 
-    fun removeMemberFromGroup(chatType: String,chatId: String,userId: String) {
-        viewModelScope.launch {
-            messageRepo.removeMemberFromGroup(chatType ,chatId, userId)
-        }
+    suspend fun removeMemberFromGroup(chatType: String,chatId: String,userId: String) {
+        messageRepo.removeMemberFromGroup(chatType ,chatId, userId)
     }
 
     fun editGroupName(chatType: String,chatId: String, groupName: String) {

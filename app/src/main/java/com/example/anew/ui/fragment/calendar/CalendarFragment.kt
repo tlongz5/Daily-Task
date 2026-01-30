@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.FragmentCalendarBinding
@@ -45,6 +46,13 @@ class CalendarFragment : Fragment() {
                 R.id.action_CalendarFragment_to_taskDetailFragment,
                 Bundle().apply {
                     putString("id", projectId)
+                },navOptions {
+                    anim {
+                        enter = R.anim.side_in_right
+                        exit = android.R.anim.fade_out
+                        popEnter = android.R.anim.fade_in
+                        popExit = android.R.anim.slide_out_right
+                    }
                 })
         }
 

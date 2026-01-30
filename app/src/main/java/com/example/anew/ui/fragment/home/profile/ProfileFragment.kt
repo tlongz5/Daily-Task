@@ -2,7 +2,10 @@ package com.example.anew.ui.fragment.home.profile
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.transition.Transition
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
 import com.example.anew.R
 import com.example.anew.databinding.FragmentProfileBinding
 import com.example.anew.databinding.ProfileBottomSheetImageSourceBinding
@@ -56,11 +60,14 @@ class ProfileFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sharedElementEnterTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(android.R.transition.move)
+
         profileViewModel = ViewModelProvider(this, MyViewModelFactory)[ProfileViewModel::class.java]
         profileViewModel.imgState.observe(viewLifecycleOwner){
             Glide.with(requireContext())
                 .load(it)
-                .centerCrop()
                 .into(binding.avatar)
 
             //update local
@@ -105,6 +112,15 @@ class ProfileFragment: Fragment() {
             val username = binding.edtUsername.text.toString().trim()
             val phoneNumber = binding.edtPhoneNumber.text.toString().trim()
 
+            val user = User(
+                fakeData.user!!.uid,
+                username,
+                name,
+                fakeData.user!!.email,
+                fakeData.user!!.photoUrl,
+                phoneNumber
+            )
+
             if (name.isNotEmpty() && username.isNotEmpty() && phoneNumber.isNotEmpty()) {
                 if(!phoneNumber.all { it.isDigit() } || !phoneNumber.startsWith("0")){
                     Toast.makeText(requireContext(), "Incorrect phone number format", Toast.LENGTH_SHORT).show()
@@ -116,7 +132,7 @@ class ProfileFragment: Fragment() {
                 }
                 viewLifecycleOwner.lifecycleScope.launch {
 
-                    if(profileViewModel.checkDuplicateUsername(username)){
+                    if(profileViewModel.checkDuplicateUsername(user)){
                         Toast.makeText(requireContext(), "Username already exists, please choose another", Toast.LENGTH_SHORT).show()
                         return@launch
                     }
@@ -161,8 +177,8 @@ class ProfileFragment: Fragment() {
                     profileViewModel.signOut(requireContext())
 
                     val intent = Intent(activity, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
+                    requireActivity().finish()
                 } catch (e: Exception) {
                     Toast.makeText(requireContext(), "Logout Error", Toast.LENGTH_SHORT).show()
                 }

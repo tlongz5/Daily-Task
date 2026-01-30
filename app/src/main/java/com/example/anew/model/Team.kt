@@ -10,6 +10,8 @@ data class Team( // represent each project
 
     val admin: String,
     var members: List<String>,
+
+    //Delete it later
     val teamMembersImage: List<String>, // load image present on item max 3
     var completedPercent: Int,
     val dueTime: Long?,

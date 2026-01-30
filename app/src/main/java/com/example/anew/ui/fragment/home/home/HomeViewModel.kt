@@ -39,7 +39,7 @@ class HomeViewModel(private val projectRepo: ProjectRepo): ViewModel() {
             //update firebase
             projectRepo.updateStatusProject(listToUpdate)
 
-            _projectState.value = updatedList as MutableList<Team>
+            _projectState.value = updatedList.sortedBy { it.dueTime }.toMutableList()
             _isCheckSwapScreen.value = true
         }
     }

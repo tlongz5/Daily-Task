@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.ItemOngoingProjectCardBinding
 import com.example.anew.model.Team
+import com.example.anew.support.animProgress
 import com.example.anew.support.toFullTime
 import kotlin.math.min
 
@@ -29,8 +30,8 @@ class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>,
     ) {
         with(holder.binding){
             projectTitle.text = ongoingProject[position].title
-            progressRing.progress = ongoingProject[position].completedPercent
-            tvProgress.text = ongoingProject[position].completedPercent.toString() + "%"
+            animProgress(progressRing, tvProgress,0,ongoingProject[position].completedPercent)
+
             dueTime.text = "Due on : ${ongoingProject[position].dueTime?.toFullTime()}"
             val members = ongoingProject[position].teamMembersImage
             val avatars = listOf(avt1,avt2,avt3,avt4)

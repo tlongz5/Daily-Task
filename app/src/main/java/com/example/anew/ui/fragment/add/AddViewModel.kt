@@ -25,9 +25,11 @@ class AddViewModel(
     private val _teamState = MutableLiveData<List<User>>()
     val teamState: LiveData<List<User>> = _teamState
 
-    private val setDate= MutableLiveData<Long?>(null)
-    private val setHour= MutableLiveData<Int?>(null)
-    private val setMinute= MutableLiveData<Int?>(null)
+    var setDate: Long?=null
+    var setHour: Int?=null
+    var setMinute: Int?=null
+    var projectName: String?=null
+    var taskDetail: String?=null
 
     fun createProject(team: Team){
         viewModelScope.launch {
@@ -35,7 +37,7 @@ class AddViewModel(
             // chua Dam bao thuoc tinh atomic
             val notification = Notification(
                 UUID.randomUUID().toString(),
-                "Project Team",
+                team.title,
                 "Your project has been created",
                 System.currentTimeMillis(),
                 false,

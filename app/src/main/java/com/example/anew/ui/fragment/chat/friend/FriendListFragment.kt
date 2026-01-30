@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.FragmentFriendListBinding
@@ -56,11 +57,25 @@ class FriendListFragment : BottomSheetDialogFragment() {
                     putString("receiver_name", it.name)
                     putString("receiver_avatar", it.photoUrl)
                     putString("chatId", listOf(it.uid, fakeData.user!!.uid).sorted().joinToString("_"))
+                },navOptions {
+                    anim {
+                        enter = R.anim.side_in_right
+                        exit = android.R.anim.fade_out
+                        popEnter = android.R.anim.fade_in
+                        popExit = android.R.anim.slide_out_right
+                    }
                 })
             },
             onClickViewProfileUser = {
                 findNavController().navigate(R.id.action_friendListFragment_to_otherUserProfileFragment,Bundle().apply {
                     putString("uid", it)
+                },navOptions {
+                    anim {
+                        enter = R.anim.side_in_right
+                        exit = android.R.anim.fade_out
+                        popEnter = android.R.anim.fade_in
+                        popExit = android.R.anim.slide_out_right
+                    }
                 })
             })
         binding.rcvFriendList.layoutManager = LinearLayoutManager(requireContext())

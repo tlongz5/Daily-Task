@@ -9,6 +9,7 @@ import com.example.anew.repo.MessageRepo
 import com.example.anew.repo.NotificationRepo
 import com.example.anew.repo.ProjectRepo
 import com.example.anew.ui.activity.login.LoginViewModel
+import com.example.anew.ui.activity.main.MainViewModel
 import com.example.anew.ui.fragment.add.AddViewModel
 import com.example.anew.ui.fragment.add.SelectAddMemberViewModel
 import com.example.anew.ui.fragment.calendar.CalendarViewModel
@@ -64,6 +65,9 @@ class MyViewModelFactory: ViewModelProvider.Factory {
             }
             modelClass.isAssignableFrom(CalendarViewModel::class.java) ->{
                 CalendarViewModel(projectRepo) as T
+            }
+            modelClass.isAssignableFrom(MainViewModel::class.java) ->{
+                MainViewModel(notificationRepo) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

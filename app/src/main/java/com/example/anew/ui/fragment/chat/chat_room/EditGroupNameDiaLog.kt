@@ -1,4 +1,4 @@
-package com.example.anew.ui.fragment.chat
+package com.example.anew.ui.fragment.chat.chat_room
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.example.anew.R
-import com.example.anew.databinding.DialogCreateGroupBinding
 import com.example.anew.databinding.DialogEditNameBinding
 
 class EditGroupNameDiaLog : DialogFragment(R.layout.dialog_edit_name) {

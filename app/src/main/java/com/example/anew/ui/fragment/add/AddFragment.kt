@@ -10,6 +10,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
 import com.example.anew.databinding.BottomSheetSetTextAddBinding
@@ -37,9 +38,6 @@ import java.util.UUID
 class AddFragment : Fragment() {
     private val myViewModelFactory = MyViewModelFactory()
     private lateinit var viewModel: AddViewModel
-    var setDate: Long?=null
-    var setHour: Int?=null
-    var setMinute: Int?=null
 
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!
@@ -69,8 +67,17 @@ class AddFragment : Fragment() {
         }
 
         //init
-        binding.tvDate.text= getCurrentDate()
-        binding.tvTime.text = getCurrentTime()
+        binding.tvDate.text= if (viewModel.setDate!=null) viewModel.setDate!!.toDayAndMonth() else getCurrentDate()
+        binding.tvTime.text = if (viewModel.setHour!=null) tranferToHourAndMinute(viewModel.setHour!!,viewModel.setMinute!!) else getCurrentTime()
+        binding.tvProjectName.text = viewModel.projectName?:""
+        binding.tvTaskDetail.text = viewModel.taskDetail?:""
+
+        if(viewModel.setDate==null) viewModel.setDate = MaterialDatePicker.todayInUtcMilliseconds()
+        if(viewModel.setHour==null) {
+            viewModel.setHour = getCurrentTime().split(":")[0].toInt()
+            viewModel.setMinute = getCurrentTime().split(":")[1].take(2).toInt()
+        }
+
         binding.rcvTeamMembers.adapter = AddTeamMembersAdapter()
         val linearLayout = LinearLayoutManager(requireContext(),
             LinearLayoutManager.HORIZONTAL, false)
@@ -94,9 +101,9 @@ class AddFragment : Fragment() {
                 .build()
 
             materialTimePicker.addOnPositiveButtonClickListener {
-                setHour = materialTimePicker.hour
-                setMinute = materialTimePicker.minute
-                binding.tvTime.text = tranferToHourAndMinute(setHour!!,setMinute!!)
+                viewModel.setHour = materialTimePicker.hour
+                viewModel.setMinute = materialTimePicker.minute
+                binding.tvTime.text = tranferToHourAndMinute(viewModel.setHour!!,viewModel.setMinute!!)
             }
             materialTimePicker.show(childFragmentManager,"time_picker")
         }
@@ -109,14 +116,22 @@ class AddFragment : Fragment() {
                 .build()
 
             materialDatePicker.addOnPositiveButtonClickListener {
-                setDate = it
+                viewModel.setDate = it
                 binding.tvDate.text = it.toDayAndMonth()
             }
             materialDatePicker.show(childFragmentManager,"date_picker")
         }
 
         binding.btnAddMember.setOnClickListener {
-            findNavController().navigate(R.id.action_AddFragment_to_selectAddMemberFragment)
+            findNavController().navigate(R.id.action_AddFragment_to_selectAddMemberFragment,null,
+                navOptions {
+                    anim {
+                        enter = R.anim.side_in_right
+                        exit = android.R.anim.fade_out
+                        popEnter = android.R.anim.fade_in
+                        popExit = android.R.anim.slide_out_right
+                    }
+                })
         }
 
         binding.btnBack.setOnClickListener {
@@ -125,11 +140,16 @@ class AddFragment : Fragment() {
 
         //NOTEEEEEEE
         binding.btnCreateNewTask.setOnClickListener {
-            if(binding.tvProjectName.text.isEmpty() ||
-                binding.tvTaskDetail.text.isEmpty() ||
+            if(binding.tvProjectName.text.trim().isEmpty() ||
+                binding.tvTaskDetail.text.trim().isEmpty() ||
                 viewModel.teamState.value.isNullOrEmpty() ||
-                setDate==null || setHour==null){
+                viewModel.setDate==null || viewModel.setHour==null){
                 Toast.makeText(context, "Please fill all information", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if(mergeDateAndTime(viewModel.setDate!!,viewModel.setHour!!,viewModel.setMinute!!)!! < System.currentTimeMillis()){
+                Toast.makeText(context, "Please select a valid date and time", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -143,12 +163,21 @@ class AddFragment : Fragment() {
                 viewModel.teamState.value.plus(fakeData.user!!).map { it.uid },
                 viewModel.teamState.value.plus(fakeData.user!!).map { it.photoUrl }.take(4),
                 0,
-                mergeDateAndTime(setDate!!,setHour!!,setMinute!!),
+                mergeDateAndTime(viewModel.setDate!!,viewModel.setHour!!,viewModel.setMinute!!),
                 true,
                 listOf()
             )
 
             viewModel.createProject(team)
+
+            //reset data in viewModel
+            viewModel.setDate = null
+            viewModel.setHour = null
+            viewModel.setMinute = null
+            viewModel.projectName = null
+            viewModel.taskDetail = null
+            viewModel.saveUser(listOf())
+
             Toast.makeText(context, "Create Success", Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }
@@ -173,13 +202,23 @@ class AddFragment : Fragment() {
         bindingBottomSheet.edtSetText.addTextChangedListener {
             if(type){
                 binding.tvProjectName.text = it.toString()
-            }else binding.tvTaskDetail.text = it.toString()
+                viewModel.projectName = it.toString()
+            }else {
+                binding.tvTaskDetail.text = it.toString()
+                viewModel.taskDetail = it.toString()
+            }
         }
 
         bottomSheet.setOnDismissListener {
             if(!check){
-                if(type) binding.tvProjectName.text = ""
-                else binding.tvTaskDetail.text = ""
+                if(type) {
+                    binding.tvProjectName.text = ""
+                    viewModel.projectName = ""
+                }
+                else {
+                    binding.tvTaskDetail.text = ""
+                    viewModel.taskDetail = ""
+                }
             }
         }
         bottomSheet.show()

@@ -25,6 +25,7 @@ class FriendListAdapter(private var friends: MutableList<User>,
         position: Int
     ) {
         holder.binding.tvName.text= friends[position].name
+        holder.binding.tvUsername.text = "@${friends[position].username}"
         holder.binding.chat.setOnClickListener {
             onClickJohnChatRoom(friends[position])
         }

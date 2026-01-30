@@ -13,14 +13,14 @@
         android:layout_height="75dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:cardElevation="4dp"
         app:strokeColor="@color/light_orange"
+        app:cardBackgroundColor="#EFE6E5"
         app:cardCornerRadius="60dp"
         app:strokeWidth="1dp">
         <ImageView
             android:id="@+id/img_avatar"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:srcCompat="@drawable/avatar1" />
     </com.google.android.material.card.MaterialCardView>
 
@@ -30,27 +30,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/materialCardView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout6"
         app:layout_constraintStart_toEndOf="@+id/materialCardView"
-        app:layout_constraintTop_toTopOf="@+id/materialCardView">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textStyle="bold"
-            android:textColor="@color/light_black"/>
+            android:textColor="@color/light_black"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="@color/light_black"
             android:maxLines="4"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="@color/light_black" />
     </LinearLayout>
 
     <LinearLayout

@@ -7,6 +7,7 @@ import com.example.anew.model.Team
 import com.example.anew.model.User
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
@@ -72,12 +73,13 @@ class ProjectRepo(private val notificationRepo: NotificationRepo,
             db.runBatch { batch ->
 // fix batch max 500 update, but demo app so it's okay
                 listToUpdate.forEach {
-                    batch.update(docRef.document(it.projectId), "inProgress", false)
+                    batch.set(docRef.document(it.projectId),
+                        mapOf("inProgress" to false), SetOptions.merge())
                     val notification = Notification(
                         "",
                         it.title,
                         "Your project has been ended, please check it out",
-                        System.currentTimeMillis(),
+                        it.dueTime!!,
                         false,
                         it.avatar,
                         "end_project",
@@ -173,7 +175,7 @@ class ProjectRepo(private val notificationRepo: NotificationRepo,
     suspend fun editNameProject(id: String, groupName: String) {
         try {
             db.collection("projects").document(id)
-                .update("name", groupName).await()
+                .update("title", groupName).await()
         } catch (e: Exception) {
             Log.d("project", "editNameProject failed")
         }

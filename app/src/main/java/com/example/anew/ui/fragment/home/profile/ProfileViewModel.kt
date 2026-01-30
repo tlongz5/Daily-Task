@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.anew.model.User
 import com.example.anew.repo.AuthRepo
 import com.example.anew.support.convertUriToCloudinaryUrl
 import kotlinx.coroutines.launch
@@ -14,8 +15,8 @@ class ProfileViewModel(private val authRepo: AuthRepo): ViewModel() {
     private val _imgState = MutableLiveData<String>()
     val imgState: LiveData<String> = _imgState
 
-    fun signOut(context: Context){
-        viewModelScope.launch { authRepo.signOut(context) }
+    suspend fun signOut(context: Context){
+        authRepo.signOut(context)
     }
 
     fun updateProfile(name: String, username: String, phoneNumber: String){
@@ -38,7 +39,7 @@ class ProfileViewModel(private val authRepo: AuthRepo): ViewModel() {
         }
     }
 
-    suspend fun checkDuplicateUsername(username: String): Boolean{
-        return authRepo.checkDuplicateUsername(username)
+    suspend fun checkDuplicateUsername(user: User): Boolean{
+        return authRepo.checkDuplicateUsername(user)
     }
 }

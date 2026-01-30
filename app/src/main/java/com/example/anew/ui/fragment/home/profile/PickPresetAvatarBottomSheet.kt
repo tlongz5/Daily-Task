@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.anew.databinding.BottomSheetPickPresetAvatarBinding
 import com.example.anew.support.MyHelper
 import com.example.anew.support.fakeData
+import com.example.anew.ui.fragment.home.adapter.AvatarPresetAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class PickPresetAvatarBottomSheet : BottomSheetDialogFragment() {
@@ -30,15 +31,15 @@ class PickPresetAvatarBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //load data to recycler view and active save button when click item
-        binding.rcvImagePreset.adapter = AvatarPresetAdapter{
+        binding.rcvImagePreset.adapter = AvatarPresetAdapter {
             Glide.with(requireContext())
                 .load(MyHelper.avatar[it])
                 .centerCrop()
                 .into(binding.avatar)
 
             saveImageItem = MyHelper.avatar[it]
-            binding.tvSave.alpha=1f
-            binding.tvSave.isEnabled=true
+            binding.tvSave.alpha = 1f
+            binding.tvSave.isEnabled = true
         }
         binding.rcvImagePreset.layoutManager = GridLayoutManager(requireContext(), 4)
         binding.tvSave.alpha=0.5f
