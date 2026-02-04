@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.ItemNotificationBinding
 import com.example.anew.model.Notification
-import com.example.anew.support.toTime
+import com.example.anew.utils.toTime
 
 class NotificationAdapter(private val callback: (String,String,String, String) -> Unit): ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(NOTIFICATION_DIFFUTIL) {
     class NotificationViewHolder(val binding: ItemNotificationBinding): RecyclerView.ViewHolder(binding.root)

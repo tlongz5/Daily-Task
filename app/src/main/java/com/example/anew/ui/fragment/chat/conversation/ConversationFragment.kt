@@ -1,7 +1,6 @@
 package com.example.anew.ui.fragment.chat.conversation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +14,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
+import com.example.anew.data.local.MyHelper
 import com.example.anew.databinding.FragmentConversationBinding
 import com.example.anew.model.UiState
-import com.example.anew.support.fakeData
 import com.example.anew.ui.fragment.chat.adapter.ConversationAdapter
-import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.example.anew.viewmodelfactory.MyViewModelFactory
 import kotlinx.coroutines.launch
 
 class ConversationFragment(): Fragment() {
@@ -46,7 +45,7 @@ class ConversationFragment(): Fragment() {
             findNavController().navigate(R.id.action_ChatFragment_to_chatRoomFragment, Bundle().apply {
                 putString("chat_type", chatType)
                 putString("chat_name", it.chatName)
-                putString("receiver_id", it.roomId.split("_").find { it != fakeData.user!!.uid })
+                putString("receiver_id", it.roomId.split("_").find { it != MyHelper.user!!.uid })
                 // if type!=private, receiverName=chatName
                 putString("receiver_name", it.chatName)
                 putString("receiver_avatar", it.avatar)
@@ -61,10 +60,10 @@ class ConversationFragment(): Fragment() {
             })
 
             //Update seen message
-            viewModel.updateSeen(it.roomId,chatType,fakeData.user!!.uid)
+            viewModel.updateSeen(it.roomId,chatType,MyHelper.user!!.uid)
         })
 
-        viewModel.getConversation(fakeData.user!!.uid,chatType)
+        viewModel.getConversation(MyHelper.user!!.uid,chatType)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.conservationState.collect { uiState ->

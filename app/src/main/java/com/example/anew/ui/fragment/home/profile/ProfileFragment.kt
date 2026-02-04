@@ -2,9 +2,7 @@ package com.example.anew.ui.fragment.home.profile
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.transition.Transition
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +10,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -20,19 +17,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
 import com.example.anew.R
+import com.example.anew.data.local.MyHelper
 import com.example.anew.databinding.FragmentProfileBinding
 import com.example.anew.databinding.ProfileBottomSheetImageSourceBinding
 import com.example.anew.model.User
-import com.example.anew.support.convertUriToCloudinaryUrl
-import com.example.anew.support.deleteUserFromSharePref
-import com.example.anew.support.fakeData
-import com.example.anew.support.saveUserToSharePrefAndDataLocal
-import com.example.anew.support.swapBitmapToUrl
-import com.example.anew.support.updateAvatarFromSharePref
+import com.example.anew.data.local.saveUserToSharePrefAndDataLocal
+import com.example.anew.utils.swapBitmapToUrl
+import com.example.anew.data.local.updateAvatarFromSharePref
 import com.example.anew.ui.activity.login.LoginActivity
-import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.example.anew.ui.fragment.home.viewavatar.PickPresetAvatarBottomSheet
+import com.example.anew.viewmodelfactory.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
@@ -74,15 +69,15 @@ class ProfileFragment: Fragment() {
             updateAvatarFromSharePref(requireContext(),it)
         }
 
-        binding.tvName2.setText(fakeData.user!!.name)
-        binding.edtName.setText(fakeData.user!!.name)
-        binding.edtUsername.setText("${fakeData.user!!.username}")
-        binding.edtEmail.setText(fakeData.user!!.email)
-        binding.edtPhoneNumber.setText(fakeData.user!!.phoneNumber)
+        binding.tvName2.setText(MyHelper.user!!.name)
+        binding.edtName.setText(MyHelper.user!!.name)
+        binding.edtUsername.setText("${MyHelper.user!!.username}")
+        binding.edtEmail.setText(MyHelper.user!!.email)
+        binding.edtPhoneNumber.setText(MyHelper.user!!.phoneNumber)
 
 
         Glide.with(this)
-            .load(fakeData.user!!.photoUrl)
+            .load(MyHelper.user!!.photoUrl)
             .error(R.drawable.ic_launcher_background)
             .centerCrop()
             .into(binding.avatar)
@@ -113,11 +108,11 @@ class ProfileFragment: Fragment() {
             val phoneNumber = binding.edtPhoneNumber.text.toString().trim()
 
             val user = User(
-                fakeData.user!!.uid,
+                MyHelper.user!!.uid,
                 username,
                 name,
-                fakeData.user!!.email,
-                fakeData.user!!.photoUrl,
+                MyHelper.user!!.email,
+                MyHelper.user!!.photoUrl,
                 phoneNumber
             )
 
@@ -145,11 +140,11 @@ class ProfileFragment: Fragment() {
                         profileViewModel.updateProfile(name, username, phoneNumber)
                         saveUserToSharePrefAndDataLocal(
                             User(
-                                fakeData.user!!.uid,
+                                MyHelper.user!!.uid,
                                 username,
                                 name,
-                                fakeData.user!!.email,
-                                fakeData.user!!.photoUrl,
+                                MyHelper.user!!.email,
+                                MyHelper.user!!.photoUrl,
                                 phoneNumber
                             ),requireContext())
                         Toast.makeText(requireContext(), "Save Success", Toast.LENGTH_SHORT).show()
@@ -221,7 +216,7 @@ class ProfileFragment: Fragment() {
         bottomSheet.setContentView(bindingBottomSheet.root)
         bindingBottomSheet.tvViewAvatar.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("ImageUri", fakeData.user!!.photoUrl)
+            bundle.putString("ImageUri", MyHelper.user!!.photoUrl)
 
             // view avatar
             findNavController().navigate(R.id.action_profileFragment_to_viewAvatarFragment,bundle)

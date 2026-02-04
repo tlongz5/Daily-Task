@@ -11,15 +11,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
+import com.example.anew.data.local.MyHelper
 import com.example.anew.databinding.FragmentCalendarBinding
-import com.example.anew.support.fakeData
-import com.example.anew.support.toCalendarDay
-import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.example.anew.utils.toCalendarDay
+import com.example.anew.viewmodelfactory.MyViewModelFactory
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
-import java.util.Calendar
 
 class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
@@ -59,7 +58,7 @@ class CalendarFragment : Fragment() {
         binding.calendarView.setSelectedDate(CalendarDay.today())
 
         viewModel = ViewModelProvider(this, myViewModelFactory)[CalendarViewModel::class.java]
-        viewModel.getTeamList(fakeData.user!!.uid)
+        viewModel.getTeamList(MyHelper.user!!.uid)
         viewModel.teamList.observe(viewLifecycleOwner) { projectList ->
             val projects =projectList.sortedBy { project -> project.dueTime }
             val redColor = getColor(requireContext(), R.color.task_failed_tv)

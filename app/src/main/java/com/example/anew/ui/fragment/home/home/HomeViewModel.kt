@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.anew.data.local.MyHelper
 import com.example.anew.model.Team
-import com.example.anew.support.fakeData
-import com.example.anew.repo.ProjectRepo
+import com.example.anew.data.repo.ProjectRepo
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val projectRepo: ProjectRepo): ViewModel() {
@@ -24,7 +24,7 @@ class HomeViewModel(private val projectRepo: ProjectRepo): ViewModel() {
 
     fun getProjectData(){
         viewModelScope.launch {
-            val projectList = projectRepo.getProjectsData(fakeData.user!!.uid)
+            val projectList = projectRepo.getProjectsData(MyHelper.user!!.uid)
             val currentTime = System.currentTimeMillis()
 
             val listToUpdate = mutableListOf<Team>()

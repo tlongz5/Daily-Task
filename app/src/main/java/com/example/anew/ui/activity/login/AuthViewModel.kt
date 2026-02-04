@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.anew.model.User
-import com.example.anew.repo.AuthRepo
+import com.example.anew.data.repo.AuthRepo
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 

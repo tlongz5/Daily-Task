@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.anew.model.Conversation
 import com.example.anew.model.UiState
-import com.example.anew.repo.MessageRepo
+import com.example.anew.data.repo.MessageRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".ui.fragment.add.SelectAddMemberFragment">
+    tools:context=".ui.fragment.common.selectaddmember.SelectAddMemberFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

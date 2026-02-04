@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.anew.model.User
-import com.example.anew.repo.AuthRepo
-import com.example.anew.support.convertUriToCloudinaryUrl
+import com.example.anew.data.repo.AuthRepo
+import com.example.anew.utils.convertUriToCloudinaryUrl
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val authRepo: AuthRepo): ViewModel() {

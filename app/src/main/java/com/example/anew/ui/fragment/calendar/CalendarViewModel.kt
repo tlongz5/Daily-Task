@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.anew.model.Team
-import com.example.anew.repo.ProjectRepo
+import com.example.anew.data.repo.ProjectRepo
 import kotlinx.coroutines.launch
 
 class CalendarViewModel(private val projectRepo: ProjectRepo): ViewModel() {

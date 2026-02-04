@@ -1,21 +1,16 @@
 package com.example.anew.ui.activity.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.anew.repo.AuthRepo
-import com.example.anew.repo.NotificationRepo
-import com.example.anew.support.fakeData
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.example.anew.data.local.MyHelper
+import com.example.anew.data.repo.NotificationRepo
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val notifiRepo: NotificationRepo): ViewModel() {
-    val counter: StateFlow<Long> = notifiRepo.getCounter(fakeData.user!!.uid)
+    val counter: StateFlow<Long> = notifiRepo.getCounter(MyHelper.user!!.uid)
         .stateIn(viewModelScope, SharingStarted.Eagerly, 0)
 
     fun initCounter(uid: String) {

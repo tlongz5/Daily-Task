@@ -14,13 +14,13 @@ import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.anew.R
+import com.example.anew.data.local.MyHelper
 import com.example.anew.databinding.FragmentHomeBinding
 import com.example.anew.model.Team
-import com.example.anew.support.fakeData
-import com.example.anew.support.toTimeUI
+import com.example.anew.utils.toTimeUI
 import com.example.anew.ui.fragment.home.adapter.CompletedProjectAdapter
 import com.example.anew.ui.fragment.home.adapter.OngoingProjectAdapter
-import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.example.anew.viewmodelfactory.MyViewModelFactory
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -130,9 +130,9 @@ class HomeFragment : Fragment() {
         })
 
 //      // handle load data user and click avatar
-        binding.userName.text = fakeData.user!!.name
+        binding.userName.text = MyHelper.user!!.name
         Glide.with(view)
-            .load(fakeData.user!!.photoUrl)
+            .load(MyHelper.user!!.photoUrl)
             .error(R.drawable.ic_launcher_background)
             .into(binding.avatar)
 

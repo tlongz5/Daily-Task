@@ -10,9 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
+import com.example.anew.data.local.MyHelper
 import com.example.anew.databinding.FragmentNotificationBinding
-import com.example.anew.support.fakeData
-import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.example.anew.viewmodelfactory.MyViewModelFactory
 
 class NotificationFragment : Fragment() {
     private var _binding: FragmentNotificationBinding? = null
@@ -34,7 +34,7 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this, myViewModelFactory)[NotificationViewModel::class.java]
-        viewModel.getNotification(fakeData.user!!.uid)
+        viewModel.getNotification(MyHelper.user!!.uid)
 
         viewModel.notificationList.observe(viewLifecycleOwner){
             (binding.rcvNotification.adapter as NotificationAdapter).submitList(it)

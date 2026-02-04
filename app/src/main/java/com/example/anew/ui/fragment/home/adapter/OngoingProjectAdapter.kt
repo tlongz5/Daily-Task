@@ -8,8 +8,8 @@ import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.ItemOngoingProjectCardBinding
 import com.example.anew.model.Team
-import com.example.anew.support.animProgress
-import com.example.anew.support.toFullTime
+import com.example.anew.utils.animProgress
+import com.example.anew.utils.toFullTime
 import kotlin.math.min
 
 class OngoingProjectAdapter(private val ongoingProject: MutableList<Team>,

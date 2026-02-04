@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.anew.model.Notification
-import com.example.anew.repo.NotificationRepo
+import com.example.anew.data.repo.NotificationRepo
 import kotlinx.coroutines.launch
 
 class NotificationViewModel(private val notificationRepo: NotificationRepo): ViewModel() {

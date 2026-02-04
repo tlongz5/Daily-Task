@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     app:layout_constraintHeight_percent="0.8"
-    tools:context=".ui.fragment.home.profile.PickPresetAvatarBottomSheet">
+    tools:context=".ui.fragment.home.viewavatar.PickPresetAvatarBottomSheet">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

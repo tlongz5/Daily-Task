@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FDFDFD"
     android:orientation="vertical"
-    tools:context=".ui.fragment.chat.chat_room.ChatRoomFragment">
+    tools:context=".ui.fragment.common.chatroom.ChatRoomFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/matterial"

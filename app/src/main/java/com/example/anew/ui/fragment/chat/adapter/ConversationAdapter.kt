@@ -2,7 +2,6 @@ package com.example.anew.ui.fragment.chat.adapter
 
 import android.graphics.Typeface
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.anew.databinding.ItemMessageBinding
 import com.example.anew.model.Conversation
-import com.example.anew.support.toRelativeTime
+import com.example.anew.utils.toRelativeTime
 
 class ConversationAdapter(private val callback: (Conversation) -> Unit): ListAdapter<Conversation, ConversationAdapter.ConversationViewHolder>(ConversationDiffUtil()) {
     class ConversationViewHolder(val binding: ItemMessageBinding): RecyclerView.ViewHolder(binding.root)

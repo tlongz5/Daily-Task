@@ -12,10 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.anew.R
+import com.example.anew.data.local.MyHelper
 import com.example.anew.databinding.FragmentFriendListBinding
-import com.example.anew.support.fakeData
 import com.example.anew.ui.fragment.chat.adapter.FriendListAdapter
-import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.example.anew.viewmodelfactory.MyViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -56,7 +56,7 @@ class FriendListFragment : BottomSheetDialogFragment() {
                     putString("receiver_id", it.uid)
                     putString("receiver_name", it.name)
                     putString("receiver_avatar", it.photoUrl)
-                    putString("chatId", listOf(it.uid, fakeData.user!!.uid).sorted().joinToString("_"))
+                    putString("chatId", listOf(it.uid, MyHelper.user!!.uid).sorted().joinToString("_"))
                 },navOptions {
                     anim {
                         enter = R.anim.side_in_right

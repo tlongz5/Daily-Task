@@ -8,13 +8,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.anew.R
+import com.example.anew.data.local.MyHelper
 import com.example.anew.databinding.ActivityMainBinding
-import com.example.anew.support.fakeData
-import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.example.anew.viewmodelfactory.MyViewModelFactory
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, myViewModelFactory)[MainViewModel::class.java]
         // init if need
-        viewModel.initCounter(fakeData.user!!.uid)
+        viewModel.initCounter(MyHelper.user!!.uid)
         lifecycleScope.launch {
             viewModel.counter.collect {
                 val count = it.toInt()

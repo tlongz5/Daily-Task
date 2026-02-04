@@ -1,33 +1,25 @@
 package com.example.anew.ui.activity.login
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.example.anew.R
 import com.example.anew.databinding.ActivityLoginBinding
 import com.example.anew.model.User
-import com.example.anew.support.fakeData
-import com.example.anew.support.getCurrentTime
-import com.example.anew.support.saveUserToSharePrefAndDataLocal
+import com.example.anew.data.local.saveUserToSharePrefAndDataLocal
 import com.example.anew.ui.activity.main.MainActivity
-import com.example.anew.viewmodelFactory.MyViewModelFactory
+import com.example.anew.viewmodelfactory.MyViewModelFactory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import java.io.File
-import androidx.core.graphics.scale
 import androidx.lifecycle.lifecycleScope
-import com.example.anew.support.swapBitmapToUrl
+import com.example.anew.data.local.MyHelper
+import com.example.anew.utils.swapBitmapToUrl
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -123,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
             val phoneNumber = sharePref.getString("phoneNumber", null)
             val username = sharePref.getString("username", null)
 
-            fakeData.user = User(userId,username!!, name!!, email!!, avatar!!, phoneNumber!!)
+            MyHelper.user = User(userId,username!!, name!!, email!!, avatar!!, phoneNumber!!)
 
             callIntent()
             finish()
@@ -132,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
 
     suspend fun swapDrawableToUrl(): String {
         //convert to bitmap
-        val drawable = ContextCompat.getDrawable(this, fakeData.avatar.random())
+        val drawable = ContextCompat.getDrawable(this, MyHelper.avatar.random())
         return swapBitmapToUrl(this,drawable!!)
     }
 }
