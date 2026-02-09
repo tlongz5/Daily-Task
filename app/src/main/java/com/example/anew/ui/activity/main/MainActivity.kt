@@ -2,8 +2,13 @@ package com.example.anew.ui.activity.main
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.marginBottom
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMargins
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -17,9 +22,8 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
-
     private lateinit var viewModel: MainViewModel
-    private val myViewModelFactory = MyViewModelFactory()
+    val myViewModelFactory = MyViewModelFactory()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -56,7 +60,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.HomeFragment,
                 R.id.ChatFragment,
                 R.id.NotificationFragment,
-                R.id.AddFragment,
                 R.id.CalendarFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
                 }
@@ -64,10 +67,15 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNav.visibility = View.GONE
                 }
             }
+            if(R.id.profileFragment == destination.id){
+                binding.root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    updateMargins(top = 0)
+                }
+            }else{
+                binding.root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    updateMargins(top = (20 * resources.displayMetrics.density).toInt())
+                }
+            }
         }
-    }
-
-    fun showBottomNav(type: Boolean){
-        binding.bottomNav.visibility = if(type) View.VISIBLE else View.GONE
     }
 }

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     tools:context=".ui.activity.main.MainActivity"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
     <androidx.fragment.app.FragmentContainerView

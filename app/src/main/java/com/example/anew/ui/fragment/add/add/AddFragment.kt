@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -51,9 +53,6 @@ class AddFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //hide bottomNav for fragment
-        (requireActivity() as MainActivity).showBottomNav(false)
 
         viewModel = ViewModelProvider(requireActivity(), myViewModelFactory)[AddViewModel::class.java]
         viewModel.teamState.observe(viewLifecycleOwner){
@@ -177,11 +176,15 @@ class AddFragment : Fragment() {
             Toast.makeText(context, "Create Success", Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }
+
+        binding.root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            bottomMargin = (45 * resources.displayMetrics.density).toInt()
+        }
     }
 
 //Note
     private fun getBottomSheet(type: Boolean) {
-        var check: Boolean = false // check Done
+        var check = false // check Done
         val bottomSheet = BottomSheetDialog(requireContext())
         val bindingBottomSheet = BottomSheetSetTextAddBinding.inflate(layoutInflater)
         bottomSheet.setContentView(bindingBottomSheet.root)
@@ -223,6 +226,5 @@ class AddFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        (requireActivity() as MainActivity).showBottomNav(true)
     }
 }

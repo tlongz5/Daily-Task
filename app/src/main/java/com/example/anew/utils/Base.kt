@@ -23,7 +23,6 @@ import java.util.TimeZone
 import kotlin.coroutines.resume
 
 //support func
-
 fun Long.toRelativeTime(): String {
     val now = System.currentTimeMillis()
     return DateUtils.getRelativeTimeSpanString(this, now, DateUtils.MINUTE_IN_MILLIS).toString()

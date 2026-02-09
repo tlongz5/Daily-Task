@@ -9,6 +9,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -106,7 +107,7 @@ class ChatRoomFragment : Fragment() {
                         "Waiting...",
                         Snackbar.LENGTH_SHORT
                     ).show()
-                }catch (e:Exception){
+                }catch (_:Exception){
                     Toast.makeText(requireContext(),"Something went wrong, please try again",Toast.LENGTH_SHORT).show()
                 }
             }
@@ -208,6 +209,11 @@ class ChatRoomFragment : Fragment() {
                 "Private" -> showDialogPrivateOptions()
                 else -> showDialogProjectOptions()
             }
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            view.setPadding(0, 0, 0, insets.systemWindowInsetBottom)
+            insets
         }
 
         parentFragmentManager.setFragmentResultListener(
