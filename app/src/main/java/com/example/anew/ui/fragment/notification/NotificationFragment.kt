@@ -41,15 +41,16 @@ class NotificationFragment : Fragment() {
         }
 
         binding.rcvNotification.layoutManager = LinearLayoutManager(requireContext())
-        binding.rcvNotification.adapter = NotificationAdapter{ notificationId, type,projectId, userId ->
+        binding.rcvNotification.adapter = NotificationAdapter{ notification ->
 
             //update status
-            viewModel.updateStatus(notificationId)
+            if(!notification.checkRead)
+            viewModel.updateStatus(notification.notificationId)
 
-            when(type){
+            when(notification.type){
                 "create_project" -> {
                     val bundle = Bundle()
-                    bundle.putString("id", projectId)
+                    bundle.putString("id", notification.projectId)
                     findNavController().navigate(R.id.action_NotificationFragment_to_taskDetailFragment,
                         bundle,navOptions {
                             anim {
@@ -62,7 +63,7 @@ class NotificationFragment : Fragment() {
                 }
                 "end_project" -> {
                     val bundle = Bundle()
-                    bundle.putString("id", projectId)
+                    bundle.putString("id", notification.projectId)
                     findNavController().navigate(R.id.action_NotificationFragment_to_taskDetailFragment,
                         bundle,navOptions {
                             anim {
@@ -78,7 +79,7 @@ class NotificationFragment : Fragment() {
                 }
                 "become_friend" -> {
                     val bundle = Bundle()
-                    bundle.putString("uid", userId)
+                    bundle.putString("uid", notification.userId)
                     findNavController().navigate(R.id.action_NotificationFragment_to_otherUserProfileFragment, bundle,
                         navOptions {
                             anim {

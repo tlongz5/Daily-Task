@@ -12,7 +12,7 @@ import com.example.anew.databinding.ItemNotificationBinding
 import com.example.anew.model.Notification
 import com.example.anew.utils.toTime
 
-class NotificationAdapter(private val callback: (String,String,String, String) -> Unit): ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(NOTIFICATION_DIFFUTIL) {
+class NotificationAdapter(private val callback: (Notification) -> Unit): ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(NOTIFICATION_DIFFUTIL) {
     class NotificationViewHolder(val binding: ItemNotificationBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
@@ -29,7 +29,7 @@ class NotificationAdapter(private val callback: (String,String,String, String) -
     ) {
         val item = getItem(position)
         holder.itemView.setOnClickListener {
-            callback(item.notificationId,item.type,item.projectId,item.userId)
+            callback(item)
         }
 
         with(holder.binding){

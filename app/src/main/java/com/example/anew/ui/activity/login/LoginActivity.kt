@@ -48,8 +48,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //init
-        binding.imgLogo.setImageResource(R.drawable.logo)
 
         //check user login before
         checkLogin()

@@ -78,7 +78,10 @@ class ChatRoomViewModel(
     }
 
     private suspend fun addToList(newList: List<Message>, isNew: Boolean) {
-        if(newList.isEmpty()) return
+        if(newList.isEmpty()) {
+            _messageState.value = UiState.Success(emptyList())
+            return
+        }
 
         val loadUserId = newList.map { it.senderId }.distinct()
             .filter { !DataTranfer.userCache.containsKey(it) }

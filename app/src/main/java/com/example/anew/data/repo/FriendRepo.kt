@@ -117,7 +117,7 @@ class FriendRepo(private val notificationRepo: NotificationRepo) {
             "",
             "request_friend",
             "",
-            "",
+            friendId,
             ""
         )
 
