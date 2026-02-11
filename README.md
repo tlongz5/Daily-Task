@@ -10,40 +10,40 @@ https://youtu.be/Nc6nfbiegGs
 ---
 📱 **Screenshots**
 <p align="center">
-  <img src="Screenshots/z7522477554471_5afc7274f4ddd2951951c5eb44825271.jpg" width="45%" />
-  <img src="Screenshots/z7522477555054_f7e82c5b681eaf71b2a2ee861746e33c.jpg" width="45%" />
+  <img src="Screenshots/z7522477554471_5afc7274f4ddd2951951c5eb44825271.jpg" width="300" />
+  <img src="Screenshots/z7522477555054_f7e82c5b681eaf71b2a2ee861746e33c.jpg" width="300" />
 </p>
 
 <p align="center">
-  <img src="Screenshots/z7522477563505_468d00f62ba644c79678a1c8aa4db879.jpg" width="45%" />
-  <img src="Screenshots/z7522477563639_c42f82229a189688dc5781b5f3f10eab.jpg" width="45%" />
+  <img src="Screenshots/z7522477563505_468d00f62ba644c79678a1c8aa4db879.jpg" width="300" />
+  <img src="Screenshots/z7522477563639_c42f82229a189688dc5781b5f3f10eab.jpg" width="300" />
 </p>
 <p align="center">
-  <img src="Screenshots/z7522477563723_160979110426b9f0a32d172e2697d81c.jpg" width="45%"/>
-  <img src="Screenshots/z7522477568987_d088c5b897b66b0c48ab39793aab43a3.jpg" width="45%"/>
-</p>
-
-<p align="center">
-  <img src="Screenshots/z7522477571893_defb42a1bd9328492afcc4287b7b43db.jpg" width="45%" />
-  <img src="Screenshots/screenshots/z7522477577070_e3c394113a8e5099974f444f56a65fb1.jpg" width="45%" />
-</p>
-<p align="center">
-  <img src="Screenshots/z7522477580709_e01a5c8289feede60901953459fbaff1.jpg" width="45%" />
-  <img src="Screenshots/z7522477581806_e7729f6426df4bc9e56c6870e95f6cb1.jpg" width="45%" />
+  <img src="Screenshots/z7522477563723_160979110426b9f0a32d172e2697d81c.jpg" width="300"/>
+  <img src="Screenshots/z7522477568987_d088c5b897b66b0c48ab39793aab43a3.jpg" width="300"/>
 </p>
 
 <p align="center">
-  <img src="Screenshots/z7522477586964_db785aabe540d850ba5f5d4823cb2843.jpg" width="45%" />
-  <img src="Screenshots/z7522477589800_540ebbdb493990feeffb50c99a18a6ff.jpg" width="45%" />
+  <img src="Screenshots/z7522477571893_defb42a1bd9328492afcc4287b7b43db.jpg" width="300" />
+  <img src="Screenshots/z7522477577070_e3c394113a8e5099974f444f56a65fb1.jpg" width="300" />
 </p>
 <p align="center">
-  <img src="Screenshots/z7522477591033_c941dae8105f90cd541408db381cad00.jpg" width="45%" />
-  <img src="Screenshots/z7522477595764_f7e262e9fe2a784e0dd6f6d4e7956745.jpg" width="45%" />
+  <img src="Screenshots/z7522477580709_e01a5c8289feede60901953459fbaff1.jpg" width="300" />
+  <img src="Screenshots/z7522477581806_e7729f6426df4bc9e56c6870e95f6cb1.jpg" width="300" />
 </p>
 
 <p align="center">
-  <img src="Screenshots/z7522477595884_dc689b2c90ef641d691a8a56de682a1d.jpg" width="45%" />
-  <img src="Screenshots/z7522477597766_0a70cbce9a41a50f3e2ae62990234d15.jpg" width="45%" />
+  <img src="Screenshots/z7522477586964_db785aabe540d850ba5f5d4823cb2843.jpg" width="300" />
+  <img src="Screenshots/z7522477589800_540ebbdb493990feeffb50c99a18a6ff.jpg" width="300" />
+</p>
+<p align="center">
+  <img src="Screenshots/z7522477591033_c941dae8105f90cd541408db381cad00.jpg" width="300" />
+  <img src="Screenshots/z7522477595764_f7e262e9fe2a784e0dd6f6d4e7956745.jpg" width="300" />
+</p>
+
+<p align="center">
+  <img src="Screenshots/z7522477595884_dc689b2c90ef641d691a8a56de682a1d.jpg" width="300" />
+  <img src="Screenshots/z7522477597766_0a70cbce9a41a50f3e2ae62990234d15.jpg" width="300" />
 </p>
 ✨ **Tính năng Chính**
 
