@@ -6,7 +6,8 @@
 
 ---
 🚀 **DEMO video**
-https://youtu.be/Nc6nfbiegGs
+
+https://drive.google.com/file/d/13iTvF9YGmDRgykxdTj87At-9ACfaimG4/view?usp=drive_link
 ---
 📱 **Screenshots**
 <p align="center">
