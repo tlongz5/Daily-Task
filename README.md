@@ -16,6 +16,10 @@ https://drive.google.com/file/d/13iTvF9YGmDRgykxdTj87At-9ACfaimG4/view?usp=drive
 </p>
 
 <p align="center">
+  <img src="Screenshots/Screenshot 2026-02-24 151914.png" width="300" />
+</p>
+
+<p align="center">
   <img src="Screenshots/z7522477563505_468d00f62ba644c79678a1c8aa4db879.jpg" width="300" />
   <img src="Screenshots/z7522477563639_c42f82229a189688dc5781b5f3f10eab.jpg" width="300" />
 </p>
