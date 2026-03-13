@@ -73,10 +73,9 @@ https://drive.google.com/file/d/13iTvF9YGmDRgykxdTj87At-9ACfaimG4/view?usp=drive
 - Profile Other User: Hiển thị thông tin liên hệ (Email, Phone) và quản lý trạng thái bạn bè (Unfriend/Message).
 ---
 🛠** Công nghệ Sử dụng**
-- Ngôn ngữ: **Kotlin**
-
-- Giao diện (UI): **XML**
-
-- Kiến trúc: **MVVM**
-
-- Backend: **Firebase**
+- Language: Kotlin
+- UI: XML
+- Kiến trúc: MVVM
+- Layout: Refresh Layout, ShimmerLayout, LinearLayout, ConstraintLayout
+- Tech: Activity, Fragment, Recycleview, ViewModel, LiveData, Flow, Navigation 
+- Backend: Firebase(Auth + Realtime db + Firestore)
